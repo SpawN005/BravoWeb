@@ -59,12 +59,7 @@ class Event
     #[ORM\Column(name: 'date_end', type: 'date', nullable: false)]
     private $dateEnd;
 
-    /**
-     * @var string
-     *
-     */
-    #[ORM\Column(name: 'type_event', type: 'string', length: 30, nullable: false)]
-    private $typeEvent;
+    
 
     /**
      * @var string
@@ -146,17 +141,7 @@ class Event
         return $this;
     }
 
-    public function getTypeEvent(): ?string
-    {
-        return $this->typeEvent;
-    }
-
-    public function setTypeEvent(string $typeEvent): self
-    {
-        $this->typeEvent = $typeEvent;
-
-        return $this;
-    }
+   
 
     public function getUrl(): ?string
     {
