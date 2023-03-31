@@ -44,6 +44,4 @@ class Commentaire
 
         return $this;
     }
-
-
 }

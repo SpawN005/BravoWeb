@@ -33,10 +33,15 @@ class ArtworkController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $form['url']->getData();
+            $fileName = $file->getClientOriginalName();
+            $file->move("C:/xampp/htdocs/img", $fileName);
+            $artwork->setUrl($fileName);
             $entityManager->persist($artwork);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('artwork/new.html.twig', [
@@ -74,7 +79,7 @@ class ArtworkController extends AbstractController
     #[Route('/{id}', name: 'app_artwork_delete', methods: ['POST'])]
     public function delete(Request $request, Artwork $artwork, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$artwork->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $artwork->getId(), $request->request->get('_token'))) {
             $entityManager->remove($artwork);
             $entityManager->flush();
         }

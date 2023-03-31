@@ -6,6 +6,8 @@ use App\Entity\Artwork;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType as FileType;
+
 
 class ArtworkType extends AbstractType
 {
@@ -15,7 +17,7 @@ class ArtworkType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('categorie')
-            ->add('url')
+            ->add('url', FileType::class)
             ->add('owner');
     }
 

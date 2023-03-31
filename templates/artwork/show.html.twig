@@ -1,46 +1,77 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Artwork{% endblock %}
-
 {% block body %}
-    <h1>Artwork</h1>
+ <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>Event Details</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ artwork.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ artwork.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ artwork.description }}</td>
-            </tr>
-            <tr>
-                <th>Catégorie</th>
-                <td>{{ artwork.catégorie }}</td>
-            </tr>
-            <tr>
-                <th>Url</th>
-                <td>{{ artwork.url }}</td>
-            </tr>
-             <tr>
-                <th>owner</th>
-                <td>{{ artwork.owner }}</td>
-            </tr>
-              <tr>
-                <th>ownazeazeer</th>
-                <td>azeaze</td>
-            </tr>
-        </tbody>
-    </table>
+        <section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
+                
+                    <h3>{{ artwork.title }}</h3>
+                </div><!-- /.event-details__top -->
+                <div class="row high-gutter">
+                    <div class="col-lg-8">
+                        <div class="event-details__main">
+                            <div class="event-details__image">
+                                <img src="http://localhost/img/{{artwork.url}}" alt="" width="760" height="565">
+                            </div><!-- /.event-details__image -->
+                            <div class="event-details__content">
+                           <p> {{artwork.description}} </p>
 
-    <a href="{{ path('app_artwork_index') }}">back to list</a>
+                             
+                                <ul class="event-details__contact list-unstyled">
+                                    <li>
+                                        <span>Owner:</span>
+                                        {{artwork.owner.firstName}}  {{artwork.owner.lastName}}
+                                    </li>
+                                    <li>
+                                        <span>Email:</span>
+                                        {{artwork.owner.email}}
+                                    </li>
+                                    <li>
+                                        <span>Phone:</span>
+                                      {{artwork.owner.phoneNumber}}
+                                    </li>
+                                 
+                                </ul><!-- /.event-details__contact -->
+                            </div><!-- /.event-details__content -->
+                        </div><!-- /.event-details__main -->
+          
+                    </div><!-- /.col-lg-8 -->
+                    <div class="col-lg-4">
+                        <div class="event-details__booking">
+                            <ul class="event-details__booking-info list-unstyled">
+                                <li>
+                                    <span>Type:</span>
+                                    {{artwork.categorie.NomCategorie}}
+                                </li>
+                    
+                                <li>
+                                    <span>Owner:</span>
+                                  {{artwork.owner.FirstName}}      {{artwork.owner.LastName}}
+                                </li>
+                            </ul><!-- /.event-details__booking-info list-unstyled -->
+                     
+                            <!-- /.thm-btn event-details__book-btn -->
+                        </div><!-- /.event-details__booking -->
+                    </div><!-- /.col-lg-4 -->
+                </div><!-- /.row -->
+            </div><!-- /.container -->
+        </section><!-- /.event-details -->
 
-    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}">edit</a>
-
-    {{ include('artwork/_delete_form.html.twig') }}
+        <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
+            <div class="container text-center">
+                <h3>More Than 1250 Exhibits!</h3>
+                <p>Every day more exhibits arrive in our museum. Do not <br> wait and buy a ticket now.</p>
+                <div class="cta-one__btn-block">
+                    <a href="#" class="thm-btn cta-one__btn-one">Become A Member</a><!-- /.thm-btn cta-one__btn-one -->
+                    <a href="#" class="thm-btn cta-one__btn-two">Buy Online</a><!-- /.thm-btn cta-one__btn-two -->
+                </div><!-- /.cta-one__btn-block -->
+            </div><!-- /.container -->
+        </section><!-- /.cta-one -->
+        
+      
 {% endblock %}

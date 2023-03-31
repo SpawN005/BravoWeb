@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Artwork
@@ -30,6 +31,17 @@ class Artwork
      *
      */
     #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
+    #[Assert\NotBlank(message: "Title is required")]
+    #[Assert\Length(
+        min: 3,
+        max: 255,
+        minMessage: "Title must be at least {{ limit }} characters long",
+        maxMessage: "Title cannot be longer than {{ limit }} characters"
+    )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z][a-zA-Z0-9\s]*$/",
+        message: "Title should not start with a space, number or special character",
+    )]
     private $title;
 
     /**
@@ -37,6 +49,14 @@ class Artwork
      *
      */
     #[ORM\Column(name: 'description', type: 'text', length: 65535, nullable: false)]
+    #[Assert\NotBlank(message: "Description is required")]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z][a-zA-Z0-9\s]*$/",
+        message: "description should not start with a space, number or special character",
+    )]
+
+
+
     private $description;
 
     /**
@@ -44,6 +64,7 @@ class Artwork
      *
      */
     #[ORM\Column(name: 'url', type: 'string', length: 200, nullable: false)]
+    #[Assert\NotBlank(message: "Image is required")]
     private $url;
 
     /**
@@ -52,6 +73,7 @@ class Artwork
      */
     #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'Categorie')]
+    #[Assert\NotBlank(message: "Categorie is required")]
     private $categorie;
 
     /**
@@ -126,6 +148,4 @@ class Artwork
 
         return $this;
     }
-
-
 }
