@@ -38,15 +38,15 @@
             </tr>
             <tr>
                 <th>Category</th>
-                <td>{{ event.categorie }}</td>
+                <td>{{ event.categorie}}</td>
             </tr>
              
         </tbody>
     </table>
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
+    <a href="{{ path('app_event') }}">back to list</a>
 
-    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
+    <a href="{{ path('app_updateEvent', {'id': event.id}) }}">edit</a>
 
-    {{ include('event/_delete_form.html.twig') }}
+    {{ include('event/deleteEvent.html.twig') }}
 {% endblock %}

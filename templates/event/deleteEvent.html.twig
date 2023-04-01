@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer un événement{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mb-5">Supprimer un événement</h1>
+        <p>Voulez-vous vraiment supprimer cet événement :</p>
+        <p><strong>{{ event.title }}</strong></p>
+        <form action="{{ path('app_deleteEvent', {id: event.id}) }}" method="POST">
+            {{ csrf_token('deleteEvent') }}
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+                <a href="{{ path('app_readEvent') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+        <a href="{{ path('app_event') }}">Retour</a>
+
+    </div>
+{% endblock %}

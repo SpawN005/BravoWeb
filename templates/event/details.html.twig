@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="container my-5">
+    <div class="row">
+      <div class="col">
+        <h1>{{ event.title }}</h1>
+        <p>{{ event.description }}</p>
+        <p>Nombre de places disponibles : {{ event.nb_placeMax }}</p>
+        <p>Début de l'événement : {{ event.date_beg|date('d/m/Y H:i') }}</p>
+        <p>Fin de l'événement : {{ event.date_end|date('d/m/Y H:i') }}</p>
+        <img src="{{ event.url }}" alt="{{ event.title }}" class="img-fluid">
+        <p>Catégorie : {{ event.categorie.nomcategorie }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -11,11 +11,11 @@
                 <th>Id</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>nb_placeMax</th>
-                <th>date_beg</th>
-                <th>date_end</th>
+                <th>Max number of places</th>
+                <th>Start date</th>
+                <th>End date</th>
                 <th>Url</th>
-                <th>Catégorie</th>
+                <th>Category</th>
             </tr>
         </thead>
         <tbody>
@@ -30,8 +30,9 @@
                 <td>{{ event.url }}</td>
                 <td>{{ event.categorie  }}</td>
                 <td>
-                    <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}">show</a>
-                    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}">edit</a>
+                    <a href="{{ path('app_readEvent', {'id': event.id}) }}">show</a>
+                    <a href="{{ path('app_updateEvent', {'id': event.id}) }}">edit</a>
+                    <a href="{{ path('app_deleteEvent', {'id': event.id}) }}">delete</a>
                 </td>
             </tr>
         {% else %}
@@ -42,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_event_new') }}">Create new</a>
+    <a href="{{ path('app_addEvent') }}">Create new</a>
 {% endblock %}
