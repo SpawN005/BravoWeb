@@ -45,19 +45,24 @@ class Event
     #[ORM\Column(name: 'nb_placeMax', type: 'integer', nullable: false)]
     private $nbPlacemax;
 
-    /**
-     * @var \DateTime
-     *
-     */
-    #[ORM\Column(name: 'date_beg', type: 'date', nullable: false)]
-    private $dateBeg;
+    // /**
+    //  * @var \DateTime
+    //  *
+    //  */
+    // #[ORM\Column(name: 'date_beg', type: 'date', nullable: false)]
+    // private $dateBeg;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateBeg = null;
+    // /**
+    //  * @var \DateTime
+    //  *
+    //  */
+    // #[ORM\Column(name: 'date_end', type: 'date', nullable: false)]
+    // private $dateEnd;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateEnd = null;
+ 
 
-    /**
-     * @var \DateTime
-     *
-     */
-    #[ORM\Column(name: 'date_end', type: 'date', nullable: false)]
-    private $dateEnd;
 
     
 

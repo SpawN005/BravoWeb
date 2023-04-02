@@ -1,11 +1,17 @@
 <?php
 
 namespace App\Form;
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Categorie;
 
 class EventType extends AbstractType
 {
@@ -17,9 +23,37 @@ class EventType extends AbstractType
             ->add('nbPlacemax')
             ->add('dateBeg')
             ->add('dateEnd')
-            ->add('url')
-            ->add('categorie')
+            ->add('url', FileType::class, [
+                'required' => true,
+                'label' => 'Event picture',
+            ])
+
+            ->add('categorie',EntityType::class,
+            ['class'=>Categorie::class,
+            'choice_label'=>'name'])
+
         ;
+       
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $events = $event->getData();
+            $imageFile = $events->getUrl();
+
+            if ($imageFile instanceof UploadedFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+                // Move the file to the directory where images are stored
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle the exception
+                }
+
+                $user->setImage($newFilename);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

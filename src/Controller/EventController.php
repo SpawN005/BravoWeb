@@ -32,7 +32,7 @@ class EventController extends AbstractController
         //Utiliser findAll()
         $events = $eventRepository->findAll();
         return $this->render('event/AffichageEvent.html.twig', [
-            'e' => $events,
+            'event' => $events,
         ]);
     }
 

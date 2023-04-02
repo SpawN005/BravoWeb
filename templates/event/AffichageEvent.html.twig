@@ -7,46 +7,52 @@
 
     <table class="table">
         <tbody>
+        {% for e in event  %}
             <tr>
                 <th>Id</th>
-                <td>{{ event.id }}</td>
+                <td>{{ e.id }}</td>
             </tr>
             <tr>
                 <th>Title</th>
-                <td>{{ event.title }}</td>
+                <td>{{ e.title }}</td>
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ event.description }}</td>
+                <td>{{ e.description }}</td>
             </tr>
              <tr>
                 <th>Number of places</th>
-                <td>{{ event.nb_placeMax }}</td>
+                <td>{{ e.nbPlacemax }}</td>
             </tr>
              <tr>
                 <th>Date begin</th>
-                <td>{{ event.date_beg }}</td>
+                <td>{{ e.dateBeg |date('Y-m-d')}}</td>
             </tr>
              <tr>
                 <th>Date end</th>
-                <td>{{ event.date_end }}</td>
+                <td>{{ e.dateEnd|date('Y-m-d') }}</td>
             </tr>
             
             <tr>
                 <th>Url</th>
-                <td>{{ event.url }}</td>
+                <td>{{ e.url }}</td>
             </tr>
             <tr>
                 <th>Category</th>
-                <td>{{ event.categorie.nomCategorie }}</td>
+                <td>{{ e.id.nomcategorie }}</td>
             </tr>
              
         </tbody>
+       
     </table>
 
     <a href="{{ path('app_event') }}">back to list</a>
 
-    <a href="{{ path('app_updateEvent', {'id': event.id}) }}">edit</a>
-
-    {{ include('event/deleteEvent.html.twig') }}
+    {# <a href="{{ path('app_updateEvent', {'id': e.id}) }}">edit</a> #}
+    
+ <td><form action="{{path('app_updateEvent',{'id':e.id}) }}">
+                <button>Update</button></form></td>
+   <td><form action="{{path('app_deleteEvent',{'id':e.id}) }}">
+            <button>Delete</button></form></td>
+              {% endfor %}
 {% endblock %}
