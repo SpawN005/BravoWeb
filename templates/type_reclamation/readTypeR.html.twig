@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>List Of Complaint Types</h1>
+
+    <table >
+       <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type_Reclamation</th>
+                <th>actions</th>
+            </tr>
+       </thead>
+       <tbody>
+        {% for type in types %}
+            <tr>
+                <td>{{ type.id }}</td>
+                <td>{{ type.typereclamation }}</td>
+                 <td>
+                    <a href="{{ path('app_deleteTypeR', {'id': type.id}) }}">delete</a>
+                <a href="{{ path('app_updateTypeR', {'id': type.id}) }}">update</a>
+                 </td>
+               
+            </tr>
+        
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}

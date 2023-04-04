@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
+
+
 /**
  * User
  *
@@ -178,6 +181,12 @@ class User
 
         return $this;
     }
+    public function __toString()
+{
+    return $this->getFirstname();
+}
+
+
 
 
 }

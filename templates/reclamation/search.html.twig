@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Search For A Complaint </h1>
+
+    {{ form(searchReclamationBytitle) }}
+
+
+    {% if Reclamations|length > 0 %}
+        <h2>Search results :</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Date de création</th>
+                    <th>État</th>
+                    <th>Propriétaire</th>
+                    <th>Date de traitement</th>
+                    <th>Note</th>
+                    <th>typereclamation</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reclamation in Reclamations %}
+                    <tr>
+                        <td>{{ reclamation.title }}</td>
+                        <td>{{ reclamation.description }}</td>
+                        <td>{{ reclamation.dateCreation|date('d/m/Y') }}</td>
+                        <td>{{ reclamation.etat }}</td>
+                        <td>{{ reclamation.ownerID.firstname }}</td>
+                        <td>{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
+                        <td>{{ reclamation.note|default('-') }}</td>
+                        <td>{{ reclamation.typereclamation}}</td>
+                                        
+                        <td>
+                            {% if reclamation.etat == "on hold" %}
+                                <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="btn btn-primary">Delete</a>
+                            {% endif %}
+                            <a href="{{ path('app_updateR', {'id': reclamation.id}) }}"class="btn btn-primary">Update</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elseif Reclamations|length == 0 %}
+        <p>Desolé aucune réclamation trouvée pour ce titre .</p>
+    {% endif %}
+{% endblock %}

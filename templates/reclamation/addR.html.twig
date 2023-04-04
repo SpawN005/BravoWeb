@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% block title %}<h1>New complaint</h1> {% endblock %}
+   {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+   {{ form_row(form.typereclamation) }}
+   {{ form_row(form.title) }}
+   {{ form_row(form.description) }}
+   {{ form_end(form) }}
+   {% if app.session.flashbag.has('success') %}
+   <div class="alert alert-success">{{ app.session.flashbag.get('success')[0] }}</div>
+   {% endif %}
+{% endblock %}
+
+
+

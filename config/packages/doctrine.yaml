@@ -42,3 +42,15 @@ when@prod:
           adapter: cache.app
         doctrine.system_cache_pool:
           adapter: cache.system
+
+  App\Repository\ReclamationRepository:
+    factory: ['@doctrine', 'getRepository']
+    arguments: [App\Entity\Reclamation]
+
+  App\Repository\TypeReclamationRepository:
+    factory: ['@doctrine', 'getRepository']
+    arguments: [App\Entity\Typereclamation]
+
+  App\Repository\UserRepository:
+    factory: ['@doctrine', 'getRepository']
+    arguments: [App\Entity\User]

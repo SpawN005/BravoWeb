@@ -5,7 +5,12 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home 01 || Muzex || Museum and Artists HTML Template - shared on themelock.com</title>
+    <title> {% block title %}{#zedet hedhi #}
+    Home 01 || Muzex || Museum and Artists HTML Template - shared on themelock.com
+    {% endblock %}{#zedet hedhi #}
+    </title>
+
+   
 {% block flavicons %}
     <!-- favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images/favicon/apple-touch-icon.png')}}">
@@ -148,7 +153,7 @@
             </div><!-- /.container -->
         </nav><!-- /.main-nav-one -->
 {% endblock %}
-
+{% block body %}{#zedet hedhi #}
         <!-- Banner Section -->
         <section class="banner-section">
             <div class="banner-carousel thm__owl-carousel owl-theme owl-carousel" data-options='{"loop": true, "items": 1, "margin": 0, "dots": false, "nav": true, "animateOut": &quot;fadeOut&quot;, "animateIn": &quot;fadeIn&quot;, "active": true, "smartSpeed": 1000, "autoplay": true, "autoplayTimeout": 6000, "autoplayHoverPause": false}'>
@@ -718,6 +723,7 @@
                 </div><!-- /.brand-one__carousel thm__owl-carousel owl-carousel owl-theme -->
             </div><!-- /.container -->
         </section><!-- /.brand-one -->
+ {% endblock %}{#zedet hedhi #}
 
         <footer class="site-footer">
             <div class="site-footer__upper">
@@ -838,7 +844,7 @@
             <p class="side-content__block__text site-footer__copy-text"><a href="#">Muzex</a> <i class="fa fa-copyright"></i> 2020 All Right Reserved</p>
         </div><!-- /.side-content__block-inner -->
     </div><!-- /.side-content__block -->
-
+ 
     <div class="side-menu__block">
 
         <a href="#" class="side-menu__toggler side-menu__close-btn"><i class="fa fa-times"></i>

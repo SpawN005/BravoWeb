@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block title %}<h1>Edit Complaint</h1>{% endblock %}
+    {{ form_start(form) }}
+    {{ form_row(form.typereclamation) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_end(form) }}
+{% endblock %}

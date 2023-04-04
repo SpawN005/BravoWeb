@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>list of complaints</h1>
+    <form method="get">
+    <label for="etat">Filtrer par état:</label>
+    <select name="etat" id="etat">
+        <option value="">Tous les états</option>
+        <option value="on hold">On hold</option>
+        <option value="processing">Processing</option>
+        <option value="treated">Treated</option>
+    </select>
+    <button type="submit">Filtrer</button>
+</form>
+   {% if reclamations %}
+    <table >
+       <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Date_Creation</th>
+                <th>Etat</th>
+                <th>OwnerID</th>
+                <th>date_Traitement</th>
+                <th>note</th>
+                <th>typereclamation</th>
+                <th>actions</th>
+            </tr>
+       </thead>
+       <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.title }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateCreation|date('d/m/Y')  }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.ownerID.firstname }}</td>
+                <td>{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
+                <td>{{ reclamation.note|default('-') }}</td>
+                <td>{{ reclamation.typereclamation }}</td>
+                 <td>
+                {% if reclamation.etat == "on hold" %}
+                    <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="btn btn-primary">delete</a>
+                    <a href="{{ path('reclamation_traiter', {id: reclamation.id}) }}" class="btn btn-primary">Traiter</a>
+                {% endif %}
+                <a href="{{ path('app_updateR', {'id': reclamation.id}) }}"class="btn btn-primary">update</a>
+            
+            </td>
+               
+            </tr>
+        
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucune réclamation trouvée.</p>
+{% endif %}
+    {% endblock %}
+

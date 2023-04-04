@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block title %}<h1>Avis pour la réclamation n°{{ reclamation.id }} </h1>{% endblock %}
+
+    {{ form_start(form) }}
+
+    {{ form_label(form.satisfait) }}
+    {{ form_widget(form.satisfait) }}
+    {{ form_label(form.Note) }}
+    {{ form_widget(form.Note) }}
+
+    {#{{ form_label(form.commentaire) }}#}
+    {#{{ form_widget(form.commentaire) }}#}
+
+    <button type="submit">Envoyer</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}

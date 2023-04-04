@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+{% block title %}<h1>My Complaints</h1>{% endblock %}
+  
+    <table class="table">
+        <thead>
+            <tr>
+                 <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Date_Creation</th>
+                <th>Etat</th>
+                <th>date_Traitement</th>
+                <th>note</th>
+                <th>typereclamation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reclamation in reclamations %}
+                <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.title }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateCreation|date('d/m/Y')  }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
+                <td>{{ reclamation.note|default('-') }}</td>
+                <td>{{ reclamation.typereclamation}}</td>
+
+                </tr>
+                <td>
+                {% if reclamation.etat == "on hold" %}
+                    <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="btn btn-primary">delete</a>
+                {% endif %}
+                <a href="{{ path('app_updateR', {'id': reclamation.id}) }}" class="btn btn-primary">update</a>
+                {% if reclamation.etat == 'processing' %}
+<a href="{{ path('reclamation_avis', {id: reclamation.id}) }}" class="btn btn-primary">Donner mon avis</a>
+{% endif %}
+
+            </td>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

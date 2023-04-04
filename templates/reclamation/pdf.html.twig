@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des réclamations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th {
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
+        td {
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des réclamations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Sujet</th>
+                <th>Date de création</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.title }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateCreation|date('d/m/Y H:i:s') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
