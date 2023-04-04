@@ -38,8 +38,14 @@
                 <td>{{ e.url }}</td>
             </tr>
             <tr>
+                {# <th>Category</th>
+                <td>{{ e.categorie.nomcategorie }}</td> #}
                 <th>Category</th>
-                <td>{{ e.id.nomcategorie }}</td>
+                {% if e.categorie is not null %}
+                    <td>{{ e.categorie.nomcategorie }}</td>
+                {% else %}
+                    <td>No category</td>
+                {% endif %}
             </tr>
              
         </tbody>

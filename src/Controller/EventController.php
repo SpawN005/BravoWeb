@@ -18,10 +18,14 @@ use Doctrine\Persistence\ManagerRegistry;
 class EventController extends AbstractController
 {
     #[Route('/event', name: 'app_event')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        $events = $entityManager
+            ->getRepository(Event::class)
+            ->findAll();
+
         return $this->render('event/index.html.twig', [
-            'controller_name' => 'EventController',
+            'event' => $events,
         ]);
     }
 

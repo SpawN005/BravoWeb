@@ -19,20 +19,25 @@
             </tr>
         </thead>
         <tbody>
-        {% for event in events %}
+        {% for e in event %}
             <tr>
-                <td>{{ event.id }}</td>
-                <td>{{ event.title }}</td>
-                <td>{{ event.description }}</td>
-                <td>{{ event.nbPlacemax  }}</td>
-                <td>{{ event.dateBeg  }}</td>
-                <td>{{ event.dateEnd  }}</td>
-                <td>{{ event.url }}</td>
-                <td>{{ event.categorie.nomCategorie   }}</td>
+                <td>{{ e.id }}</td>
+                <td>{{ e.title }}</td>
+                <td>{{ e.description }}</td>
+                <td>{{ e.nbPlacemax  }}</td>
+                <td>{{ e.dateBeg |date('Y-m-d') }}</td>
+                <td>{{ e.dateEnd |date('Y-m-d') }}</td>
+                <td>{{ e.url }}</td>
+                {# <td>{{ e.categorie.nomCategorie   }}</td> #}
+                 {% if e.categorie is not null %}
+                    <td>{{ e.categorie.nomcategorie }}</td>
+                {% else %}
+                    <td>No category</td>
+                {% endif %}
                 <td>
-                    <a href="{{ path('app_readEvent', {'id': event.id}) }}">show</a>
-                    <a href="{{ path('app_updateEvent', {'id': event.id}) }}">edit</a>
-                    <a href="{{ path('app_deleteEvent', {'id': event.id}) }}">delete</a>
+                    <a href="{{ path('app_readEvent', {'id': e.id}) }}">show</a>
+                    <a href="{{ path('app_updateEvent', {'id': e.id}) }}">edit</a>
+                    <a href="{{ path('app_deleteEvent', {'id': e.id}) }}">delete</a>
                 </td>
             </tr>
         {% else %}

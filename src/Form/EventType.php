@@ -26,11 +26,12 @@ class EventType extends AbstractType
             ->add('url', FileType::class, [
                 'required' => true,
                 'label' => 'Event picture',
+                'data_class' => null, // Définir data_class à null pour éviter l'erreur
             ])
 
             ->add('categorie',EntityType::class,
             ['class'=>Categorie::class,
-            'choice_label'=>'name'])
+            'choice_label'=>'nomCategorie'])
 
         ;
        
