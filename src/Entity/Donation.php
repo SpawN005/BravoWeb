@@ -72,7 +72,7 @@ class Donation
      *
      */
     #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Categorie')]
+    #[ORM\ManyToOne(targetEntity: 'CategorieDonation')]
     private $categorie;
 
     public function getId(): ?int
@@ -163,6 +163,4 @@ class Donation
 
         return $this;
     }
-
-
 }

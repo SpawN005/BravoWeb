@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType as FileType;
 
 
+
 class ArtworkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -17,7 +18,7 @@ class ArtworkType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('categorie')
-            ->add('url', FileType::class)
+            ->add('url', FileType::class, array('data_class' => null, 'required' => true))
             ->add('owner');
     }
 

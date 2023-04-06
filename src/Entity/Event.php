@@ -63,13 +63,6 @@ class Event
      * @var string
      *
      */
-    #[ORM\Column(name: 'type_event', type: 'string', length: 30, nullable: false)]
-    private $typeEvent;
-
-    /**
-     * @var string
-     *
-     */
     #[ORM\Column(name: 'url', type: 'string', length: 255, nullable: false)]
     private $url;
 
@@ -78,7 +71,7 @@ class Event
      *
      */
     #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Categorie')]
+    #[ORM\ManyToOne(targetEntity: 'CategorieEvent')]
     private $categorie;
 
     public function getId(): ?int
@@ -181,6 +174,4 @@ class Event
 
         return $this;
     }
-
-
 }

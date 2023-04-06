@@ -56,7 +56,7 @@ class Blog
      *
      */
     #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Categorie')]
+    #[ORM\ManyToOne(targetEntity: 'CategorieBlog')]
     private $categorie;
 
     /**
@@ -143,6 +143,4 @@ class Blog
 
         return $this;
     }
-
-
 }

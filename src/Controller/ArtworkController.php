@@ -33,7 +33,6 @@ class ArtworkController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $file = $form['url']->getData();
             $fileName = $file->getClientOriginalName();
             $file->move("C:/xampp/htdocs/img", $fileName);
@@ -64,7 +63,12 @@ class ArtworkController extends AbstractController
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['url']->getData();
+            $fileName = $file->getClientOriginalName();
+            $file->move("C:/xampp/htdocs/img", $fileName);
+            $artwork->setUrl($fileName);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
@@ -84,6 +88,6 @@ class ArtworkController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
 }

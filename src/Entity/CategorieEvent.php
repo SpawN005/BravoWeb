@@ -2,16 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\CategorieEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Categorie
- *
- */
-#[ORM\Table(name: 'categorie')]
+#[ORM\Entity(repositoryClass: CategorieEventRepository::class)]
 #[ORM\UniqueConstraint(name: 'NomCategorie', columns: ['NomCategorie'])]
-#[ORM\Entity]
-class Categorie
+class CategorieEvent
 {
     /**
      * @var int
