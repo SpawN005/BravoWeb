@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block body %}
+    <h1>Event</h1>
+
+    <table class="table">
+        <tbody>
+        {% for e in event  %}
+            <tr>
+                <th>Id</th>
+                <td>{{ e.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ e.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ e.description }}</td>
+            </tr>
+             <tr>
+                <th>Number of places</th>
+                <td>{{ e.nbPlacemax }}</td>
+            </tr>
+             <tr>
+                <th>Date begin</th>
+                <td>{{ e.dateBeg |date('Y-m-d')}}</td>
+            </tr>
+             <tr>
+                <th>Date end</th>
+                <td>{{ e.dateEnd|date('Y-m-d') }}</td>
+            </tr>
+            
+            <tr>
+                <th>Url</th>
+                <td>{{ e.url }}</td>
+            </tr>
+            <tr>
+                {# <th>Category</th>
+                <td>{{ e.categorie.nomcategorie }}</td> #}
+                <th>Category</th>
+                {% if e.categorieEvent is not null %}
+                    <td>{{ e.categorieEvent.nomcategorie }}</td>
+                {% else %}
+                    <td>No category</td>
+                {% endif %}
+            </tr>
+             
+        
+
+    <a href="{{ path('app_event') }}">back to list</a>
+
+    {# <a href="{{ path('app_updateEvent', {'id': e.id}) }}">edit</a> #}
+    
+ <td><form action="{{path('app_updateEvent',{'id':e.id}) }}">
+                <button>Update</button></form></td>
+   <td><form action="{{path('app_deleteEvent',{'id':e.id}) }}">
+            <button>Delete</button></form></td>
+              {% endfor %}
+              </tbody>
+       
+    </table>
+{% endblock %}
