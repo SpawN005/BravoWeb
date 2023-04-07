@@ -10,7 +10,7 @@
         <p>Début de l'événement : {{ event.dateBeg|date('d/m/Y H:i') }}</p>
         <p>Fin de l'événement : {{ event.dateEnd|date('d/m/Y H:i') }}</p>
         <img src="{{ event.url }}" alt="{{ event.title }}" class="img-fluid">
-        <p>Catégorie : {{ event.id.nomcategorie }}</p>
+        <p>Catégorie : {{ event.categorieEvent.nomCategorieEvent }}</p>
       </div>
     </div>
   </div>

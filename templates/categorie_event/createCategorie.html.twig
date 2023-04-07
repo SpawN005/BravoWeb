@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Category{% endblock %}
+
+{% block body %}
+    <h1>Create Category</h1>
+
+    {{ form_start(f) }}
+        {{ form_widget(f) }}
+        <button class="btn">Create</button>
+    {{ form_end(f) }}
+
+<a href="{{ path('app_categorie_event') }}">back to list</a>
+{% endblock %}

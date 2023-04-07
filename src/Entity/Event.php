@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  */
 #[ORM\Table(name: 'event')]
-#[ORM\Index(name: 'FK_eventcat', columns: ['categorie'])]
+
 #[ORM\UniqueConstraint(name: 'uk_title', columns: ['title'])]
 #[ORM\Entity]
 class Event
@@ -73,13 +73,15 @@ class Event
     #[ORM\Column(name: 'url', type: 'string', length: 255, nullable: false)]
     private $url;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?categorieEvent $categorieEvent = null;
+
     /**
-     * @var \Categorie
+     *
      *
      */
-    #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Categorie')]
-    private $categorie;
+    
 
     public function getId(): ?int
     {
@@ -160,17 +162,19 @@ class Event
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
+    public function getCategorieEvent(): ?categorieEvent
     {
-        return $this->categorie;
+        return $this->categorieEvent;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setCategorieEvent(?categorieEvent $categorieEvent): self
     {
-        $this->categorie = $categorie;
+        $this->categorieEvent = $categorieEvent;
 
         return $this;
     }
+
+    
 
 
 }

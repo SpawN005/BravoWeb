@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category list{% endblock %}
+
+{% block body %}
+    <h1>Category list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Category name</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for categorie in categories %}
+            <tr>
+                <td>{{ categorie.id }}</td>
+                <td>{{ categorie.nomCategorieEvent }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_createCategorie') }}">Add category</a>
+    <td><form action="{{path('app_updateCategorie',{'id':e.id}) }}">
+                <button>Update</button></form></td>
+   <td><form action="{{path('app_deleteCategrie',{'id':e.id}) }}">
+            <button>Delete</button></form></td>
+        {% endfor %}
+
+{% endblock %}

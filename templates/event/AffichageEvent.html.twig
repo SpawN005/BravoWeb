@@ -41,16 +41,14 @@
                 {# <th>Category</th>
                 <td>{{ e.categorie.nomcategorie }}</td> #}
                 <th>Category</th>
-                {% if e.categorie is not null %}
-                    <td>{{ e.categorie.nomcategorie }}</td>
+                {% if e.categorieevent is not null %}
+                    <td>{{ e.categorieEvent.nomCategorieEvent }}</td>
                 {% else %}
                     <td>No category</td>
                 {% endif %}
             </tr>
              
-        </tbody>
-       
-    </table>
+        
 
     <a href="{{ path('app_event') }}">back to list</a>
 
@@ -61,4 +59,7 @@
    <td><form action="{{path('app_deleteEvent',{'id':e.id}) }}">
             <button>Delete</button></form></td>
               {% endfor %}
+              </tbody>
+       
+    </table>
 {% endblock %}
