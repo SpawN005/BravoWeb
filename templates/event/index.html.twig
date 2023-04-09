@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block body %}
+    <h1>Event index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Max number of places</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Image</th>
+                {# <th>Category</th> #}
+            </tr>
+        </thead>
+        <tbody>
+        {% for e in event %}
+            <tr>
+                <td>{{ e.id }}</td>
+                <td>{{ e.title }}</td>
+                <td>{{ e.description }}</td>
+                <td>{{ e.nbPlaceMax  }}</td>
+                <td>{{ e.dateBeg |date('Y-m-d') }}</td>
+                <td>{{ e.dateEnd |date('Y-m-d') }}</td>
+                <td>{{ e.image }}</td>
+                 {# <td>{{ e.categorie.nomCategorie   }}</td> #} 
+                  {% if e.categorie is not null %}
+                    <td>{{ e.categorie.nom }}</td>
+                {% else %}
+                    <td>No category</td>
+                {% endif %}
+                <td> 
+                    {# <a href="{{ path('app_readEvent', {'id': e.id}) }}">show</a> #}
+                    <a href="{{ path('app_updateEvent', {'id': e.id}) }}">edit</a>
+                    <a href="{{ path('app_deleteEvent', {'id': e.id}) }}">delete</a>
+                    <a href="{{ path('app_detailEvent', {'id': e.id}) }}">details</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_addEvent') }}">Create new</a>
+
+     <a href="{{ path('app_event_categorie') }}">Categories</a>
+{% endblock %}

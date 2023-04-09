@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Event{% endblock %}
+
+
+{% block body %}
+<section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>Event Details</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+
+
+        <section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
+                <a href="{{ path('app_event') }}">back </a>
+                  {# {% for e in event  %} #}
+                    <h3>{{ event.title }}</h3>
+                </div><!-- /.event-details__top -->
+                <div class="row high-gutter">
+                    <div class="col-lg-8">
+                        <div class="event-details__main">
+                            <div class="event-details__image">
+                                <img src="http://localhost/img/{{event.image}}" alt="" width="760" height="565">
+                            </div><!-- /.event-details__image -->
+                            <div class="event-details__content">
+                             <p> {{event.description}} </p>
+
+
+                             
+                                <ul class="event-details__contact list-unstyled">
+                                   
+                                 <li><form method="post" action="{{ path('app_deleteEvent', {'id': event.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+    <button class="btn">Delete</button>
+</form>
+</li>
+<li>
+<form method="post" action="{{ path('app_updateEvent', {'id': event.id}) }}">
+    <button class="btn">Update</button>
+</form>  
+</li>
+  {# {% endfor %} #}
+                                </ul><!-- /.event-details__contact -->
+                            </div><!-- /.event-details__content -->
+                        </div><!-- /.event-details__main -->
+         
+                    </div><!-- /.col-lg-8 -->
+                    <div class="col-lg-4">
+                        <div class="event-details__booking">
+                            <ul class="event-details__booking-info list-unstyled">
+                                {# <li>
+                                    <span>Type:</span>
+                                    {{artwork.categorie.NomCategorie}}
+                                </li> #}
+                   
+                               
+                            </ul><!-- /.event-details__booking-info list-unstyled -->
+                     
+                            <!-- /.thm-btn event-details__book-btn -->
+                        </div><!-- /.event-details__booking -->
+                    </div><!-- /.col-lg-4 -->
+                </div><!-- /.row -->
+            </div><!-- /.container -->
+        </section><!-- /.event-details -->
+
+
+        <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
+            <div class="container text-center">
+                <h3>More Than 1250 Exhibits!</h3>
+                <p>Every day more exhibits arrive in our museum. Do not <br> wait and buy a ticket now.</p>
+                <div class="cta-one__btn-block">
+                    <a href="#" class="thm-btn cta-one__btn-one">Become A Member</a><!-- /.thm-btn cta-one__btn-one -->
+                    <a href="#" class="thm-btn cta-one__btn-two">Buy Online</a><!-- /.thm-btn cta-one__btn-two -->
+                </div><!-- /.cta-one__btn-block -->
+            </div><!-- /.container -->
+        </section><!-- /.cta-one -->
+       
+     
+{% endblock %}

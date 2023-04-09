@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'muzex-icon';
+  src:  url('../fonts/muzex-icon.eot?u5t8b4');
+  src:  url('../fonts/muzex-icon.eot?u5t8b4#iefix') format('embedded-opentype'),
+    url('../fonts/muzex-icon.ttf?u5t8b4') format('truetype'),
+    url('../fonts/muzex-icon.woff?u5t8b4') format('woff'),
+    url('../fonts/muzex-icon.svg?u5t8b4#muzex-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="muzex-icon-"], [class*=" muzex-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'muzex-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.muzex-icon-search:before {
+  content: "\e900";
+}
+.muzex-icon-clock:before {
+  content: "\e901";
+}
+.muzex-icon-location:before {
+  content: "\e902";
+}
+.muzex-icon-ticket:before {
+  content: "\e903";
+}
+.muzex-icon-menu:before {
+  content: "\e904";
+}
