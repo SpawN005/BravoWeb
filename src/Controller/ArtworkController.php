@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Artwork;
+use App\Entity\Categorie;
 use App\Form\ArtworkType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,9 +20,14 @@ class ArtworkController extends AbstractController
         $artworks = $entityManager
             ->getRepository(Artwork::class)
             ->findAll();
+        $categories = $entityManager
+            ->getRepository(Categorie::class)
+            ->findAll();
+
 
         return $this->render('artwork/index.html.twig', [
             'artworks' => $artworks,
+            "categories" => $categories,
         ]);
     }
 

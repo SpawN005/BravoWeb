@@ -1,41 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Artwork index{% endblock %}
+{% block body %}
 
-{% block ArtWork %}
-    <h1>Artwork index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Catégorie</th>
-                <th>Url</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for artwork in artworks %}
-            <tr>
-                <td>{{ artwork.id }}</td>
-                <td>{{ artwork.title }}</td>
-                <td>{{ artwork.description }}</td>
-                <td>{{ artwork.categorie  }}</td>
-                <td>{{ artwork.url }}</td>
-                <td>
-                    <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}">show</a>
-                    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
+        <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>Gallery</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+
+        <section class="collection-grid collection-masonary">
+            <div class="container">
+                <div class="collection-grid__top">
+                    <div class="block-title text-left">
+                        <p>Gallery  </p>
+                        <h3>Explore <br> the Collection</h3>
+                    </div>
+                  
+                    <ul class="collection-filter post-filter list-unstyled">
+                    <li data-filter=".filter-item" class="active"><span>All Section</span></li>
+                    {% for categorie in categories  %}
+                    <li data-filter=".{{categorie.NomCategorie}}"><span>{{categorie.NomCategorie}}</span></li>
         {% endfor %}
-        </tbody>
-    </table>
+       
+                     </ul><!-- /.collection-filter list-unstyled -->
+                    
+                       <a href="new" style="color:#848484;"> <p style="margin:0px 0px 20px -150px;">Add Artwork + </p> </a>
+                      
+               <!-- /.block-title -->
+                       </div><!-- /.collection-grid__top --> <div class="row high-gutter filter-layout masonary-layout">
+{% for artwork in artworks %}  
+               
+                    <div class="col-lg-4 col-md-6 filter-item masonary-item {{artwork.categorie}}">
+                        <div class="collection-grid__single">
+                            <div class="collection-grid__image">
+                                <img src="http://localhost/img/{{artwork.url}}"  width="363" height="363"alt="">
+                          
+                            </div><!-- /.collection-grid__image -->
+                            <div class="collection-grid__content">
+                                <h3><a href="{{ path('app_artwork_show', {'id': artwork.id}) }}">{{artwork.title}}</a></h3>
+                                <p>{{artwork.owner.FirstName}} {{artwork.owner.LastName}}</p>
+                            </div><!-- /.collection-grid__content -->
+                        </div><!-- /.collection-grid__single -->
+                    </div><!-- /.col-lg-4 -->
+                   {% else %} 
+                         <p>no records found</p>
+            
+        {% endfor %}
+                </div><!-- /.row -->
+            </div><!-- /.container -->
+        </section><!-- /.collection-grid -->
 
-    <a href="{{ path('app_artwork_new') }}">Create new</a>
+            
+          
+      
 {% endblock %}
