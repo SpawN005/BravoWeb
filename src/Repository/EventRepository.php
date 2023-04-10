@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Form\SearchEventFormType;
+
 
 /**
  * @extends ServiceEntityRepository<Event>
@@ -63,4 +65,35 @@ class EventRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function findSearch($dateBeg, $dateEnd, $nbPlaceMax, $categorie)
+{
+    $qb = $this->createQueryBuilder('e')
+        ->orderBy('e.date_beg', 'ASC');
+    
+    if ($dateBeg) {
+        $qb->andWhere('e.date_beg >= :dateBeg')
+           ->setParameter('dateBeg', $dateBeg);
+    }
+    
+    if ($dateEnd) {
+        $qb->andWhere('e.date_end <= :dateEnd')
+           ->setParameter('dateEnd', $dateEnd);
+    }
+    
+    if ($nbPlaceMax) {
+        $qb->andWhere('e.nb_placeMax <= :nbPlaceMax')
+           ->setParameter('nbPlaceMax', $nbPlaceMax);
+    }
+    
+    if ($categorie) {
+        $qb->andWhere('e.categorie = :categorie')
+           ->setParameter('categorie', $categorie);
+    }
+    
+    return $qb->getQuery()->getResult();
+}
+
+
+
 }

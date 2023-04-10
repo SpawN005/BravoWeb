@@ -17,66 +17,28 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 class EventController extends AbstractController
 { 
     #[Route('/event', name: 'app_event')]
-public function index(Request $request, EntityManagerInterface $entityManager): Response
-{
-    $form = $this->createForm(SearchEventFormType::class);
-    $form->handleRequest($request);
-
-    $queryBuilder = $entityManager->createQueryBuilder()
-        ->select('e')
-        ->from(Event::class, 'e');
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $data = $form->getData();
-
-        // Filtrer les événements selon les dates sélectionnées dans le formulaire
-        if ($data['min'] !== null) {
-            $queryBuilder->andWhere('e.dateBeg >= :min')
-                ->setParameter('min', $data['min']);
+    public function index(Request $request, EventRepository $eventRepository): Response
+    {
+        $form = $this->createForm(SearchEventFormType::class);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $ev = $eventRepository->findSearch($data->getDateBeg(), $data->getDateEnd(), $data->getNbPlaceMax(), $data->getCategorie());
+        } else {
+            $ev = $eventRepository->findAll();
         }
-
-        if ($data['max'] !== null) {
-            $queryBuilder->andWhere('e.dateEnd <= :max')
-                ->setParameter('max', $data['max']);
-        }
-
-        // Filtrer les événements selon le nombre maximum de places sélectionné dans le formulaire
-        if ($data['nbPlaceMax'] !== null) {
-            $queryBuilder->andWhere('e.nbPlaceMax <= :nbPlaceMax')
-                ->setParameter('nbPlaceMax', $data['nbPlaceMax']);
-        }
-
-        // Filtrer les événements selon la catégorie sélectionnée dans le formulaire
-        if ($data['categorie'] !== null) {
-            $queryBuilder->leftJoin('e.categorie', 'c')
-                ->andWhere('c.id = :categorie')
-                ->setParameter('categorie', $data['categorie']->getId());
-        }
-
-        // Récupérer les événements à partir du queryBuilder
-        $events = $queryBuilder->getQuery()->getResult();
-
-        // Obtenir les noms des catégories des événements
-        foreach ($events as $event) {
-            $categorie = $event->getCategorie();
-            if ($categorie !== null) {
-                $categorieId = $categorie->getId();
-                $categorieName = $categorie->getNom();
-                // utiliser les propriétés de catégorie comme nécessaire
-            }
-        }
-
+    
         return $this->render('event/index.html.twig', [
-            'ev' => $events,
+            'ev' => $ev,
             'form' => $form->createView(),
-            
         ]);
     }
     
-    return $this->render('event/index.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
+    
+
+    
+    
 
     
 
