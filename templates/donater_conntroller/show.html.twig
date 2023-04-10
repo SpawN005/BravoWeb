@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donater{% endblock %}
+
+{% block body %}
+    <h1>Donater</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ donater.id }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ donater.amount }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_donater_conntroller_index') }}">back to list</a>
+
+    <a href="{{ path('app_donater_conntroller_edit', {'id': donater.id}) }}">edit</a>
+
+    {{ include('donater_conntroller/_delete_form.html.twig') }}
+{% endblock %}
