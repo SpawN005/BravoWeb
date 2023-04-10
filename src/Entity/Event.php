@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -15,15 +16,26 @@ class Event
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique:true)]
+    #[Assert\NotBlank(message: 'Le titre ne peut pas être vide')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9\s]*$/',
+        message: 'Le titre ne peut pas contenir des caractères spéciaux'
+    )]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'La description ne peut pas être vide')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9\s]*$/',
+        message: 'La description ne peut pas contenir des caractères spéciaux'
+    )]
     private ?string $description = null;
 
     #[ORM\Column]
     private ?int $nb_placeMax = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\LessThan(propertyPath: "date_end", message: "La date de début doit être inférieure à la date de fin")]
     private ?\DateTimeInterface $date_beg = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
