@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Form\SearchEventFormType;
 use App\Repository\EventRepository;
 use App\Form\EventType;
 use App\Entity\Event;
@@ -17,16 +17,69 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 class EventController extends AbstractController
 { 
     #[Route('/event', name: 'app_event')]
-    public function index(EntityManagerInterface $entityManager): Response
-    {
-        $events = $entityManager
-            ->getRepository(Event::class)
-            ->findAll();
+public function index(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $form = $this->createForm(SearchEventFormType::class);
+    $form->handleRequest($request);
+
+    $queryBuilder = $entityManager->createQueryBuilder()
+        ->select('e')
+        ->from(Event::class, 'e');
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $data = $form->getData();
+
+        // Filtrer les événements selon les dates sélectionnées dans le formulaire
+        if ($data['min'] !== null) {
+            $queryBuilder->andWhere('e.dateBeg >= :min')
+                ->setParameter('min', $data['min']);
+        }
+
+        if ($data['max'] !== null) {
+            $queryBuilder->andWhere('e.dateEnd <= :max')
+                ->setParameter('max', $data['max']);
+        }
+
+        // Filtrer les événements selon le nombre maximum de places sélectionné dans le formulaire
+        if ($data['nbPlaceMax'] !== null) {
+            $queryBuilder->andWhere('e.nbPlaceMax <= :nbPlaceMax')
+                ->setParameter('nbPlaceMax', $data['nbPlaceMax']);
+        }
+
+        // Filtrer les événements selon la catégorie sélectionnée dans le formulaire
+        if ($data['categorie'] !== null) {
+            $queryBuilder->leftJoin('e.categorie', 'c')
+                ->andWhere('c.id = :categorie')
+                ->setParameter('categorie', $data['categorie']->getId());
+        }
+
+        // Récupérer les événements à partir du queryBuilder
+        $events = $queryBuilder->getQuery()->getResult();
+
+        // Obtenir les noms des catégories des événements
+        foreach ($events as $event) {
+            $categorie = $event->getCategorie();
+            if ($categorie !== null) {
+                $categorieId = $categorie->getId();
+                $categorieName = $categorie->getNom();
+                // utiliser les propriétés de catégorie comme nécessaire
+            }
+        }
 
         return $this->render('event/index.html.twig', [
-            'event' => $events,
+            'ev' => $events,
+            'form' => $form->createView(),
+            
         ]);
     }
+    
+    return $this->render('event/index.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+    
+
 
     // #[Route('/readEvent', name: 'app_readEvent')]
     // public function readEvent(EventRepository $eventRepository): Response
@@ -50,16 +103,16 @@ class EventController extends AbstractController
     // }
 
     #[Route('/detailEvent/{id}', name: 'app_detailEvent', methods: ["GET", "POST"] )]
-    public function show($id,Event $events,EventRepository $rep, Request $request, PersistenceManagerRegistry $doctrine): Response
+    public function show($id, EventRepository $rep, Request $request, PersistenceManagerRegistry $doctrine): Response
     {
-        
         //Utiliser find by id
-        $events = $rep->find($id);
+        $event = $rep->find($id);
         return $this->render('event/detailsEvent.html.twig', [
-            'event' => $events,
+            'event' => $event,
         ]);
-        
     }
+
+
 
 
     #[Route('/deleteEvent/{id}', name: 'app_deleteEvent')]

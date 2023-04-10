@@ -4,7 +4,13 @@
 
 {% block body %}
     <h1>Event index</h1>
-
+ {{ form_start(form) }}
+        {{ form_row(form.dateBeg) }}
+        {{ form_row(form.dateEnd) }}
+        {{ form_row(form.nbPlaceMax) }}
+        {{ form_row(form.categorie, {'empty_data': null}) }}
+        {{ form_row(form.Search) }}
+ {{ form_end(form) }}
     <table class="table">
         <thead>
             <tr>
@@ -15,11 +21,12 @@
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Image</th>
-                {# <th>Category</th> #}
+                 <th>Category</th> 
             </tr>
         </thead>
         <tbody>
-        {% for e in event %}
+        {% for e in ev %}
+                 {% if e.nbPlaceMax <= data.nbPlaceMax and e.dateBeg >= data.min and e.dateEnd <= data.max %}
             <tr>
                 <td>{{ e.id }}</td>
                 <td>{{ e.title }}</td>
@@ -28,7 +35,7 @@
                 <td>{{ e.dateBeg |date('Y-m-d') }}</td>
                 <td>{{ e.dateEnd |date('Y-m-d') }}</td>
                 <td>{{ e.image }}</td>
-                 {# <td>{{ e.categorie.nomCategorie   }}</td> #} 
+                   <td>{{ e.categorie.nom  }}</td>  
                   {% if e.categorie is not null %}
                     <td>{{ e.categorie.nom }}</td>
                 {% else %}
@@ -41,6 +48,7 @@
                     <a href="{{ path('app_detailEvent', {'id': e.id}) }}">details</a>
                 </td>
             </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="6">no records found</td>
