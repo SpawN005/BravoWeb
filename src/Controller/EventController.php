@@ -41,18 +41,12 @@ class EventController extends AbstractController
     #[Route('/event/{id}', name: 'app_eventUser')]
     public function indexUser(Request $request, EventRepository $eventRepository,EntityManagerInterface $entityManager): Response
     {
-        $ev = $entityManager
-            ->getRepository(Event::class)
-            ->findAll();
-            $categorie = $entityManager
-            ->getRepository(EventCategorie::class)
-            ->findAll();
         $form = $this->createForm(SearchEventFormType::class);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $ev = $eventRepository->findSearch( $data->getNbPlaceMax(), $data->getCategorie());
+            $ev = $eventRepository->findSearch($data['nbPlaceMax'], $data['categorie']);
         } else {
             $ev = $eventRepository->findAll();
         }
