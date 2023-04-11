@@ -5,6 +5,8 @@ use App\Form\SearchEventFormType;
 use App\Repository\EventRepository;
 use App\Form\EventType;
 use App\Entity\Event;
+use App\Entity\EventCategorie;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,16 +17,22 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 
 
 class EventController extends AbstractController
-{ 
+{   
     #[Route('/event', name: 'app_event')]
-    public function index(Request $request, EventRepository $eventRepository): Response
+    public function index(Request $request, EventRepository $eventRepository,EntityManagerInterface $entityManager): Response
     {
+        $ev = $entityManager
+            ->getRepository(Event::class)
+            ->findAll();
+        $categorie = $entityManager
+            ->getRepository(EventCategorie::class)
+            ->findAll();
         $form = $this->createForm(SearchEventFormType::class);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $ev = $eventRepository->findSearch($data->getDateBeg(), $data->getDateEnd(), $data->getNbPlaceMax(), $data->getCategorie());
+            $ev = $eventRepository->findSearch( $data->getNbPlaceMax(), $data->getCategorie());
         } else {
             $ev = $eventRepository->findAll();
         }
@@ -35,7 +43,30 @@ class EventController extends AbstractController
         ]);
     }
     
+    #[Route('/event/{id}', name: 'app_eventUser')]
+    public function indexUser(Request $request, EventRepository $eventRepository,EntityManagerInterface $entityManager): Response
+    {
+        $ev = $entityManager
+            ->getRepository(Event::class)
+            ->findAll();
+            $categorie = $entityManager
+            ->getRepository(EventCategorie::class)
+            ->findAll();
+        $form = $this->createForm(SearchEventFormType::class);
+        $form->handleRequest($request);
     
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $ev = $eventRepository->findSearch( $data->getNbPlaceMax(), $data->getCategorie());
+        } else {
+            $ev = $eventRepository->findAll();
+        }
+    
+        return $this->render('event/indexUser.html.twig', [
+            'ev' => $ev,
+            'form' => $form->createView(),
+        ]);
+    }
 
     
     
@@ -74,6 +105,18 @@ class EventController extends AbstractController
         ]);
     }
 
+    #[Route('/detailEventUser/{id}', name: 'app_detailEventUser', methods: ["GET", "POST"] )]
+    public function showUser($id, EventRepository $rep, Request $request, PersistenceManagerRegistry $doctrine): Response
+    {
+        //Utiliser find by id
+        $event = $rep->find($id);
+        $eventId = $event->getId();
+        return $this->render('event/detailsEventUser.html.twig', [
+            'event' => $event,
+            'eventId' => $eventId
+        ]);
+    }
+
 
 
 
@@ -102,7 +145,11 @@ class EventController extends AbstractController
     $event= new Event();
 $form=$this->createForm(EventType::class,$event);
                    $form->handleRequest($request);
-                   if($form->isSubmitted()){
+                   if($form->isSubmitted()&& $form->isValid()){
+                    $file = $form['image']->getData();
+            $fileName = $file->getClientOriginalName();
+            $file->move("C:/xampp/htdocs/img", $fileName);
+            $event->setImage($fileName);
                     //Action d'ajout
                        $em =$doctrine->getManager() ;
                        $em->persist($event);
@@ -114,16 +161,19 @@ $form=$this->createForm(EventType::class,$event);
                    }
 
                    #[Route('/updateEvent/{id}', name: 'app_updateEvent')]
-                   public function updateEvent($id, EventRepository $eventRepository, ManagerRegistry $doctrine, Request $request)
+                   public function updateEvent($id, EventRepository $eventRepository, ManagerRegistry $doctrine, Request $request,
+                   EntityManagerInterface $entityManager)
                    {
                        //récupérer la classe à modifier
                        $event = $eventRepository->find($id);
                        $form = $this->createForm(EventType::class,$event);
                        $form->handleRequest($request);
-                       if($form->isSubmitted()){
-                           //Action de MAJ
-                           $em =$doctrine->getManager() ;
-                           $em->flush(); // modification de cette ligne
+                       if ($form->isSubmitted() && $form->isValid()) {
+                        $file = $form['image']->getData();
+                        $fileName = $file->getClientOriginalName();
+                        $file->move("C:/xampp/htdocs/img", $fileName);
+                        $event->setImage($fileName);
+                        $entityManager->flush();
                            return $this->redirectToRoute("app_event");
                        }
                        return $this->renderForm("event/createEvent.html.twig", array("form"=>$form));

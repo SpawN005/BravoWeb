@@ -28,32 +28,32 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                 {{ form_label (form.title, "Title") }} 
-                                {{ form_widget(form.title) }} 
+                                {{ form_widget(form.title,{'attr': {'class': 'form-control'}}) }} 
                                  {{ form_errors (form.title) }} 
                                 </div>
                                 <div class="col-lg-12">
                                      {{ form_label (form.description, "Description") }} 
-                                {{ form_widget(form.description) }} 
+                                {{ form_widget(form.description,{'attr': {'class': 'form-control'}}) }} 
                                  {{ form_errors (form.description) }} 
                                
                                   <div class="col-lg-6">
                                 {{ form_label (form.nb_placeMax, "Max number of places") }} 
-                                {{ form_widget(form.nb_placeMax) }} 
+                                {{ form_widget(form.nb_placeMax,{'attr': {'class': 'form-control', 'min': '1'}}) }} 
                                  {{ form_errors (form.nb_placeMax) }} 
                                  </div>
-                                  <div class="col-lg-6">
-                                {{ form_label (form.date_beg, "Start date") }} 
-                                {{ form_widget(form.date_beg) }} 
-                                 {{ form_errors (form.date_beg) }} 
-                                 </div>
-                                  <div class="col-lg-6">
-                                {{ form_label (form.date_end, "End date") }} 
-                                {{ form_widget(form.date_end) }} 
-                                 {{ form_errors (form.date_end) }} 
-                                 </div>
+                                <div class="col-lg-6">
+    {{ form_label (form.date_beg, "Start date") }} 
+    {{ form_widget(form.date_beg) }} 
+    {{ form_errors (form.date_beg) }} 
+</div>
+<div class="col-lg-6">
+    {{ form_label (form.date_end, "End date") }} 
+{{ form_widget(form.date_end) }}
+    {{ form_errors (form.date_end) }} 
+</div>
                                  <div class="col-lg-6">
                                 {{ form_label (form.image, "Image") }} 
-                                {{ form_widget(form.image) }} 
+                                {{ form_widget(form.image,{'attr': {'class': 'form-control'}}) }} 
                                  {{ form_errors (form.image) }} 
                                  </div>
                                   <div class="col-lg-6">

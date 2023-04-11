@@ -1,4 +1,4 @@
-{% extends 'base-back.html.twig' %}
+{% extends 'base.html.twig' %}
 
 
 {% block title %}Event{% endblock %}
@@ -50,9 +50,7 @@
     <strong>Catégorie:</strong> <p>No category</p>
 {% endif %}
 
-                        <a href="{{ path('app_updateEvent', {'id': e.id}) }}">edit</a>
-                        <a href="{{ path('app_deleteEvent', {'id': e.id}) }}">delete</a>
-                        {# <a href="{{ path('app_detailEvent', {'id': e.id}) }}">details</a> #}
+                       
                     </div><!-- /.collection-grid__content -->
                 </div><!-- /.collection-grid__single -->
             </div><!-- /.col-lg-4 col-md-6 filter-item masonary-item -->
@@ -63,7 +61,7 @@
         {% endfor %}
     </div><!-- /.row -->
 
-    <a href="{{ path('app_addEvent') }}">Create new</a>
+    
     <a href="{{ path('app_event_categorie') }}">Categories</a>
     
        <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
