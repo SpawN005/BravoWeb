@@ -19,20 +19,14 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 class EventController extends AbstractController
 {   
     #[Route('/event', name: 'app_event')]
-    public function index(Request $request, EventRepository $eventRepository,EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EventRepository $eventRepository): Response
     {
-        $ev = $entityManager
-            ->getRepository(Event::class)
-            ->findAll();
-        $categorie = $entityManager
-            ->getRepository(EventCategorie::class)
-            ->findAll();
         $form = $this->createForm(SearchEventFormType::class);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $ev = $eventRepository->findSearch( $data->getNbPlaceMax(), $data->getCategorie());
+            $ev = $eventRepository->findSearch($data['nbPlaceMax'], $data['categorie']);
         } else {
             $ev = $eventRepository->findAll();
         }
@@ -42,6 +36,7 @@ class EventController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
     
     #[Route('/event/{id}', name: 'app_eventUser')]
     public function indexUser(Request $request, EventRepository $eventRepository,EntityManagerInterface $entityManager): Response
@@ -96,7 +91,7 @@ class EventController extends AbstractController
     // }
 
     #[Route('/detailEvent/{id}', name: 'app_detailEvent', methods: ["GET", "POST"] )]
-    public function show($id, EventRepository $rep, Request $request, PersistenceManagerRegistry $doctrine): Response
+    public function show($id, EventRepository $rep, Request $request): Response
     {
         //Utiliser find by id
         $event = $rep->find($id);
@@ -106,7 +101,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/detailEventUser/{id}', name: 'app_detailEventUser', methods: ["GET", "POST"] )]
-    public function showUser($id, EventRepository $rep, Request $request, PersistenceManagerRegistry $doctrine): Response
+    public function showUser($id, EventRepository $rep, Request $request): Response
     {
         //Utiliser find by id
         $event = $rep->find($id);

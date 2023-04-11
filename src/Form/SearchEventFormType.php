@@ -17,16 +17,7 @@ class SearchEventFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ->add('dateBeg', DateType::class, [
-            //     'widget' => 'single_text',
-            //     'label' => 'From',
-            //     'required' => false,
-            // ])
-            // ->add('dateEnd', DateType::class, [
-            //     'widget' => 'single_text',
-            //     'label' => 'To',
-            //     'required' => false,
-            // ])
+           
             ->add('nbPlaceMax', NumberType::class, [
                 'label' => 'Maximum number of places',
                 'required' => false,

@@ -24,8 +24,7 @@
     <h1>Event index</h1>
     
     {{ form_start(form) }}
-        {# {{ form_row(form.dateBeg) }}
-        {{ form_row(form.dateEnd) }} #}
+       
         {{ form_row(form.nbPlaceMax) }}
         {{ form_row(form.categorie, {'empty_data': null}) }}
         {{ form_row(form.Search) }}
@@ -39,7 +38,7 @@
                         <img src="http://localhost/img/{{e.image}}" width="363" height="363" alt="">
                     </div><!-- /.collection-grid__image -->
                     <div class="collection-grid__content">
-                        <h3><a href="{{ path('app_detailEvent', {'id': e.id}) }}">{{e.title}}</a></h3>
+                        <h3><a href="{{ path('app_detailEventUser', {'id': e.id}) }}">{{e.title}}</a></h3>
                        <strong>Description:</strong> <p>{{e.description}}</p>
 <strong>Nombre de places maximum:</strong> <p>{{e.nbPlaceMax}}</p>
 <strong>Date de début:</strong> <p>{{e.dateBeg |date('Y-m-d')}}</p>

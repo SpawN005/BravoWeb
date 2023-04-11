@@ -66,20 +66,12 @@ class EventRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-public function findSearch(?DateTimeInterface $dateBeg, ?DateTimeInterface $dateEnd, ?int $nbPlaceMax, ?string $categorie)
+public function findSearch( ?int $nbPlaceMax, ?string $categorie)
 {
-    $qb = $this->createQueryBuilder('e')
-        ->orderBy('e.date_beg', 'ASC');
+    $qb = $this->createQueryBuilder('e');
+      
     
-    if ($dateBeg) {
-        $qb->andWhere('e.date_beg >= :dateBeg')
-           ->setParameter('dateBeg', $dateBeg);
-    }
     
-    if ($dateEnd) {
-        $qb->andWhere('e.date_end <= :dateEnd')
-           ->setParameter('dateEnd', $dateEnd);
-    }
     
     if ($nbPlaceMax) {
         $qb->andWhere('e.nb_placeMax <= :nbPlaceMax')
