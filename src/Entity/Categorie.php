@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Categorie
@@ -27,6 +28,17 @@ class Categorie
      *
      */
     #[ORM\Column(name: 'NomCategorie', type: 'string', length: 100, nullable: false)]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z0-9_-]+$/",
+        message: "Categorie should not start with a space, number or special character",
+    )]
+    #[Assert\NotBlank(message: "Categorie is required")]
+    #[Assert\Length(
+        min: 3,
+        max: 10,
+        minMessage: "Categorie must be at least {{ limit }} characters long",
+        maxMessage: "Categorie cannot be longer than {{ limit }} characters"
+    )]
     private $nomcategorie;
 
     public function getId(): ?int
@@ -39,7 +51,7 @@ class Categorie
         return $this->nomcategorie;
     }
 
-    public function setNomcategorie(string $nomcategorie): self
+    public function setNomcategorie(?string $nomcategorie): self
     {
         $this->nomcategorie = $nomcategorie;
 

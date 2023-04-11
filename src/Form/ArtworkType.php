@@ -18,7 +18,7 @@ class ArtworkType extends AbstractType
             ->add('title')
             ->add('description')
             ->add('categorie')
-            ->add('url', FileType::class, array('data_class' => null, 'required' => true))
+            ->add('url', FileType::class, array('data_class' => null, 'required' => false))
             ->add('owner');
     }
 
@@ -26,6 +26,8 @@ class ArtworkType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Artwork::class,
+
+
         ]);
     }
 }

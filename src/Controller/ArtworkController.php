@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Filesystem\Filesystem;
 
 #[Route('/artwork')]
 class ArtworkController extends AbstractController
@@ -66,17 +67,21 @@ class ArtworkController extends AbstractController
     #[Route('/{id}/edit', name: 'app_artwork_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Artwork $artwork, EntityManagerInterface $entityManager): Response
     {
+
+
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
-
+        $oldImage = $artwork->getUrl();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form['url']->getData();
-            $fileName = $file->getClientOriginalName();
-            $file->move("C:/xampp/htdocs/img", $fileName);
-            $artwork->setUrl($fileName);
-            $entityManager->flush();
+            $newImage = $form['url']->getData();
 
+            if ($newImage) {
+                $newImage->move("C:/xampp/htdocs/img", $newImage->getClientOriginalName());
+                $artwork->setUrl($newImage->getClientOriginalName());
+            }
+
+            $entityManager->flush();
             return $this->redirectToRoute('app_artwork_index', [], Response::HTTP_SEE_OTHER);
         }
 

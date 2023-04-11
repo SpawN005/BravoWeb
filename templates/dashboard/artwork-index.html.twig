@@ -1,0 +1,54 @@
+{% extends 'dashboard-base.html.twig' %}
+{% block body %}
+ <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Artworks</h6>
+                
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-white">
+                                    <th scope="col">Title</th>
+                           
+                                      <th scope="col">Owner</th>
+                                 
+                                      <th scope="col">Categorie</th>
+                                        <th scope="col">Image</th>
+                                 
+                            
+                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for artwork in artworks %}
+                                <tr>
+                                   
+                                    <td>{{ artwork.title }}</td>
+                                  
+                                    <td>{{artwork.owner.firstName}}  {{artwork.owner.lastName}}</td>
+                                      <td>{{artwork.categorie.NomCategorie}} </td>
+                                        <td><img src="http://localhost/img/{{artwork.url}}" alt="" width="144" height="144"></td>
+                                  
+                                     
+                                
+                                  
+
+                                </tr>
+                                 {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+                           
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+    
+{% endblock %}

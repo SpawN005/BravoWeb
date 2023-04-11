@@ -52,19 +52,20 @@
                                 {{ form_widget(form.title) }} 
                                  {{ form_errors (form.title) }} 
                                 </div>
-                                <div class="col-lg-6">
+                                  <div class="col-lg-6 ">
                                 {{ form_label (form.categorie, "Categorie") }} 
-                                {{ form_widget(form.categorie) }} 
+                                {{ form_widget(form.categorie ,{'attr': {'class': 'selectpicker'}}) }} 
                                  {{ form_errors (form.categorie) }} 
                                  </div>
                                   <div class="col-lg-6">
                                 {{ form_label (form.owner, "Owner") }} 
-                                {{ form_widget(form.owner) }} 
+                                {{ form_widget(form.owner,{'attr': {'class': 'selectpicker'}}) }} 
                                  {{ form_errors (form.owner) }} 
+                                 
                                  </div>
                                   <div class="col-lg-6">
                                 {{ form_label (form.url, "Image") }} 
-                                {{ form_widget(form.url) }} 
+                                {{ form_widget(form.url ) }} 
                                  {{ form_errors (form.url) }} 
                                  </div>
                                  <div class="col-lg-12">

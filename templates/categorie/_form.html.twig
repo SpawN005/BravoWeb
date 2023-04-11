@@ -1,0 +1,17 @@
+{{ form_start(form,{'attr':{'novalidate': 'novalidate'}}) }}
+ <div class="container-fluid pt-4 px-4">
+                        <div class="bg-secondary rounded h-100 p-4"> 
+                            <div class="form-floating mb-3">
+                                                       
+
+                                     {{ form_widget(form.nomcategorie ,{'attr': {'class': 'form-control' , 'id':'floatingInput'}, 'label':null}) }}
+                                <label for="floatingInput">Categorie</label>
+                                   <p>  {{ form_errors (form.nomcategorie) }} </p>   
+                            </div>
+                              <button class="btn btn-sm btn-primary" >{{ button_label|default('Save') }}</button> 
+                        </div>
+                    </div>
+   
+  
+    
+{{ form_end(form) }}
