@@ -1,0 +1,59 @@
+ <link rel=stylesheet href="{{asset('assetsFront/vendor.css')}}">
+    <link rel=stylesheet href="{{asset('assetsFront/style.css')}}">
+    <link rel=stylesheet  href="{{asset('assetsFront/css/layerslider.css')}}">
+    <script src="{{asset('assetsFront/js/vendor/modernizr.js')}}"></script>
+
+
+
+<div class= slide-ls data-ls="transition3d: 33,15; slidedelay: 8000 ; durationin:0;">
+
+        <img src="{{asset('assetsFront/images/banner/background01.jpg')}}" class=ls-bg alt="Slide background">
+
+            <div class="ls-l layercontent01" style="top: 50%; left: 50%; z-index:4;"
+                 data-ls="offsetxin:left; offsetxout:right; durationin: 4000; parallaxlevel: 8;">
+                 <img
+                    src="{{asset('assetsFront/images/banner/player.png')}}" alt=innerimage class=img-responsive
+                    style="max-width: 100% !important ;top: 50%;">
+            </div>
+            <img src="{{asset('assetsFront/images/banner/ball.png')}}"alt=innerimage class="ls-l layercontent02" style="top: 50%; left: 50%; z-index:4";
+                 data-ls="offsetxin: right; offsetxout:left; rotatein:-360; easingin: easeoutquart; durationin: 4000; delayin: 250; parallaxlevel: -5;">
+
+            <img src="{{asset('assetsFront/images/banner/front_particles.png')}}" alt=particles class=ls-l style="z-index:9; left:0;"
+                 data-ls="offsetxin: left; offsetxout:left; scalexin:50; easingin: easeoutquart; durationin: 3000; delayin: 250;">
+                 
+            <img src="{{asset('assetsFront/images/banner/back_particles.png')}}"alt=particles class=ls-l style="z-index:3; left:50%;"
+                 data-ls="offsetxin: left; offsetxout:left; scalein:90; easingin: easeoutquart; durationin: 3000; delayin: 250;">
+
+            <h2 class="ls-l bannertext layercontent03" data-ls="offsetxin:left; rotatexin:90 ; durationin: 3500;"> action</h2>
+
+            <h2 class="ls-l bannertext01 italic01 layercontent04"
+                data-ls="offsetxin:left; scalexin:9; durationin: 4000;">starts</h2><h4
+                    class="ls-l bannertext02 layercontent05" data-ls="offsetxin:left; rotatexin:90 ; durationin: 4500;">
+                from</h4>
+
+            <h2 class="ls-l bannertext01 layercontent06" style="left: 87%; top:760px;"
+                data-ls="offsetxin:left; flipxin:90 ; durationin: 5000;">21<sup>st</sup></h2><h6
+                class="ls-l bannertext03 layercontent07" data-ls="offsetxin:left; flipxin:90 ; durationin: 6000;">
+                july , 2015</h6>
+            </div>
+</div>
+
+
+
+
+
+
+
+ <figure><a href=#><img src="{{asset('assetsFront/images/appstore/apple.png ')}}"alt=image></a></figure>
+                        <figure><a href=#><img src="{{asset('assetsFront/images/appstore/google.png')}}"></a></figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="{{asset('assetsFront/js/vendor/vendor.js')}}"></script>
+<script src="{{asset('js/main.js')}}"></script>
+
+
+<div class=row><a href=index-2.html class=footer-logo><img src="{{asset('assetsFront/images/tunisport.png')}}" alt=image></a>

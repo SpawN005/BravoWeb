@@ -1,0 +1,448 @@
+{% extends "front.html.twig" %}
+{% block banner %}{% endblock %}
+{% block body %}{% endblock %}
+{% block footer2 %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block headerUser %}
+
+
+    <header class=header-main>
+        <div class=header-upper>
+            <div class=container>
+                <div class=row>
+                   <ul>
+                    
+                    <li>{% if app.user.image == null   %}
+                        <img src="{{asset('/uploads/images/user.jpg')}}" alt="Profile"  class="rounded-circle" style="width: 25px;padding-top:6px;">
+                        {% else %}
+                        <img src="{{asset('/uploads/images/' ~ app.user.image)}}" alt="Profile"  class="rounded-circle"style="width: 25px;padding-top:6px;">
+                       {% endif %}</li>
+                        <li><a href="{{path('clientProfile')}}">{{app.user.firstName}} {{app.user.lastName}}</a></li>
+                        
+                        <li><a href="{{path('app_logout')}}"><i class="fa fa-sign-out"></i> 
+                        <span>Logout</span></a>
+                    </li>
+                     
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+        
+      
+                    <div class=social><a href=https://www.facebook.com/templatespoint.net class=facebook><i
+                            class="fa fa-facebook"></i></a> <a href=https://twitter.com/itobuztech class=twitter><i
+                            class="fa fa-twitter"></i></a> <a href=https://www.behance.net/ class=behance><i
+                            class="fa fa-google"></i></a></div>
+                </div>
+            </div>
+        </div>
+
+<style>
+</style>
+    </header>
+
+
+
+
+
+{% endblock %}
+
+{% block bodyFront %}
+
+
+
+<body >
+<div class="container mt-5">
+<div class="row"  style="padding-top:50px;">
+<div class="col-lg-4 pb-5">
+
+<div class="author-card pb-3">
+<div class="author-card-cover" style="background-image: url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);"></div>
+<div class="author-card-profile">
+<div class="author-card-avatar">{% if app.user.image == null   %}
+                        <img src="{{asset('/uploads/images/user.jpg')}}" alt="Profile"  class="rounded-circle" >
+                        {% else %}
+                        <img src="{{asset('/uploads/images/' ~ app.user.image)}}" alt="Profile"  class="rounded-circle">
+                       {% endif %}
+</div>
+<div class="author-card-details">
+<h5 class="author-card-name text-lg">{{app.user.firstName}} {{app.user.lastName}}</h5><span class="author-card-position"></span>
+</div>
+</div>
+</div>
+{{form_start(form,{'attr':{'novalidate':'novalidate'}})}}
+<div class="wizard">
+<nav class="list-group list-group-flush">
+<a class="list-group-item" href="#">
+<div class="d-flex justify-content-between align-items-center">
+{{form_widget(form.image,{'attr':{'class':'bi bi-upload'}})}}
+    <video id="video" autoplay width="320" height="240"></video>
+      <button id="snap">Take Picture</button>
+      <canvas id="canvas"></canvas>
+
+
+<div><i class="fe-icon-shopping-bag mr-1 text-muted"></i>
+<div class="d-inline-block font-weight-medium text-uppercase">Orders List</div>
+</div><span class="badge badge-secondary">6</span>
+</div>
+</a><a class="list-group-item active" href="#">
+<i class="fe-icon-user text-muted"></i>Profile Settings</a>
+
+</a>
+<a class="list-group-item" href="https://www.bootdey.com/snippets/view/bs4-account-tickets" target="__blank">
+<div class="d-flex justify-content-between align-items-center">
+<div><i class="fe-icon-tag mr-1 text-muted"></i>
+<div class="d-inline-block font-weight-medium text-uppercase">My Tickets</div>
+</div><span class="badge badge-secondary">4</span>
+</div>
+</a>
+</nav>
+</div>
+</div>
+
+<div class="col-lg-8 pb-5">
+
+
+
+<div class="col-md-6">
+<div class="form-group">
+<label for="account-fn">First Name</label>
+{{form_widget(form.firstName,{'attr':{'class':'form-control'}})}}
+
+   {% if   form.vars.submitted and not form.vars.valid %}
+
+
+                    <div style="color: red;">
+
+                     {{ form_errors(form.firstName) }}
+                   </div>
+
+
+{% endif %}
+
+</div>
+</div>
+ <div class="col-md-6">
+<div class="form-group">
+<label for="account-ln">Last Name</label>
+
+   {% if   form.vars.submitted and not form.vars.valid %}
+
+                    <div style="color: red;">
+
+               
+                       {{ form_errors(form.lastName) }}
+                    </div>
+
+
+{% endif %}
+{{form_widget(form.lastName,{'attr':{'class':'form-control'}})}}</div>
+</div>
+<div class="col-md-6">
+<div class="form-group">
+<label for="account-email">E-mail Address</label>
+{{form_widget(form.email,{'attr':{'class':'form-control'}})}}
+
+   {% if   form.vars.submitted and not form.vars.valid %}
+
+
+               <div style="color: red;">
+
+                  {{ form_errors(form.email) }}
+               </div>
+
+{% endif %}
+</div>
+</div>
+<div class="col-md-6">
+<div class="form-group">
+    <label for="account-phone">Phone Number</label>
+    {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'name': 'phone'}}) }}
+    {% if form.vars.submitted and not form.vars.valid %}
+        <div style="color: red;">
+            {{ form_errors(form.phone) }}    
+        </div>
+    {% endif %}
+    <button type="button" id="verify-phone-btn">Verify Phone Number</button>
+</div>
+
+
+<button type="submit" class="btn btn-primary">Save Changes</button>
+
+
+<a class="btn btn-danger" href="{{ path('deleteProfile', { 'id': app.user.getId()  }) }}" >Delete</a>
+</div>
+</div>
+{{form_end(form)}}
+</div>
+</div>
+</div>
+<style type="text/css">
+body{
+    background:#eee;    
+}
+.widget-author {
+  margin-bottom: 58px;
+}
+.author-card {
+  position: relative;
+  padding-bottom: 48px;
+  background-color: #fff;
+  box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .09);
+}
+.author-card .author-card-cover {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.author-card .author-card-cover::after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  opacity: 0.5;
+}
+.author-card .author-card-cover > .btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 0 10px;
+}
+.author-card .author-card-profile {
+  display: table;
+  position: relative;
+  margin-top: -22px;
+  padding-right: 15px;
+  padding-bottom: 16px;
+  padding-left: 20px;
+  z-index: 5;
+}
+.author-card .author-card-profile .author-card-avatar, .author-card .author-card-profile .author-card-details {
+  display: table-cell;
+  vertical-align: middle;
+}
+.author-card .author-card-profile .author-card-avatar {
+  width: 85px;
+  border-radius: 50%;
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, .15);
+  overflow: hidden;
+}
+.author-card .author-card-profile .author-card-avatar > img {
+  display: block;
+  width: 100%;
+}
+.author-card .author-card-profile .author-card-details {
+  padding-top: 20px;
+  padding-left: 15px;
+}
+.author-card .author-card-profile .author-card-name {
+  margin-bottom: 2px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.author-card .author-card-profile .author-card-position {
+  display: block;
+  color: #8c8c8c;
+  font-size: 12px;
+  font-weight: 600;
+}
+.author-card .author-card-info {
+  margin-bottom: 0;
+  padding: 0 25px;
+  font-size: 13px;
+}
+.author-card .author-card-social-bar-wrap {
+  position: absolute;
+  bottom: -18px;
+  left: 0;
+  width: 100%;
+}
+.author-card .author-card-social-bar-wrap .author-card-social-bar {
+  display: table;
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 12px 20px 1px rgba(64, 64, 64, .11);
+}
+.btn-style-1.btn-white {
+    background-color: #fff;
+}
+.list-group-item i {
+    display: inline-block;
+    margin-top: -1px;
+    margin-right: 8px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+.mr-1, .mx-1 {
+    margin-right: .25rem !important;
+}
+
+.list-group-item.active:not(.disabled) {
+    border-color: #e7e7e7;
+    background: #fff;
+    color: #ac32e4;
+    cursor: default;
+    pointer-events: none;
+}
+.list-group-flush:last-child .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.list-group-flush .list-group-item {
+    border-right: 0 !important;
+    border-left: 0 !important;
+}
+
+.list-group-flush .list-group-item {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+}
+.list-group-item.active {
+    z-index: 2;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.list-group-item:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+a.list-group-item, .list-group-item-action {
+    color: #404040;
+    font-weight: 600;
+}
+.list-group-item {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    border: 1px solid #e7e7e7 !important;
+    border-radius: 0 !important;
+    color: #404040;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.125);
+}
+.list-group-item.active:not(.disabled)::before {
+    background-color: #ac32e4;
+}
+
+.list-group-item::before {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background-color: transparent;
+    content: '';
+}
+.photo-data-preview {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+
+</style>
+<!-- Video and picture-taking functionality -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const snap = document.getElementById('snap');
+  const constraints = { video: true };
+
+  // Attach the video stream to the video element and update the canvas with the video frame
+  function handleSuccess(stream) {
+    video.srcObject = stream;
+    setInterval(() => {
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    }, 100);
+  }
+
+  // Handle errors if there are any
+  function handleError(error) {
+    console.error(`Error: ${error}`);
+  }
+
+  // Attach the video stream to the video element and update the canvas with the video frame
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then(handleSuccess)
+    .catch(handleError);
+  
+  // Take a picture by drawing the current canvas image to a new canvas element
+  snap.addEventListener('click', () => {
+    const imgData = canvas.toDataURL('image/png');
+    console.log('Image data:', imgData);
+    fetch('/save-image', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ image: imgData })
+    })
+    .then(response => {
+      console.log('Server response:', response);
+      return response.json();
+    })
+    .then(data => {
+      console.log('Server data:', data);
+      const img = new Image();
+      img.src = data.image;
+      document.body.appendChild(img);
+    });
+  });
+</script>
+
+<!-- Phone number verification functionality -->
+<script>
+function sendVerificationCode() {
+      console.log('sendVerificationCode function called!');
+
+    var phoneNumber = $("#phone").val();
+    console.log("Phone number: " + phoneNumber);
+
+    // Perform validation on the phone number here, if necessary
+    // ...
+
+    // Make AJAX call to server to send verification code to phone number
+    $.ajax({
+        url: "/send_verification_code",
+        type: "POST",
+        data: { phone_number: phoneNumber },
+        success: function(response) {
+            // Handle success response from server
+            console.log(response);
+        },
+        error: function(xhr) {
+            // Handle error response from server
+            console.log(xhr.responseText);
+        }
+    });
+}
+
+</script>
+
+{% endblock %}

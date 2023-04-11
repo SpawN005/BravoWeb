@@ -1,3 +1,14 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+app_save_image:
+  path: '/save-image'
+  controller: App\Controller\YourController::saveImage'
+  methods: ['POST']
+
+app_send_verification_code:
+    path: '/send-verification-code'
+    controller: App\Controller\ClientController::sendVerificationCode
+    methods: ['POST']
+
