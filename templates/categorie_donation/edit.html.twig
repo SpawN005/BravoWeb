@@ -1,0 +1,13 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Edit CategorieDonation{% endblock %}
+
+{% block body %}
+    <h1>Edit CategorieDonation</h1>
+
+    {{ include('categorie_donation/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_categorie_donation_index') }}">back to list</a>
+
+    {{ include('categorie_donation/_delete_form.html.twig') }}
+{% endblock %}

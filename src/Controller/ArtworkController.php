@@ -25,7 +25,7 @@ class ArtworkController extends AbstractController
             ->findAll();
 
 
-        return $this->render('artwork/index.html.twig', [
+        return $this->render('artwork/back.html.twig', [
             'artworks' => $artworks,
             "categories" => $categories,
         ]);

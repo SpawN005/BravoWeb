@@ -4,13 +4,14 @@ namespace App\Form;
 
 use App\Entity\Donation;
 use App\Entity\User;
-use App\Entity\Categorie;
+use App\Entity\CategorieDonation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationType extends AbstractType
 {
@@ -22,15 +23,10 @@ class DonationType extends AbstractType
             ->add('dateCreation')
             ->add('dateExpiration')
             ->add('amount')
-            ->add('owner', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'firstName',
-            ])
             ->add('Categorie', EntityType::class, [
-            'class' => Categorie::class,
+            'class' => CategorieDonation::class,
             'choice_label' => 'nomcategorie',
-            ])
-            ->add('save',SubmitType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

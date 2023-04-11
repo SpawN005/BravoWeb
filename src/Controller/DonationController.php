@@ -27,6 +27,17 @@ class DonationController extends AbstractController
             'donation' => $donations
         ]);
     }
+    #[Route('/donation/show', name: 'app_donation_show', methods:['GET'])]
+    public function show(EntityManagerInterface $entityManager): Response
+{
+    $donations = $entityManager
+        ->getRepository(Donation::class)
+        ->findAll();
+        return $this->render('donation/show.html.twig', [
+            'controller_name' => 'DonationController',
+            'donation' => $donations
+        ]);
+}
 
     #[Route('/donation/add', name: 'app_donation_add', methods: ['GET', 'POST'])]
      public function new(Request $request, EntityManagerInterface $entityManager): Response

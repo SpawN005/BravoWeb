@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Entity;
-
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Donation
@@ -27,14 +28,18 @@ class Donation
     /**
      * @var string
      *
-     */
+     */ 
+
+
     #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
+    #[Assert\NotBlank(message:'Please enter a title')]
     private $title;
 
     /**
      * @var string
      *
      */
+    #[Assert\NotBlank(message:'Please enter a description')]
     #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
     private $description;
 
@@ -42,6 +47,7 @@ class Donation
      * @var \DateTime
      *
      */
+    #[Assert\GreaterThanOrEqual('today', message:'The start date must be a date that is later than the current date.')]
     #[ORM\Column(name: 'date_creation', type: 'date', nullable: false)]
     private $dateCreation;
 
@@ -49,6 +55,7 @@ class Donation
      * @var \DateTime
      *
      */
+    #[Assert\GreaterThanOrEqual(propertyPath:'dateCreation', message:'The end date must be a date that is later than the start date.')]
     #[ORM\Column(name: 'date_expiration', type: 'date', nullable: false)]
     private $dateExpiration;
 
@@ -56,6 +63,7 @@ class Donation
      * @var int
      *
      */
+    #[Assert\Range(min: 1,notInRangeMessage: 'The amount must be greater than zero',)]
     #[ORM\Column(name: 'amount', type: 'integer', nullable: false)]
     private $amount;
 
@@ -68,7 +76,7 @@ class Donation
     private $owner;
 
     /**
-     * @var \Categorie
+     * @var \CategorieDonation
      *
      */
     #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
@@ -152,12 +160,12 @@ class Donation
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
+    public function getCategorie(): ?CategorieDonation
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setCategorie(?CategorieDonation $categorie): self
     {
         $this->categorie = $categorie;
 

@@ -23,6 +23,7 @@ class CategorieDonation
      *
      */
     #[ORM\Column(name: 'NomCategorie', type: 'string', length: 100, nullable: false)]
+    #[Assert\NotBlank(message:'Please')]
     private $nomcategorie;
 
     public function getId(): ?int
