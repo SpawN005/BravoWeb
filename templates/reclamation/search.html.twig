@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Search For A Complaint </h1>
+    {#<h1>Search For A Complaint </h1>#}
+    <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>Search results </h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+
+        <section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
 
     {{ form(searchReclamationBytitle) }}
 
@@ -36,9 +45,9 @@
                                         
                         <td>
                             {% if reclamation.etat == "on hold" %}
-                                <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="btn btn-primary">Delete</a>
+                                <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="thm-btn contact-one__btn">Delete</a>
                             {% endif %}
-                            <a href="{{ path('app_updateR', {'id': reclamation.id}) }}"class="btn btn-primary">Update</a>
+                            <a href="{{ path('app_updateR', {'id': reclamation.id}) }}"class="thm-btn contact-one__btn">Update</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -47,4 +56,15 @@
     {% elseif Reclamations|length == 0 %}
         <p>Desolé aucune réclamation trouvée pour ce titre .</p>
     {% endif %}
+    <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
+            <div class="container text-center">
+                <h3>We are at your disposal</h3>
+                <p>do not hesitate to claim again if necessary <br> thank you for your engagement.</p>
+                <div class="cta-one__btn-block">
+                    <a href="{{ path('app_addR') }}" class="thm-btn cta-one__btn-one">Create new</a><!-- /.thm-btn cta-one__btn-one -->
+                    <a href="{{ path('reclamation_user') }}" class="thm-btn cta-one__btn-two">back to list</a><!-- /.thm-btn cta-one__btn-two -->
+
+                </div><!-- /.cta-one__btn-block -->
+            </div><!-- /.container -->
+        </section><!-- /.cta-one -->
 {% endblock %}

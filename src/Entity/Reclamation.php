@@ -85,7 +85,7 @@ class Reclamation
     #[ORM\ManyToOne(targetEntity: 'User')]
     private $ownerid;
 
-    #[ORM\JoinColumn(name: 'typereclamation', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'typereclamation', referencedColumnName: 'id',onDelete:"RESTRICT")]
     #[ORM\ManyToOne(targetEntity: 'Typereclamation')]
     private $typereclamation;
 

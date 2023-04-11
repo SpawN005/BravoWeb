@@ -1,7 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% block title %}<h1>Avis pour la réclamation n°{{ reclamation.id }} </h1>{% endblock %}
+   {# {% block title %}<h1>Avis pour la réclamation n°{{ reclamation.id }} </h1>{% endblock %}#}
+   <section class="page-header" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);">
+
+            <div class="container">
+                <h2>Provide your opinion</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+      <div class="contact-one">
+            <div class="container">
+                <div class="block-title-two text-center">
+                    <p>Contact</p>
+                    <h3>Your feedback always matter <br> Thank you for your engagement</h3>
+                </div><!-- /.block-title-two -->
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="contact-one__box">
+                            <h3>Opening Hours</h3>
+                            <p>Daily: 9.30 AM–6.00 PM <br> Sunday & Holidays: Closed</p>
+                        </div><!-- /.contact-one__box -->
+                        <div class="contact-one__box">
+                            <h3>Contact Info</h3>
+                            <p>77408 Satterfield Motorway <br> Suite 469 New Antonetta, BC </p>
+                            <p>
+                                <a href="mailto:example@muzex.com">example@muzex.com</a> <br> <a href="tel:(617)-495-9400-326">(617) 495-9400-326</a></p>
+                        </div><!-- /.contact-one__box -->
+                        <div class="contact-one__box">
+                            <h3>Social Contact</h3>
+                            <div class="contact-one__box-social">
+                                <a href="#" class="fab fa-facebook-f"></a>
+                                <a href="#" class="fab fa-twitter"></a>
+                                <a href="#" class="fab fa-vimeo"></a>
+                                <a href="#" class="fab fa-linkedin-in"></a>
+                            </div><!-- /.contact-one__box-social -->
+                        </div><!-- /.contact-one__box -->
+                    </div><!-- /.col-lg-4 -->
+                     
+                    <div class="col-lg-8">
+                 <div class="contact-form-validated contact-one__form" >
+
+
 
     {{ form_start(form) }}
 
@@ -10,10 +49,16 @@
     {{ form_label(form.Note) }}
     {{ form_widget(form.Note) }}
 
-    {#{{ form_label(form.commentaire) }}#}
-    {#{{ form_widget(form.commentaire) }}#}
+     <div class="col-lg-12">
+    <button  type="submit" class="thm-btn contact-one__btn" >Envoyer</button>
+    </div><!-- /.col-lg-12 -->
 
-    <button type="submit">Envoyer</button>
+     <div class="cta-one__btn-block">
+                <a href="{{ path('reclamation_user') }}" class="thm-btn cta-one__btn-two">back to list</a><!-- /.thm-btn cta-one__btn-two -->
+
+                </div><!-- /.cta-one__btn-block -->
+
+     </div><!-- /.row -->
 
     {{ form_end(form) }}
 

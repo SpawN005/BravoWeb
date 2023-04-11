@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert; 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Typereclamation
@@ -13,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Table(name: 'typereclamation')]
 #[ORM\Entity]
+#[UniqueEntity(fields:["typereclamation"], message:"Ce type existe déjà.")]
+
 class Typereclamation
 {
    
@@ -21,9 +25,9 @@ class Typereclamation
      *
      */
     #[ORM\Column(name: 'typeReclamation', type: 'string', length: 30, nullable: false)]
-    #[Assert\NotBlank(message:"Le champ Titre ne peut pas être vide")]
-    #[Assert\Length(max:20, maxMessage:"Le champ Titre ne peut pas contenir plus de {{ 20 }} caractères")]
-    #[Assert\Regex(pattern:"/^[a-zA-Z0-9 ]*$/", message:"Le champ Titre ne peut contenir que des lettres, des chiffres et des espaces")]
+    #[Assert\NotBlank(message:"Le champ type ne peut pas être vide")]
+    #[Assert\Length(max:10, maxMessage:"Le champ type ne peut pas contenir plus de {{ 10 }} caractères")]
+    #[Assert\Regex(pattern:"/^[a-zA-Z0-9 ]*$/", message:"Le champ type ne peut contenir que des lettres, des chiffres et des espaces")]
     private $typereclamation;
 
     /**
@@ -34,10 +38,7 @@ class Typereclamation
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
-    //#[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
-    //#[ORM\Id]
-    //#[ORM\GeneratedValue(strategy: 'NONE')]
-    //#[ORM\OneToOne(targetEntity: 'Reclamation')]
+
 
     private $id;
 

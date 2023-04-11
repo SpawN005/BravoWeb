@@ -1,7 +1,26 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-back.html.twig' %}
+{% block nav %}
+<div class="navbar-nav w-100">
+                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="{{ path('app_readR', {'etat': 'on_hold'}) }}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Gestion reclamations</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="{{ path('app_addTypeR')}}" class="dropdown-item">Add new type</a>
+                            <a href="{{ path('app_readTypeR')}}" class="dropdown-item">List of types</a>
+                            <a href="{{ path('app_addR')}}" class="dropdown-item">Add new complaint</a>
+                        </div>
+                    </div>
+                   
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+            {% endblock %}
 
 {% block body %}
+
     <h1>list of complaints</h1>
+
     <form method="get">
     <label for="etat">Filtrer par état:</label>
     <select name="etat" id="etat">

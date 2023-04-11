@@ -2,9 +2,20 @@
 
 
 {% block body %}
-{% block title %}<h1>My Complaints</h1>{% endblock %}
-  
+{#{% block title %}<h1>My Complaints</h1>{% endblock %}#}
+   <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>My Complaints</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+<section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
+        
+                 
     <table class="table">
+           
+     
         <thead>
             <tr>
                  <th>Id</th>
@@ -30,19 +41,33 @@
                 <td>{{ reclamation.note|default('-') }}</td>
                 <td>{{ reclamation.typereclamation}}</td>
 
-                </tr>
+                
                 <td>
                 {% if reclamation.etat == "on hold" %}
-                    <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="btn btn-primary">delete</a>
+                    <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="thm-btn contact-one__btn">delete</a>
                 {% endif %}
-                <a href="{{ path('app_updateR', {'id': reclamation.id}) }}" class="btn btn-primary">update</a>
+                <a href="{{ path('app_updateR', {'id': reclamation.id}) }}" class="thm-btn contact-one__btn">update</a>
                 {% if reclamation.etat == 'processing' %}
-<a href="{{ path('reclamation_avis', {id: reclamation.id}) }}" class="btn btn-primary">Donner mon avis</a>
-{% endif %}
+
+                <a href="{{ path('reclamation_avis', {id: reclamation.id}) }}" class="thm-btn contact-one__btn">Donner mon avis</a>
+                {% endif %}
 
             </td>
             {% endfor %}
         </tbody>
     </table>
+    
+    <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
+            <div class="container text-center">
+                <h3>We are at your disposal</h3>
+                <p>do not hesitate to claim again if necessary <br> thank you for your engagement.</p>
+                <div class="cta-one__btn-block">
+                    <a href="{{ path('app_addR') }}" class="thm-btn cta-one__btn-one">Create new</a><!-- /.thm-btn cta-one__btn-one -->
+                    <a href="{{ path('searchReclamationBytitle') }}" class="thm-btn cta-one__btn-two">Search</a><!-- /.thm-btn cta-one__btn-two -->
+
+                </div><!-- /.cta-one__btn-block -->
+            </div><!-- /.container -->
+        </section><!-- /.cta-one -->
+
 {% endblock %}
 

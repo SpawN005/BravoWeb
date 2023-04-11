@@ -24,7 +24,7 @@ class ReclamationFormType extends AbstractType
 
         ->add('title')
         ->add('description', TextareaType::class)
-        ->add('Save',SubmitType::class);
+        //->add('Save',SubmitType::class);
     ;
     }
 

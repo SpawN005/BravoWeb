@@ -108,7 +108,7 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
             $em->remove($reclamation);
             $em->flush();// pour la mise a jour f bd 
             $this->addFlash('success', 'La réclamation a bien été supprimée.');
-            return $this->redirectToRoute('app_readR',['etat' => 'on_hold'] );
+            return $this->redirectToRoute('reclamation_user' );
                 }
      #[Route('/updateR/{id}', name: 'app_updateR')]
          public function updateR($id,ReclamationRepository $rep,
@@ -126,7 +126,7 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
                         $em =$doctrine->getManager() ;
                         $em->flush();
                         $this->addFlash('success', 'La réclamation a bien été modifiée.');
-                        return $this->redirectToRoute("app_readR",['etat' => 'on_hold']);
+                        return $this->redirectToRoute("reclamation_user");
                                      }
                 return $this->renderForm("reclamation/updateR.html.twig",
                                                     array("form"=>$form));

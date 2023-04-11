@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Typereclamation;
 use App\Entity\Reclamation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

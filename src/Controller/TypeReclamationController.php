@@ -7,12 +7,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TypeReclamationRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Form\TypeReclamationFormType;
 use App\Entity\Typereclamation;
 use App\Entity\Reclamation;
 use App\Repository\ReclamationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 #[Route('/typereclamation')]
@@ -102,6 +104,55 @@ class TypeReclamationController extends AbstractController
                 return $this->renderForm("type_reclamation/updateTypeR.html.twig",
                                                     array("form"=>$form));
          }
+
+    #[Route('/deleteTypecheck/{id}', name: 'app_deleteTypeCheck')]
+         public function delete($id,TypeReclamationRepository $rep,Request $request, TypeReclamation $typeReclamation, EntityManagerInterface $entityManager): Response
+{ //recuperer le type a supprimer 
+     $type=$rep->find($id);
+        // Vérifier s'il existe des réclamations associées au type de réclamation
+        $reclamations = $this->getDoctrine()->getRepository(Reclamation::class)->findBy(['typereclamation' => $type]);      
+          if (count($reclamations) > 0) {
+            // Si oui, demander confirmation avant la suppression
+            $alertMessage = "Attention ! Ce type de réclamation est déjà associé à des réclamations. Êtes-vous sûr de vouloir le supprimer ?";
+            $alertForm = $this->createFormBuilder()
+                ->setAction($this->generateUrl('app_deleteTypeCheck', ['id' => $typeReclamation->getId()]))
+                ->add('confirm', SubmitType::class, ['label' => 'Confirmer la suppression'])
+                ->getForm();
+            $alertForm->handleRequest($request);
+            if ($alertForm->isSubmitted() && $alertForm->isValid()) {
+                // Si le formulaire de confirmation est soumis et valide, mettre à jour les réclamations associées
+                // au type de réclamation en les affectant au type "Autre"
+                foreach ($reclamations as $reclamation) {
+                    $reclamation->setTypeReclamation($entityManager->getRepository(TypeReclamation::class)->findOneBy(['typereclamation' => 'Autre']));
+                    $entityManager->persist($reclamation);
+                }
+                // Supprimer le type de réclamation
+                $entityManager->remove($typeReclamation);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Le type de réclamation a été supprimé avec succès.');
+                return $this->redirectToRoute('app_readTypeR');
+            } else {
+                // Si le formulaire n'est pas encore soumis, retourner la vue avec le formulaire
+                return $this->render('type_reclamation/delete_confirm.html.twig', [
+                    'typeReclamation' => $typeReclamation,
+                    'alertMessage' => $alertMessage,
+                    'alertForm' => $alertForm->createView(),
+                ]);
+            }
+        } else {
+            // Sinon, supprimer directement le type de réclamation
+            $entityManager->remove($typeReclamation);
+            $entityManager->flush();
+            $this->addFlash('success', 'Le type de réclamation a été supprimé avec succès.');
+            return $this->redirectToRoute('app_readTypeR');
+        }
+    
+}
+
+         
+
+
           
           
 
