@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1>Statistiques des réclamations</h1>
+        {{ cmen_google_charts(piechart) }}
+    </div>
+{% endblock %}

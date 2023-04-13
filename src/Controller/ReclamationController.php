@@ -15,13 +15,13 @@ use App\Repository\ReclamationRepository;
 use App\Repository\UserRepository;
 use App\Form\SearchReclamationFormType;
 use App\Form\AvisReclamationFormType;
-use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Knp\Snappy\Pdf;
-
-
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Dompdf\DompdfBundle\DompdfBundle;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+
 
 
 
@@ -228,31 +228,64 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
     return $this->redirectToRoute('app_readR',['etat' => 'on_hold']);
      }
 
-     //fonction associé au bundle de generation de pdf 
-     private $pdf;
 
-     public function __construct(Pdf $pdf)
-     {
-         $this->pdf = $pdf;
-     }
      #[Route('/genererPdf', name: 'genererPdf')]
-     public function generatePdfAction(ReclamationRepository $r)
+     public function imprime(ReclamationRepository $repository): Response
      {
-         $reclamations = $r->findAll();
-     
+         $pdfOptions = new Options();
+         $pdfOptions->set('defaultFont', 'Arial');
+         $dompdf = new Dompdf($pdfOptions);
+         $reclamations= $repository->findAll();
          $html = $this->renderView('reclamation/pdf.html.twig', [
              'reclamations' => $reclamations,
          ]);
-     
-         $filename = 'reclamations.pdf';
-     
-         return new PdfResponse(
-             $this->pdf->getOutputFromHtml($html),
-             $filename,
-             'application/pdf',
-             'inline'
-         );
+         $dompdf->loadHtml($html);
+         $dompdf->setPaper('A4', 'portrait');
+         $dompdf->render();
+         $dompdf->stream("Liste des reclamations.pdf", [
+             "Attachment" => true
+         ]);
+         return $this->redirectToRoute('app_readR');
      }
+     //generer des stats selon etat piechart
+
+     #[Route('/genererstats', name: 'genererstats')]
+
+public function reclamationStats(ReclamationRepository $reclamationRepository)
+{
+    $reclamations = $reclamationRepository->findAll();
+
+    $treated = 0;
+    $processing = 0;
+    $onHold = 0;
+
+    foreach ($reclamations as $reclamation) {
+        if ($reclamation->getEtat() === 'Treated') {
+            $treated++;
+        } elseif ($reclamation->getEtat() === 'Processing') {
+            $processing++;
+        } elseif ($reclamation->getEtat() === 'On hold') {
+            $onHold++;
+        }
+    }
+
+    $pieChart = new PieChart();
+    $pieChart->getData()->setArrayToDataTable([
+        ['Etat', 'Nombre de réclamations'],
+        ['Treated', $treated],
+        ['Processing', $processing],
+        ['On hold', $onHold]
+    ]);
+    $pieChart->getOptions()->setTitle('Statistiques des réclamations');
+    $pieChart->getOptions()->setHeight(400);
+    $pieChart->getOptions()->setWidth(600);
+
+    return $this->render('reclamation/stats.html.twig', [
+        'piechart' => $pieChart
+    ]);
+}
+
+     
 
 
 
