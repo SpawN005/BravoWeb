@@ -6,13 +6,15 @@ use App\Repository\EventRepository;
 use App\Form\EventType;
 use App\Entity\Event;
 use App\Entity\EventCategorie;
-
+use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 
 
@@ -110,23 +112,33 @@ class EventController extends AbstractController
 
 
     #[Route('/deleteEvent/{id}', name: 'app_deleteEvent')]
-    public function delecteEvent($id, EventRepository $rep, 
-    ManagerRegistry $doctrine): Response
+    public function deleteEvent($id, EventRepository $rep, ReservationRepository $reservationRep, ManagerRegistry $doctrine, SessionInterface $session): Response
     {
         //récupérer la classe à supprimer
         $event=$rep->find($id);
         if (!$event) {
             throw $this->createNotFoundException('Event not found for id '.$id);
         }
-        //Action de suppression
-        //récupérer l'Entitye manager
+        // Récupérer toutes les réservations de cet événement
+        $reservations = $reservationRep->findBy(['id_event' => $event]);
+    
+        // Supprimer l'événement
         $em=$doctrine->getManager();
         $em->remove($event);
-        //La maj au niveau de la bd
+    
+        // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
+        foreach ($reservations as $reservation) {
+            $user = $reservation->getIdParticipant();
+            $message = 'L\'événement "' . $event->getTitle() . '" a été supprimé.';
+            $session->getFlashBag()->add('danger', $message);
+        }
+    
+        // Enregistrer les modifications dans la base de données
         $em->flush();
+    
         return $this->redirectToRoute('app_event');
     }
-
+    
     #[Route('/addEvent', name: 'app_addEvent')]
     public function addEvent(ManagerRegistry $doctrine,
     Request $request)

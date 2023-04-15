@@ -37,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
    
 
-    #[ORM\OneToMany(mappedBy: 'id_participant', targetEntity: Reservation::class)]
+    #[ORM\OneToMany(mappedBy: 'id_participant', targetEntity: Reservation::class, cascade: ['remove'])]
     private Collection $reservations;
 
     public function __construct()

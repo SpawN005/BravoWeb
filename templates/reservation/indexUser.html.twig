@@ -3,11 +3,22 @@
 {% block title %}Reservation index{% endblock %}
 
 {% block body %}
+    <a href="{{ path('app_eventUser', {'id': event.id}) }}">back</a>
+
 <section class="page-header" style="background-image: url({{ asset('assets/images/backgrounds/page-header-bg-1-1.jpg') }});">
     <div class="container">
         <h2>My reservation</h2>
     </div><!-- /.container -->
 </section><!-- /.page-header -->
+
+{% if app.session.flashBag.has('danger') %}
+        <div class="alert alert-danger">
+            {% for message in app.session.flashBag.get('danger') %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
 
 <div class="contact-one">
     <div class="container">
