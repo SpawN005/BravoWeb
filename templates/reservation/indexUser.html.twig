@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation index{% endblock %}
+
+{% block body %}
+<section class="page-header" style="background-image: url({{ asset('assets/images/backgrounds/page-header-bg-1-1.jpg') }});">
+    <div class="container">
+        <h2>My reservation</h2>
+    </div><!-- /.container -->
+</section><!-- /.page-header -->
+
+<div class="contact-one">
+    <div class="container">
+        <div class="block-title-two text-center">
+            <p>Contact</p>
+            <h3>Stay in Touch with Tun'art</h3>
+        </div><!-- /.block-title-two -->
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="contact-one__box">
+                    <h3>Opening Hours</h3>
+                    <p>Daily: 9.30 AM–6.00 PM <br> Sunday & Holidays: Closed</p>
+                </div><!-- /.contact-one__box -->
+                <div class="contact-one__box">
+                    <h3>Contact Info</h3>
+                    <p>77408 Satterfield Motorway <br> Suite 469 New Antonetta, BC </p>
+                    <p>
+                        <a href="mailto:example@muzex.com">example@muzex.com</a> <br> <a href="tel:(617)-495-9400-326">(617) 495-9400-326</a></p>
+                </div><!-- /.contact-one__box -->
+                <div class="contact-one__box">
+                    <h3>Social Contact</h3>
+                    <div class="contact-one__box-social">
+                        <a href="#" class="fab fa-facebook-f"></a>
+                        <a href="#" class="fab fa-twitter"></a>
+                        <a href="#" class="fab fa-vimeo"></a>
+                        <a href="#" class="fab fa-linkedin-in"></a>
+                    </div><!-- /.contact-one__box-social -->
+                </div><!-- /.contact-one__box -->
+            </div><!-- /.col-lg-4 -->
+
+            <div class="col-lg-8">
+                <div class="contact-form-validated contact-one__form" >
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Event</th>
+                                <th>Participant</th>
+                                <th>Confirmation</th>
+                                <th>Number of places</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.id }}</td>
+                                <td>{{ reservation.idEvent.title }}</td>
+                                <td>{{ reservation.idParticipant.email }}</td>
+                                <td>{{ reservation.isConfirmed ? 'Confirmed' : 'Pending' }}</td>
+                                <td>{{ reservation.nbPlace }}</td>
+                                <td>
+                                    <a href="{{ path('app_deleteReservationUser', {'id': reservation.id}) }}">Delete</a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_updateReservation', {'id': reservation.id}) }}">Edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">no records found</td>
+                            </tr>
+                           
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div><!-- /.contact-form-validated -->
+            </div><!-- /.col-lg-8 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</div><!-- /.contact-one -->
+{% endblock %}

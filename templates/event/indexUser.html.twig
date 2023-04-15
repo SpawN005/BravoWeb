@@ -2,24 +2,7 @@
 
 
 {% block title %}Event{% endblock %}
-{% block nav %}
-                <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Gestion events</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="{{ path('app_addEvent')}}" class="dropdown-item">create event</a>
-                            <a href="{{ path('app_addCategorie')}}" class="dropdown-item">create type</a>
-                            <a href="{{ path('app_event_categorie')}}" class="dropdown-item">list type</a>
-                        </div>
-                    </div>
-                    
-                </div>
-            </nav>
-        </div>
 
-        <!-- Sidebar End -->
-{% endblock %}
 {% block body %}
     <h1>Event index</h1>
     
@@ -51,6 +34,7 @@
 {% else %}
     <strong>Catégorie:</strong> <p>No category</p>
 {% endif %}
+              <a href="{{ path('app_addReservation', {'id': e.id}) }}">Reserver</a>
 
                        
                     </div><!-- /.collection-grid__content -->
@@ -61,11 +45,12 @@
                 </div><div class="row">
             {% endif %}
             {% endif %}
+            
         {% endfor %}
     </div><!-- /.row -->
 
     
-    <a href="{{ path('app_event_categorie') }}">Categories</a>
+    
     
        <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
             <div class="container text-center">

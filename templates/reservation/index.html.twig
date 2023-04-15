@@ -1,7 +1,7 @@
 {% extends 'base-back.html.twig' %}
 
 
-{% block title %}Category index{% endblock %}
+{% block title %}List reservations{% endblock %}
 {% block nav %}
                 <div class="navbar-nav w-100">
                     <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
@@ -24,27 +24,31 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+    <h1>List reservations</h1>
 
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-               
-            </tr>
+                                <th>Id</th>
+                                <th>Event</th>
+                                <th>Participant</th>
+                                <th>Confirmation</th>
+                                <th>Number of places</th>
+                                <th>Action</th>
+                            </tr>
         </thead>
         <tbody>
-        {% for categorie in categories %}
+        {% for reservation in reservations %}
             <tr>
-                <td>{{ categorie.id }}</td>
-                <td>{{ categorie.nom }}</td>
-               
-                <td>
-                    {# <a href="{{ path('app_readEvent', {'id': e.id}) }}">show</a> #}
-                    <a href="{{ path('app_updateCategorie', {'id': categorie.id}) }}">edit</a>
-                    <a href="{{ path('app_deleteCategrie', {'id': categorie.id}) }}">delete</a>
+                 <td>{{ reservation.id }}</td>
+                                <td>{{ reservation.idEvent.title }}</td>
+                                <td>{{ reservation.idParticipant.email }}</td>
+                                <td>{{ reservation.isConfirmed ? 'Confirmed' : 'Pending' }}</td>
+                                <td>{{ reservation.nbPlace }}</td>
+                                <td>
+                                    <a href="{{ path('app_deleteReservation', {'id': reservation.id}) }}">Delete</a>
+                                </td>
                  
                 </td>
             </tr>
@@ -57,5 +61,5 @@
     </table>
 
 
-    <a href="{{ path('app_addCategorie') }}">Add new category</a>
+    <a href="{{ path('app_event') }}">Back</a>
 {% endblock %}

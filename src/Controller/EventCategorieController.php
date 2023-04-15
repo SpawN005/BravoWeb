@@ -86,7 +86,7 @@ class EventCategorieController extends AbstractController
             $em->flush();
             return $this->redirectToRoute("app_event_categorie");
         }
-        return $this->renderForm("event_categorie/createCategorie.html.twig", [
+        return $this->renderForm("event_categorie/updateCategorie.html.twig", [
             "form" => $form
         ]);
     }

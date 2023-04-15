@@ -21,7 +21,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $roles = [];
+    private ?array $roles = null;
 
     /**
      * @var string The hashed password
@@ -35,10 +35,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: NoteBlog::class)]
     private Collection $noteBlogs;
 
+   
+
+    #[ORM\OneToMany(mappedBy: 'id_participant', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->blogs = new ArrayCollection();
         $this->noteBlogs = new ArrayCollection();
+        $this->isConfirmed = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,6 +192,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($noteBlog->getUser() === $this) {
                 $noteBlog->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+  
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setIdParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getIdParticipant() === $this) {
+                $reservation->setIdParticipant(null);
             }
         }
 

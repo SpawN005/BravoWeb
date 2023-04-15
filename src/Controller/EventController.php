@@ -165,6 +165,6 @@ $form=$this->createForm(EventType::class,$event);
                         $entityManager->flush();
                            return $this->redirectToRoute("app_event");
                        }
-                       return $this->renderForm("event/createEvent.html.twig", array("form"=>$form));
+                       return $this->renderForm("event/updateEvent.html.twig", array("form"=>$form));
                    }          
 }
