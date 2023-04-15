@@ -42,6 +42,10 @@
                     <div class="col-lg-8">
                  <div class="contact-form-validated contact-one__form" >
 
+{% if app.session.flashbag.has('success') %}
+   <div class="alert alert-success">{{ app.session.flashbag.get('success')[0] }}</div>
+   {% endif %}
+   
    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
    <div class="row">
        <div class="col-lg-6">
@@ -73,9 +77,7 @@
 
     </div><!-- /.row -->
    {{ form_end(form) }}
-   {% if app.session.flashbag.has('success') %}
-   <div class="alert alert-success">{{ app.session.flashbag.get('success')[0] }}</div>
-   {% endif %}
+   
 
       </div><!-- /.col-lg-8 -->
                    

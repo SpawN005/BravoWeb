@@ -20,6 +20,12 @@
             {% endblock %}
 
 {% block body %}
+{% if app.session.flashbag.has('satisfaction') %}
+    <div class="alert alert-info">{{ app.session.flashbag.get('satisfaction')[0] }}</div>
+{% endif %}
+{% if app.session.flashbag.has('note') %}
+    <div class="alert alert-info">{{ app.session.flashbag.get('note')[0] }}</div>
+{% endif %}
 
     <h1>list of complaints</h1>
 

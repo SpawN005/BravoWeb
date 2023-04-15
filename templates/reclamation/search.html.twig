@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="event-details__top">
 
-    {{ form(searchReclamationBytitle) }}
+        {{ form(searchReclamationBytitle) }}
 
 
     {% if Reclamations|length > 0 %}
@@ -54,13 +54,14 @@
             </tbody>
         </table>
     {% elseif Reclamations|length == 0 %}
-        <p>Desolé aucune réclamation trouvée pour ce titre .</p>
+        <p>Désolé aucune réclamation trouvée pour cette recherche.</p>
     {% endif %}
     <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
             <div class="container text-center">
-                <h3>We are at your disposal</h3>
-                <p>do not hesitate to claim again if necessary <br> thank you for your engagement.</p>
+                <h3>Nous sommes à votre disposition</h3>
+                <p>N'hésitez pas à contacter de nouveau si nécessaire <br> merci pour votre engagement.</p>
                 <div class="cta-one__btn-block">
+
                     <a href="{{ path('app_addR') }}" class="thm-btn cta-one__btn-one">Create new</a><!-- /.thm-btn cta-one__btn-one -->
                     <a href="{{ path('reclamation_user') }}" class="thm-btn cta-one__btn-two">back to list</a><!-- /.thm-btn cta-one__btn-two -->
 

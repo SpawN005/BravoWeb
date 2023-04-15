@@ -2,6 +2,7 @@
 
 
 {% block body %}
+
 {#{% block title %}<h1>My Complaints</h1>{% endblock %}#}
    <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
             <div class="container">
@@ -11,10 +12,12 @@
 <section class="event-details">
             <div class="container">
                 <div class="event-details__top">
-        
+
                  
     <table class="table">
-           
+           {% if app.session.flashbag.has('success') %}
+   <div class="alert alert-success">{{ app.session.flashbag.get('success')[0] }}</div>
+   {% endif %}
      
         <thead>
             <tr>

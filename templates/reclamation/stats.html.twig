@@ -1,8 +1,30 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Statistiques{% endblock %}
+
 {% block body %}
-    <div class="container">
-        <h1>Statistiques des réclamations</h1>
-        {{ cmen_google_charts(piechart) }}
-    </div>
+<h1>Statistiques</h1>
+
+<div id="piechart"></div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+      var data = google.visualization.arrayToDataTable({{ pieChart.data|raw }});
+
+      var options = {{ pieChart.options|raw }};
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+      chart.draw(data, options);
+    }
+</script>
 {% endblock %}

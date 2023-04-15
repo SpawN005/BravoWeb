@@ -65,14 +65,36 @@ class ReclamationRepository extends ServiceEntityRepository
 //        ;
 //   
 
-public function findByTitle($title)
+public function findByTitleAndStateAndCreationDate($title, $etat, $dateCreation)
 {
-    return $this->createQueryBuilder('r')
+    $qb = $this->createQueryBuilder('r')
         ->where('r.title LIKE :title')
-        ->setParameter('title', '%'.$title.'%')
-        ->getQuery()
+        ->setParameter('title', '%'.$title.'%');
+    
+    if ($etat) {
+        $qb->andWhere('r.etat = :etat')
+            ->setParameter('etat', $etat);
+    }
+    
+    if ($dateCreation) {
+        $qb->andWhere('r.dateCreation = :dateCreation')
+        ->setParameter('dateCreation', $dateCreation);
+    }
+    
+    return $qb->getQuery()
         ->getResult();
 }
+
+public function countByEtat()
+{
+    $qb = $this->createQueryBuilder('r')
+        ->select('r.etat, COUNT(r.id) as total')
+        ->groupBy('r.etat');
+
+    return $qb->getQuery()->getResult();
+}
+
+
 
 
 

@@ -17,10 +17,17 @@ use App\Form\SearchReclamationFormType;
 use App\Form\AvisReclamationFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 use Dompdf\DompdfBundle\DompdfBundle;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Chart;
+use CMEN\GoogleChartsBundle\GoogleCharts\EventType;
+use CMEN\GoogleChartsBundle\GoogleCharts\Options\ChartOptionsInterface;
+use CMEN\GoogleChartsBundle\GoogleCharts\Options\PieChart\PieChartOptions;
+
 
 
 
@@ -134,28 +141,41 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
      #[Route('/searchReclamationBytitle', name: 'searchReclamationBytitle')]  
      public function searchReclamation(Request $request, ReclamationRepository $reclamationRepository)
      {
-         $title = null; 
-         $reclamations = []; // Définir une valeur par défaut  s'il n'y a pas de résultat de recherche
+         $title = null;
+         $etat = null;
+         $date = null;
+         $reclamations = []; // Définir une valeur par défaut s'il n'y a pas de résultat de recherche
          $searchForm = $this->createForm(SearchReclamationFormType::class);
          $searchForm->handleRequest($request);
          if ($searchForm->isSubmitted() && $searchForm->isValid()) {
              $title = $searchForm->get('title')->getData();
-             if ($title !== null) {
-                 $resultOfSearch = $reclamationRepository->findByTitle($title);
-                 return $this->renderForm('reclamation/search.html.twig', [
-                     'Reclamations'=>$resultOfSearch,
-                     'searchReclamationBytitle' => $searchForm,
-                 ]);
-             }
+             $etat = $searchForm->get('etat')->getData();
+             $date = $searchForm->get('dateCreation')->getData();
+     
+             // Appeler la méthode de recherche avec les paramètres
+             $resultOfSearch = $reclamationRepository->findByTitleAndStateAndCreationDate($title, $etat, $date);
+     
+             return $this->renderForm('reclamation/search.html.twig', [
+                 'Reclamations' => $resultOfSearch,
+                 'searchReclamationBytitle' => $searchForm,
+             ]);
          }
      
+         // Afficher toutes les réclamations si aucun paramètre n'a été saisi
          $reclamations = $reclamationRepository->findAll();
+     
          return $this->renderForm('reclamation/search.html.twig', [
              'Reclamations' => $reclamations,
              'searchReclamationBytitle' => $searchForm,
              'title' => $title,
+             'etat' => $etat,
+             'date' => $date
          ]);
      }
+     
+     
+     
+           
      //affichege des reclamations coté user (ses propres reclam)
      #[Route('/UserReclamation', name: 'reclamation_user')]  
      public function userReclamations(ReclamationRepository $r){
@@ -172,38 +192,55 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
 
 
      #[Route('/avisReclamation/{id}', name: 'reclamation_avis')]  
-     public function avis($id, Request $request, ReclamationRepository $rep, EntityManagerInterface $entityManager)
-     {
-         $reclamation = $rep->find($id);
-         // $reclamation = $rep->findOneBy(['ownerid' => 155]);
-     
-         $form = $this->createForm(AvisReclamationFormType::class);
-         $form->handleRequest($request);
-     
-         if ($form->isSubmitted() && $form->isValid()) {
-             $avis = $form->getData();
-             
-             // Mettre à jour l'état de la réclamation
-             $etat = $avis['satisfait'] ? 'treated' : 'processing';
-             $entityManager->createQuery('UPDATE App\Entity\Reclamation r SET r.etat = :etat WHERE r.id = :id')
-                           ->setParameter('etat', $etat)
-                           ->setParameter('id', $id)
-                           ->execute();
-            // mettre a jour la note 
-            $note = $avis['Note'];
-            $entityManager->createQuery('UPDATE App\Entity\Reclamation r SET r.note = :note WHERE r.id = :id')
-                          ->setParameter('note', $note)
-                          ->setParameter('id', $id)
-                          ->execute();
+public function avis($id, Request $request, ReclamationRepository $rep, EntityManagerInterface $entityManager, SessionInterface $session)
+{
+    $reclamation = $rep->find($id);
+    // $reclamation = $rep->findOneBy(['ownerid' => 155]);
 
-             return $this->redirectToRoute('reclamation_user');
-         }
-     
-         return $this->render('reclamation/avis.html.twig', [
-             'reclamation' => $reclamation,
-             'form' => $form->createView(),
-         ]);
-     }
+    $form = $this->createForm(AvisReclamationFormType::class);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $avis = $form->getData();
+
+        // Mettre à jour l'état de la réclamation
+        $etat = $avis['satisfait'] ? 'treated' : 'processing';
+        $entityManager->createQuery('UPDATE App\Entity\Reclamation r SET r.etat = :etat WHERE r.id = :id')
+                      ->setParameter('etat', $etat)
+                      ->setParameter('id', $id)
+                      ->execute();
+
+        // mettre a jour la note 
+        $note = $avis['Note'];
+        $entityManager->createQuery('UPDATE App\Entity\Reclamation r SET r.note = :note WHERE r.id = :id')
+                      ->setParameter('note', $note)
+                      ->setParameter('id', $id)
+                      ->execute();
+
+        // Message flash pour indiquer que la mise à jour a été effectuée avec succès
+        $message = 'Votre avis a été enregistré avec succès.';
+        $session->getFlashBag()->add('success', $message);
+
+        // Message flash pour indiquer si le user est satisfait ou non satisfait
+        $satisfaction = $avis['satisfait'] ? 'satisfait' : 'non satisfait';
+        $message = 'Le user est ' . $satisfaction . " Pour la reclamation ayant id ".$reclamation->getId().'.';
+        $session->getFlashBag()->add('satisfaction', $message);
+
+        // Message flash pour indiquer si le user a donné une note
+        if ($note) {
+            $message = 'Le user a donné une note de ' . $note ." Pour la reclamation ayant id ".$reclamation->getId().'.';
+            $session->getFlashBag()->add('note', $message);
+        }
+
+        return $this->redirectToRoute('reclamation_user');
+    }
+
+    return $this->render('reclamation/avis.html.twig', [
+        'reclamation' => $reclamation,
+        'form' => $form->createView(),
+    ]);
+}
+
 
      #[Route('/traiterReclamation/{id}', name: 'reclamation_traiter')]
     // #[IsGranted(Role_Admin)] 
@@ -250,40 +287,31 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
      //generer des stats selon etat piechart
 
      #[Route('/genererstats', name: 'genererstats')]
-
-public function reclamationStats(ReclamationRepository $reclamationRepository)
+public function stats(ReclamationRepository $r): Response
 {
-    $reclamations = $reclamationRepository->findAll();
+    $reclamations=$r->findAll();
 
-    $treated = 0;
-    $processing = 0;
-    $onHold = 0;
-
-    foreach ($reclamations as $reclamation) {
-        if ($reclamation->getEtat() === 'Treated') {
-            $treated++;
-        } elseif ($reclamation->getEtat() === 'Processing') {
-            $processing++;
-        } elseif ($reclamation->getEtat() === 'On hold') {
-            $onHold++;
-        }
-    }
+    $reclamationsByEtat = $r->countByEtat();
 
     $pieChart = new PieChart();
-    $pieChart->getData()->setArrayToDataTable([
-        ['Etat', 'Nombre de réclamations'],
-        ['Treated', $treated],
-        ['Processing', $processing],
-        ['On hold', $onHold]
-    ]);
-    $pieChart->getOptions()->setTitle('Statistiques des réclamations');
-    $pieChart->getOptions()->setHeight(400);
-    $pieChart->getOptions()->setWidth(600);
+    $pieChartData = [['Etat', 'Nombre de réclamations']];
+    foreach ($reclamationsByEtat as $etatData) {
+        $pieChartData[] = [$etatData['etat'], $etatData['total']];
+    }
+
+    $pieChart->getData()->setArrayToDataTable($pieChartData);
+    $pieChart->getOptions()->setTitle('Réclamations par état');
 
     return $this->render('reclamation/stats.html.twig', [
-        'piechart' => $pieChart
-    ]);
+            'reclamations' => $reclamations,'piechart' => $pieChart
+        ]);
 }
+
+
+
+
+     
+     
 
      
 
