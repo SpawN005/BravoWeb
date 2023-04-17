@@ -161,7 +161,7 @@
 <div class="col-md-6">
 <div class="form-group">
     <label for="account-phone">Phone Number</label>
-    {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'name': 'phone'}}) }}
+    {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'id': 'form-phone'}}) }}
     {% if form.vars.submitted and not form.vars.valid %}
         <div style="color: red;">
             {{ form_errors(form.phone) }}    
@@ -363,9 +363,113 @@ a.list-group-item, .list-group-item-action {
     max-width: 200px;
     max-height: 200px;
 }
+.custom-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: custom-alert-anim 0.3s ease forwards;
+}
+
+.custom-alert-message {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.custom-alert-input input {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.custom-alert-button button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.custom-alert-button button:hover {
+  background-color: #0062cc;
+}
+
+@keyframes custom-alert-anim {
+  from {
+    transform: translate(-50%, -150%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+.alert {
+    animation-name: slide-up;
+    animation-duration: 0.5s;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+
 
 
 </style>
+
+
+
+<script>
+function CustomAlert(){
+  this.alert = function(message,title){
+    document.body.innerHTML = document.body.innerHTML + '<div id="dialogoverlay"></div><div id="dialogbox" class="slit-in-vertical"><div><div id="dialogboxhead"></div><div id="dialogboxbody"></div><div id="dialogboxfoot"></div></div></div>';
+
+    let dialogoverlay = document.getElementById('dialogoverlay');
+    let dialogbox = document.getElementById('dialogbox');
+    
+    let winH = window.innerHeight;
+    dialogoverlay.style.height = winH+"px";
+    
+    dialogbox.style.top = "100px";
+
+    dialogoverlay.style.display = "block";
+    dialogbox.style.display = "block";
+    
+    document.getElementById('dialogboxhead').style.display = 'block';
+
+    if(typeof title === 'undefined') {
+      document.getElementById('dialogboxhead').style.display = 'none';
+    } else {
+      document.getElementById('dialogboxhead').innerHTML = '<i class="fa fa-exclamation-circle" aria-hidden="true"></i> '+ title;
+    }
+    document.getElementById('dialogboxbody').innerHTML = message;
+    document.getElementById('dialogboxfoot').innerHTML = '<button class="pure-material-button-contained active" onclick="customAlert.ok()">OK</button>';
+  }
+  
+  this.ok = function(){
+    document.getElementById('dialogbox').style.display = "none";
+    document.getElementById('dialogoverlay').style.display = "none";
+  }
+}
+
+let customAlert = new CustomAlert();
+
+</script>
 <!-- Video and picture-taking functionality -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -416,25 +520,60 @@ a.list-group-item, .list-group-item-action {
   });
 </script>
 
-<!-- Phone number verification functionality -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+$(document).ready(function() {
+
+  
+    $('#verify-phone-btn').click(function() {
+        sendVerificationCode();
+    });
+});
+
 function sendVerificationCode() {
-      console.log('sendVerificationCode function called!');
-
-    var phoneNumber = $("#phone").val();
+    console.log('sendVerificationCode function called!');
+    var phoneNumber = '+21656918803' 
     console.log("Phone number: " + phoneNumber);
-
+    
     // Perform validation on the phone number here, if necessary
     // ...
-
+    
     // Make AJAX call to server to send verification code to phone number
     $.ajax({
-        url: "/send_verification_code",
+        url: "/client/profile/modifier/{id}/sendVerificationCode",
         type: "POST",
-        data: { phone_number: phoneNumber },
+        data: { phone: phoneNumber },
         success: function(response) {
             // Handle success response from server
             console.log(response);
+            
+            // Display flash message and prompt user for verification code
+            var flashMessage = 'Verification code sent to ' + phoneNumber + '. Please enter the code below:';
+            var verificationCode = prompt(flashMessage);
+            
+            // Make AJAX call to server to verify the code
+            $.ajax({
+                url: "/client/profile/modifier/{id}/verifyCode",
+                type: "POST",
+                data: { code: verificationCode },
+                success: function(response) {
+                    // Handle success response from server
+                    console.log(response);
+                    if (response.success) {
+                        alert('Your phone has been verified successfully!');
+                        $('#verify-phone-btn').hide(); // Hide the verify phone number element
+                    } else {
+                    alert('Please make sure you typed the right code.');
+
+                    }
+                },
+
+                error: function(xhr) {
+                    // Handle error response from server
+                    console.log(xhr.responseText);
+                    alert('Please make sure you typed the right code.');
+                }
+            });
         },
         error: function(xhr) {
             // Handle error response from server
@@ -442,7 +581,9 @@ function sendVerificationCode() {
         }
     });
 }
-
 </script>
+
+
+
 
 {% endblock %}

@@ -48,7 +48,7 @@
                  <a class="nav-link active"  href="{{path('adminProfile')}}">Edit Profile</a>
                 </li>
 
-         
+
 
                 <li class="nav-item" >
                 {# <a href="{{path('changePass')}}">aaaaaa</a> #}
@@ -101,7 +101,8 @@
 
                 </div>
 
-                <div class="tab-pane fade profile-edit pt-3 active show" id="profile-edit">
+
+                      <div class="tab-pane fade profile-edit pt-3 active show" id="profile-edit">
 
                   <!-- Profile Edit Form -->
                   {{form_start(form,{'attr':{'novalidate':'novalidate'}})}}
@@ -114,7 +115,7 @@
                 {{ form_errors(form.firstName) }}
                  {{ form_errors(form.lastName) }}
                  {{ form_errors(form.email) }}
-          
+
                   {{ form_errors(form.phone) }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -127,16 +128,16 @@
                         {% else %}
                         <img src="{{asset('/uploads/images/' ~ app.user.image)}}" alt="Profile"  class="rounded-circle">
                        {% endif %}
-                       
+
                         <div class="pt-2">
                           <a href="#" class="btn btn-primary btn-sm" name="image[image]" title="Upload new profile image">{{form_widget(form.image,{'attr':{'class':'bi bi-upload'}})}}</a>
-                        
+
                         </div>
                       </div>
                     </div>
 
 
-            
+
                     </div>
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
@@ -156,7 +157,7 @@
                         {{form_widget(form.email,{'attr':{'class':'form-control'}})}}
                       </div>
                     </div>
-                  
+
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                       <div class="col-md-8 col-lg-9">
@@ -164,11 +165,11 @@
                       </div>
                     </div>
 
-                  
+
 
                     <div class="text-center">
-                      
-                      
+
+
                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete">Save Changes</button>
 {# <button type="submit" class="btn btn-primary">Save Changes</button> #}
 <!-- Modal -->
@@ -182,7 +183,7 @@
         </button>
       </div>
       <div class="modal-body">
-      Are you sure to Modify your profile ? 
+      Are you sure to Modify your profile ?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

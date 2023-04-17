@@ -1,0 +1,676 @@
+{% extends 'back2.html.twig' %}
+{% block header %}{% endblock %}
+{% block headerUser %}
+
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo d-flex align-items-center">
+                <img src="{{asset('assets/img/.png')}}" alt="">
+                <span class="d-none d-lg-block"></span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+
+        <div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+        </div><!-- End Search Bar -->
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle " href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li><!-- End Search Icon-->
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-bell"></i>
+                        <span class="badge bg-primary badge-number">4</span>
+                    </a><!-- End Notification Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <li class="dropdown-header">
+                            You have 4 new notifications
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item">
+                            <i class="bi bi-exclamation-circle text-warning"></i>
+                            <div>
+                                <h4>Lorem Ipsum</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>30 min. ago</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item">
+                            <i class="bi bi-x-circle text-danger"></i>
+                            <div>
+                                <h4>Atque rerum nesciunt</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>1 hr. ago</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <div>
+                                <h4>Sit rerum fuga</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>2 hrs. ago</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item">
+                            <i class="bi bi-info-circle text-primary"></i>
+                            <div>
+                                <h4>Dicta reprehenderit</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>4 hrs. ago</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="dropdown-footer">
+                            <a href="#">Show all notifications</a>
+                        </li>
+
+                    </ul><!-- End Notification Dropdown Items -->
+
+                </li><!-- End Notification Nav -->
+
+                <li class="nav-item dropdown">
+
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="badge bg-success badge-number">3</span>
+                    </a><!-- End Messages Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                        <li class="dropdown-header">
+                            You have 3 new messages
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>Maria Hudson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>4 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>Anna Nelson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>6 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>David Muldon</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>8 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="dropdown-footer">
+                            <a href="#">Show all messages</a>
+                        </li>
+
+                    </ul><!-- End Messages Dropdown Items -->
+
+                </li><!-- End Messages Nav -->
+
+                <li class="nav-item dropdown pe-3">
+
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        {% if app.user.image == null %}
+
+                            <img src="{{ asset('/uploads/images/user.jpg') }}" alt="Profile" class="rounded-circle">
+                        {% else %}
+                            <img src="{{ asset('/uploads/images/' ~ app.user.image) }}" alt="Profile" class="rounded-circle">
+                        {% endif %}
+
+                        <span class="d-none d-md-block dropdown-toggle ps-2">{{app.user.firstName}}</span>
+                    </a><!-- End Profile Iamge Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>{{app.user.firstName}} {{app.user.lastName}}</h6>
+                            <span>Web Designer</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{path('adminProfile')}}">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                <i class="bi bi-gear"></i>
+                                <span>Account Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                                <i class="bi bi-question-circle"></i>
+                                <span>Need Help?</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{path('app_logout')}}">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </li>
+
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+
+            </ul>
+        </nav><!-- End Icons Navigation -->
+
+    </header><!-- End Header -->
+
+
+{% endblock %}
+{% block main %}
+{% endblock %}
+
+{% block body %}
+
+    <section class="section">
+
+        <div class="row">
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Recent Salse</h6>
+                        <a href="">Show All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                            <tr>
+                                <th scope="col" data-sortable="" style="width: 7.37101%;">
+                                    <a href="#" class="dataTable-sorter">#</a>
+                                </th>
+                                <th scope="col" data-sortable="" style="width: 12.285%;">
+                                    <a href="#" class="dataTable-sorter">Image</a>
+                                </th>
+                                <th scope="col" data-sortable="" style="width:12.285%;">
+                                    <a href="#" class="dataTable-sorter">First Name</a>
+                                </th>
+                                <th scope="col" data-sortable="" style="width: 12.285%;">
+                                    <a href="#" class="dataTable-sorter">Last Name </a>
+                                </th>
+                                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                    <a href="#" class="dataTable-sorter">Phone Number</a>
+                                </th>
+                                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                    <a href="#" class="dataTable-sorter">Email</a>
+                                </th>
+
+                                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                    <a href="#" class="dataTable-sorter">Actions</a>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            {% for u in userClient %}
+                            <tr >
+                                <th scope="row">{{u.id}}</th>
+                                <td>
+
+                                    {% if u.image == null %}
+
+                                        <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                                    {% else %}
+
+                                        <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                                    {% endif %}
+
+
+
+                                </td>
+                                <td>{{u.firstName}}</td>
+                                <td>{{u.lastName}}</td>
+                                <td>{{u.phone}}</td>
+                                <td>{{u.email}}</td>
+
+                                <td>
+
+                                    <a type="button" class="btn btn-danger" href="{{ path('deleteUser', { 'id': u.getId()  }) }}">Delete</a>
+
+                                    {# <a type="button" class="btn btn-danger" data-target="#deleaate" data-toggle="modal">Delete</a> #}
+                                    {# <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleaate" >Delete</a> #}
+                                    {#
+                                    <div class="modal fade" id="deleaate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Delete Admin</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                          Are you sure to delete this Admin ?
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <a type="button" class="btn btn-danger" href="{{ path('DeleteAdmin', { 'id': u.getId()  }) }}">Delete</a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div> #}
+
+
+                                </td>
+                                {% endfor %}
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ADD ADMIN</button>
+                                {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+            <div class="col-lg-12">
+
+                <div class="card">
+
+                    <br><br><br><br><br><br>
+                    <div class="card-body">
+
+                        <h5 class="card-title">Users Table</h5>
+
+
+                        <!-- Table with stripped rows -->
+                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+
+                            <div class="dataTable-top">
+                                <div class="dataTable-dropdown">
+                                    <label>
+                                        <select class="dataTable-selector">
+                                            <option value="5">5</option>
+                                            <option value="10" selected="">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                        </select>entries per page
+                                    </label>
+                                </div>
+                                <div class="dataTable-search">
+                                    <input class="dataTable-input" placeholder="Search..." type="text" />
+                                </div>
+                            </div>
+                            <div class="dataTable-container">
+                                <table class="table datatable dataTable-table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" data-sortable="" style="width: 7.37101%;">
+                                            <a href="#" class="dataTable-sorter">#</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 12.285%;">
+                                            <a href="#" class="dataTable-sorter">Image</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width:12.285%;">
+                                            <a href="#" class="dataTable-sorter">First Name</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 12.285%;">
+                                            <a href="#" class="dataTable-sorter">Last Name </a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                            <a href="#" class="dataTable-sorter">Phone Number</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                            <a href="#" class="dataTable-sorter">Email</a>
+                                        </th>
+
+                                        <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                            <a href="#" class="dataTable-sorter">Actions</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody >
+                                    {% for u in userClient %}
+                                    <tr >
+                                        <th scope="row">{{u.id}}</th>
+                                        <td>
+
+                                            {% if u.image == null %}
+
+                                                <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                                            {% else %}
+
+                                                <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                                            {% endif %}
+
+
+
+                                        </td>
+                                        <td>{{u.firstName}}</td>
+                                        <td>{{u.lastName}}</td>
+                                        <td>{{u.phone}}</td>
+                                        <td>{{u.email}}</td>
+
+                                        <td>
+
+                                            <a type="button" class="btn btn-danger" href="{{ path('deleteUser', { 'id': u.getId()  }) }}">Delete</a>
+
+                                            {# <a type="button" class="btn btn-danger" data-target="#deleaate" data-toggle="modal">Delete</a> #}
+                                            {# <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleaate" >Delete</a> #}
+                                            {#
+                                            <div class="modal fade" id="deleaate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                              <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Admin</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                  Are you sure to delete this Admin ?
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <a type="button" class="btn btn-danger" href="{{ path('DeleteAdmin', { 'id': u.getId()  }) }}">Delete</a>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div> #}
+
+
+                                        </td>
+                                        {% endfor %}
+
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ADD ADMIN</button>
+                                        {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
+
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="dataTable-bottom">
+
+                                <div class="dataTable-info">Showing 1 to 5 of 5 entries</div>
+                                <nav class="dataTable-pagination">
+                                    <ul class="dataTable-pagination-list"></ul>
+                                </nav>
+
+                            </div>
+                        </div>
+                        <!-- End Table with stripped rows -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Admin </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{form_start(form,{'attr':{'novalidate':'novalidate'}})}}
+                    {% if   form.vars.submitted and not form.vars.valid %}
+
+                        <div class="alert alert-danger alert-dismissible fade show"  role="alert">
+                            <i class="bi bi-exclamation-octagon me-1"></i>
+                            {{ form_errors(form.firstName) }}
+                            {{ form_errors(form.lastName) }}
+                            {{ form_errors(form.email) }}
+                            {{ form_errors(form.password.first) }}
+                            {{ form_errors(form.password.second) }}
+                            {{ form_errors(form.phone) }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">First Name :</label>
+                        {{form_widget(form.firstName,{'attr':{'class':'form-control'}})}}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Last Name :</label>
+                        {{form_widget(form.lastName,{'attr':{'class':'form-control'}})}}
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">email:</label>
+                        {{form_widget(form.email,{'attr':{'class':'form-control'}})}}
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">phone:</label>
+                        {{form_widget(form.phone,{'attr':{'class':'form-control'}})}}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">password:</label>
+                        {{form_widget(form.password.first,{'attr':{'class':'form-control'}})}}
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">confirm password:</label>
+                        {{form_widget(form.password.second,{'attr':{'class':'form-control'}})}}
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">ADD</button>
+                </div>
+                {{form_end(form)}}
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('Add Admin ' )
+            modal.find('.modal-body input')
+        })
+    </script>
+    <section class="section" style="padding-left:300px">
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+
+                    <br><br><br><br><br><br>
+                    <div class="card-body">
+
+                        <h5 class="card-title">Admins Table</h5>
+
+
+                        <!-- Table with stripped rows -->
+                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+
+                            <div class="dataTable-top">
+                                <div class="dataTable-dropdown">
+                                    <label>
+                                        <select class="dataTable-selector">
+                                            <option value="5">5</option>
+                                            <option value="10" selected="">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                        </select>entries per page
+                                    </label>
+                                </div>
+                                <div class="dataTable-search">
+                                    <input class="dataTable-input" placeholder="Search..." type="text" />
+                                </div>
+                            </div>
+                            <div class="dataTable-container">
+                                <table class="table datatable dataTable-table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" data-sortable="" style="width: 7.37101%;">
+                                            <a href="#" class="dataTable-sorter">#</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 12.285%;">
+                                            <a href="#" class="dataTable-sorter">Image</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width:12.285%;">
+                                            <a href="#" class="dataTable-sorter">First name</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 12.285%;">
+                                            <a href="#" class="dataTable-sorter">Last name </a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                            <a href="#" class="dataTable-sorter">Phone</a>
+                                        </th>
+                                        <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                            <a href="#" class="dataTable-sorter">Email</a>
+                                        </th>
+
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody >
+                                    {% for u in user %}
+                                    <tr >
+                                        <th scope="row">{{u.id}}</th>
+                                        <td>
+
+                                            {% if u.image == null %}
+
+                                                <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                                            {% else %}
+
+                                                <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                                            {% endif %}
+
+
+
+                                        </td>
+                                        <td>{{u.firstName}}</td>
+                                        <td>{{u.lastName}}</td>
+                                        <td>{{u.phone}}</td>
+                                        <td>{{u.email}}</td>
+                                        <td>
+
+                                            {% if u.banned == 0 %}
+
+                                                <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
+                                            {% else %}
+                                                <span class="badge d-block bg-red bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">  BANNED </span>
+                                            {% endif %}
+
+                                        </td>
+                                        <td>
+
+                                            {# <a class="btn btn-danger" href="{{ path('Update', { id: C.getIdCat()  }) }}" >Delete</a> #}
+                                        </td>
+
+                                        {% endfor %}
+                                        {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
+
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="dataTable-bottom">
+
+                                <div class="dataTable-info">Showing 1 to 5 of 5 entries</div>
+                                <nav class="dataTable-pagination">
+                                    <ul class="dataTable-pagination-list"></ul>
+                                </nav>
+
+                            </div>
+                        </div>
+                        <!-- End Table with stripped rows -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

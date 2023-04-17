@@ -22,10 +22,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use libphonenumber\PhoneNumberUtil;
-use libphonenumber\PhoneNumberFormat;
-use libphonenumber\NumberParseException;
 use Twilio\Rest\Client;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+
+
 
 
 
@@ -67,7 +68,7 @@ class ClientController extends AbstractController
 
     
 
-#[Route('/client/profile/modifier', name: 'clientProfile',methods: ['GET', 'POST'])]
+    #[Route('/client/profile/modifier', name: 'clientProfile', methods: ['GET', 'POST'])]
 
 public function userProfile(ManagerRegistry $doctrine, Request $request, UserRepository $repository, SluggerInterface $slugger): response
 {
@@ -143,62 +144,69 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
 
   }
 
-/**
- * @Route("/sendVerificationCode", methods={"POST"})
- */
-public function sendVerificationCode(Request $request)
-{
+  #[Route('/client/profile/modifier/{id}/sendVerificationCode', methods: ['POST'])]
+  public function sendVerificationCode(Request $request)
+  {
+      // Extract the phone number from the form submission
     // Extract the phone number from the form submission
-    $phoneNumber = $request->request->get('phone');
+    $phoneNumber = '+21656918803';
 
-    // Check whether the phone number already contains the country code
-    $phoneUtil = PhoneNumberUtil::getInstance();
-    try {
-        $numberProto = $phoneUtil->parse($phoneNumber, 'TN');
-        if (!$phoneUtil->isValidNumber($numberProto)) {
-            throw new NumberParseException(
-                NumberParseException::NOT_A_NUMBER,
-                'Invalid phone number'
-            );
-        }
-        if ($phoneUtil->getRegionCodeForNumber($numberProto) == 'TN') {
-            $phoneNumber = $phoneUtil->format($numberProto, PhoneNumberFormat::E164);
-        } else {
-            throw new NumberParseException(
-                NumberParseException::INVALID_COUNTRY_CODE,
-                'Invalid country code'
-            );
-        }
-    } catch (NumberParseException $e) {
-        // Handle the exception if the phone number is not valid
-        return new JsonResponse(['success' => false, 'message' => $e->getMessage()]);
-    }
+      // Check whether the phone number already contains the country code
+      if (!preg_match('/^\+216\d{8}$/', $phoneNumber)) {
+          return new JsonResponse(['success' => false, 'message' => 'Invalid phone number']);
+      }
+  
+      // Generate a random verification code
+      $verificationCode = rand(1000, 9999);
+  
+      // Store the verification code in the user's session
+      $session = $request->getSession();
+      $session->set('verification_code', $verificationCode);
+  
+      // Send the verification code via Twilio
+      $sid = 'AC722e32116c6083cff1c7e8898c7a1dd5';
+      $token = '7a9334e17663891b9f651c3fdcbef544';
+      $client = new Client($sid, $token);
+  
+      $message = $client->messages->create(
+          $phoneNumber, // the phone number to send the verification code to
+          array(
+              'from' => '+15076088911', // your Twilio phone number
+              'body' => 'Your TunART verification code is: ' . $verificationCode
+          )
+      );
+  
+      // Return a JSON response indicating success
+      return new JsonResponse(['success' => true]);
+  }
 
-    // Generate a random verification code
-    $verificationCode = rand(1000, 9999);
-
-    // Store the verification code in the user's session
+#[Route('/client/profile/modifier/{id}/verifyCode', methods: ['POST'])]
+public function verifyCode(Request $request, EntityManagerInterface $em): JsonResponse
+{
+    // Get the verification code entered by the user
+    $code = $request->request->get('code');
+    
+    // Get the verification code stored in the user's session
     $session = $request->getSession();
-    $session->set('verification_code', $verificationCode);
-
-    // Send the verification code via Twilio
-    $sid = 'AC722e32116c6083cff1c7e8898c7a1dd5';
-    $token = '7a9334e17663891b9f651c3fdcbef544';
-    $client = new Client($sid, $token);
-    dump($phoneNumber);
-
-    $message = $client->messages->create(
-        $phoneNumber, // the phone number to send the verification code to
-        array(
-            'from' => '+15076088911', // your Twilio phone number
-            'body' => 'Your verification code is: ' . $verificationCode
-        )
-    );
-
-    // Return a JSON response indicating success
-    return new JsonResponse(['success' => true]);
+    $verificationCode = $session->get('verification_code');
+    
+    // Compare the two codes to check if they match
+    if ($code == $verificationCode) {
+        $userId = $this->getUser()->getId();
+        $user = $em->getRepository(User::class)->find($userId);
+        $user->setIsVerified(1);
+        $em->flush();
+        $session->set('is_verified', 1);
+        
+        // Return a success response
+        return new JsonResponse(['success' => true]);
+    } else {
+        // If the codes don't match, return an error response
+        return new JsonResponse(['success' => false, 'message' => 'Invalid verification code']);
+    }
 }
 
+  
 
 
   

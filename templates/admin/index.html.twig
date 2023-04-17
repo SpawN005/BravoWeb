@@ -1,4 +1,4 @@
-{% extends 'back.html.twig' %}
+{% extends 'back2.html.twig' %}
 {% block header %}{% endblock %}
 {% block headerUser %}
 
@@ -12,12 +12,6 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -243,146 +237,202 @@
 
 {% block body %}
 
-  <section class="section" style="padding-left:300px">
+  <section class="section">
   
     <div class="row">
-      <div class="col-lg-12">
-      
-        <div class="card">
-        
-          <br><br><br><br><br><br>
-          <div class="card-body">
-          
-            <h5 class="card-title">Users Table</h5>
-         
+      <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Users Table</h6>
+            <a href="">Show All</a>
+          </div>
+          <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+              <thead>
+              <tr>
+                <th scope="col" data-sortable="" style="width: 7.37101%;">
+                  <a href="#" class="dataTable-sorter">#</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 12.285%;">
+                  <a href="#" class="dataTable-sorter">Image</a>
+                </th>
+                <th scope="col" data-sortable="" style="width:12.285%;">
+                  <a href="#" class="dataTable-sorter">First Name</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 12.285%;">
+                  <a href="#" class="dataTable-sorter">Last Name </a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Phone Number</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Email</a>
+                </th>
 
-            <!-- Table with stripped rows -->
-            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-            
-              <div class="dataTable-top">
-                <div class="dataTable-dropdown">
-                  <label>
-                    <select class="dataTable-selector">
-                      <option value="5">5</option>
-                      <option value="10" selected="">10</option>
-                      <option value="15">15</option>
-                      <option value="20">20</option>
-                      <option value="25">25</option>
-                    </select>entries per page
-                  </label>
-                </div>
-                <div class="dataTable-search">
-                  <input class="dataTable-input" placeholder="Search..." type="text" />
-                </div>
-              </div>
-              <div class="dataTable-container">
-                <table class="table datatable dataTable-table">
-                  <thead>
-                    <tr>
-                      <th scope="col" data-sortable="" style="width: 7.37101%;">
-                        <a href="#" class="dataTable-sorter">#</a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width: 12.285%;">
-                        <a href="#" class="dataTable-sorter">Image</a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width:12.285%;">
-                        <a href="#" class="dataTable-sorter">First Name</a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width: 12.285%;">
-                        <a href="#" class="dataTable-sorter">Last Name </a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width: 19.1646%;">
-                        <a href="#" class="dataTable-sorter">Phone Number</a>
-                      </th>
-                       <th scope="col" data-sortable="" style="width: 19.1646%;">
-                        <a href="#" class="dataTable-sorter">Email</a>
-                      </th>
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Actions</a>
+                </th>
+              </tr>
+              </thead>
+              <tbody >
+              {% for u in userClient %}
+              <tr >
+                <th scope="row">{{u.id}}</th>
+                <td>
 
-                      <th scope="col" data-sortable="" style="width: 19.1646%;">
-                        <a href="#" class="dataTable-sorter">Actions</a>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody >
-                  {% for u in userClient %}
-                         <tr >
-                      <th scope="row">{{u.id}}</th>
-                      <td>
-                      
-                     {% if u.image == null %}
-                     
-                      <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
-                      {% else %}
+                  {% if u.image == null %}
 
-                       <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
-                     {% endif %}
-                     
-                      
-                      
-                      </td>
-                      <td>{{u.firstName}}</td>
-                      <td>{{u.lastName}}</td>
-                      <td>{{u.phone}}</td>
-                      <td>{{u.email}}</td>
-                
-                      <td>
+                    <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                  {% else %}
 
-<a type="button" class="btn btn-danger" href="{{ path('deleteUser', { 'id': u.getId()  }) }}">Delete</a>
-
-      {# <a type="button" class="btn btn-danger" data-target="#deleaate" data-toggle="modal">Delete</a> #}
-                       {# <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleaate" >Delete</a> #}
-{# 
-<div class="modal fade" id="deleaate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Admin</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      Are you sure to delete this Admin ? 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-danger" href="{{ path('DeleteAdmin', { 'id': u.getId()  }) }}">Delete</a>
-      </div>
-    </div>
-  </div>
-</div> #}
+                    <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                  {% endif %}
 
 
- </td>                                       
-    {% endfor %}
-                
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ADD ADMIN</button>
-            {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
+
+                </td>
+                <td>{{u.firstName}}</td>
+                <td>{{u.lastName}}</td>
+                <td>{{u.phone}}</td>
+                <td>{{u.email}}</td>
+
+                <td>
+
+                  <a type="button" class="btn btn-danger" href="{{ path('deleteUser', { 'id': u.getId()  }) }}">Delete</a>
+
+                  {# <a type="button" class="btn btn-danger" data-target="#deleaate" data-toggle="modal">Delete</a> #}
+                  {# <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleaate" >Delete</a> #}
+                  {#
+                  <div class="modal fade" id="deleaate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Delete Admin</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                        Are you sure to delete this Admin ?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <a type="button" class="btn btn-danger" href="{{ path('DeleteAdmin', { 'id': u.getId()  }) }}">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div> #}
 
 
-                  </tbody>
-                  
-                </table>
-                
-              </div>
-              
-              <div class="dataTable-bottom">
-              
-                <div class="dataTable-info">Showing 1 to 5 of 5 entries</div>
-                <nav class="dataTable-pagination">
-                  <ul class="dataTable-pagination-list"></ul>
-                </nav>
-                
-              </div>
-            </div>
-            <!-- End Table with stripped rows -->
+                </td>
+                {% endfor %}
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ADD ADMIN</button>
+                {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
+
+
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+      <!-- Recent Sales End -->
+
     </div>
   </section>
 
+  <div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h6 class="mb-0">ADMINs Table</h6>
+        <a href="">Show All</a>
+      </div>
+      <div class="table-responsive">
+        <div class="dataTable-container">
+          <table class="table datatable dataTable-table">
+            <thead>
+            <tr>
+              <th scope="col" data-sortable="" style="width: 7.37101%;">
+                <a href="#" class="dataTable-sorter">#</a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 12.285%;">
+                <a href="#" class="dataTable-sorter">Image</a>
+              </th>
+              <th scope="col" data-sortable="" style="width:12.285%;">
+                <a href="#" class="dataTable-sorter">First name</a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 12.285%;">
+                <a href="#" class="dataTable-sorter">Last name </a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 19.1646%;">
+                <a href="#" class="dataTable-sorter">Phone</a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 19.1646%;">
+                <a href="#" class="dataTable-sorter">Email</a>
+              </th>
 
+              </th>
+
+            </tr>
+            </thead>
+            <tbody >
+            {% for u in user %}
+            <tr >
+              <th scope="row">{{u.id}}</th>
+              <td>
+
+                {% if u.image == null %}
+
+                  <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                {% else %}
+
+                  <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                {% endif %}
+
+
+
+              </td>
+              <td>{{u.firstName}}</td>
+              <td>{{u.lastName}}</td>
+              <td>{{u.phone}}</td>
+              <td>{{u.email}}</td>
+              <td>
+
+                {% if u.banned == 0 %}
+
+                  <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
+                {% else %}
+                  <span class="badge d-block bg-red bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">  BANNED </span>
+                {% endif %}
+
+              </td>
+              <td>
+
+                {# <a class="btn btn-danger" href="{{ path('Update', { id: C.getIdCat()  }) }}" >Delete</a> #}
+              </td>
+
+              {% endfor %}
+              {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
+
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="dataTable-bottom">
+
+          <div class="dataTable-info">Showing 1 to 5 of 5 entries</div>
+          <nav class="dataTable-pagination">
+            <ul class="dataTable-pagination-list"></ul>
+          </nav>
+
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -412,7 +462,7 @@
             <label for="recipient-name" class="col-form-label">First Name :</label>
            {{form_widget(form.firstName,{'attr':{'class':'form-control'}})}}
           </div>
-         
+
           <div class="form-group">
             <label for="message-text" class="col-form-label">Last Name :</label>
            {{form_widget(form.lastName,{'attr':{'class':'form-control'}})}}
@@ -425,7 +475,7 @@
             <label for="message-text" class="col-form-label">phone:</label>
            {{form_widget(form.phone,{'attr':{'class':'form-control'}})}}
           </div>
-          
+
           <div class="form-group">
             <label for="message-text" class="col-form-label">password:</label>
            {{form_widget(form.password.first,{'attr':{'class':'form-control'}})}}
@@ -434,7 +484,7 @@
             <label for="message-text" class="col-form-label">confirm password:</label>
            {{form_widget(form.password.second,{'attr':{'class':'form-control'}})}}
           </div>
-        
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -455,125 +505,6 @@ $('#exampleModal').on('show.bs.modal', function (event) {
   modal.find('.modal-body input')
 })
 </script>
-   <section class="section" style="padding-left:300px">
-  
-    <div class="row">
-      <div class="col-lg-12">
-      
-        <div class="card">
-        
-          <br><br><br><br><br><br>
-          <div class="card-body">
-          
-            <h5 class="card-title">Admins Table</h5>
-         
 
-            <!-- Table with stripped rows -->
-            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
-            
-              <div class="dataTable-top">
-                <div class="dataTable-dropdown">
-                  <label>
-                    <select class="dataTable-selector">
-                      <option value="5">5</option>
-                      <option value="10" selected="">10</option>
-                      <option value="15">15</option>
-                      <option value="20">20</option>
-                      <option value="25">25</option>
-                    </select>entries per page
-                  </label>
-                </div>
-                <div class="dataTable-search">
-                  <input class="dataTable-input" placeholder="Search..." type="text" />
-                </div>
-              </div>
-              <div class="dataTable-container">
-                <table class="table datatable dataTable-table">
-                  <thead>
-                    <tr>
-                      <th scope="col" data-sortable="" style="width: 7.37101%;">
-                        <a href="#" class="dataTable-sorter">#</a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width: 12.285%;">
-                        <a href="#" class="dataTable-sorter">Image</a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width:12.285%;">
-                        <a href="#" class="dataTable-sorter">First name</a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width: 12.285%;">
-                        <a href="#" class="dataTable-sorter">Last name </a>
-                      </th>
-                      <th scope="col" data-sortable="" style="width: 19.1646%;">
-                        <a href="#" class="dataTable-sorter">Phone</a>
-                      </th>
-                       <th scope="col" data-sortable="" style="width: 19.1646%;">
-                        <a href="#" class="dataTable-sorter">Email</a>
-                      </th>
-                      
-                      </th>
-                      
-                    </tr>
-                  </thead>
-                  <tbody >
-                  {% for u in user %}
-                         <tr >
-                      <th scope="row">{{u.id}}</th>
-                      <td>
-                      
-                     {% if u.image == null %}
-                     
-                      <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
-                      {% else %}
 
-                       <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
-                     {% endif %}
-                     
-                      
-                      
-                      </td>
-                      <td>{{u.firstName}}</td>
-                      <td>{{u.lastName}}</td>
-                      <td>{{u.phone}}</td>
-                      <td>{{u.email}}</td>
-                      <td>
-                      
-                      {% if u.banned == 0 %}
-                      
-                       <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
-                         {% else %}
-                        <span class="badge d-block bg-red bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">  BANNED </span>
-                       {% endif %}
-                    
-                      </td>
-                      <td>
-                      
-                      {# <a class="btn btn-danger" href="{{ path('Update', { id: C.getIdCat()  }) }}" >Delete</a> #}
-                      </td>
-                      
-                  {% endfor %}
-            {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
-
-                  
-                  </tbody>
-                  
-                </table>
-                
-              </div>
-              
-              <div class="dataTable-bottom">
-              
-                <div class="dataTable-info">Showing 1 to 5 of 5 entries</div>
-                <nav class="dataTable-pagination">
-                  <ul class="dataTable-pagination-list"></ul>
-                </nav>
-                
-              </div>
-            </div>
-            <!-- End Table with stripped rows -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
 {% endblock %}
