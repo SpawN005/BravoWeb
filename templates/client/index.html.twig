@@ -159,16 +159,18 @@
 </div>
 </div>
 <div class="col-md-6">
-<div class="form-group">
+  <div class="form-group">
     <label for="account-phone">Phone Number</label>
-    {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'name': 'phone'}}) }}
+    {{ form_widget(form.phone, {'attr': {'class': 'form-control', 'name': 'phone', 'id': 'account-phone'}}) }}
     {% if form.vars.submitted and not form.vars.valid %}
-        <div style="color: red;">
-            {{ form_errors(form.phone) }}    
-        </div>
+      <div style="color: red;">
+        {{ form_errors(form.phone) }}    
+      </div>
     {% endif %}
     <button type="button" id="verify-phone-btn">Verify Phone Number</button>
+  </div>
 </div>
+
 
 
 <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -417,32 +419,41 @@ a.list-group-item, .list-group-item-action {
 </script>
 
 <!-- Phone number verification functionality -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/twilio-client@1.13.0/dist/twilio.min.js"></script>
 <script>
-function sendVerificationCode() {
-      console.log('sendVerificationCode function called!');
+  function sendVerificationCode(formattedPhoneNumber) {
 
-    var phoneNumber = $("#phone").val();
-    console.log("Phone number: " + phoneNumber);
-
-    // Perform validation on the phone number here, if necessary
-    // ...
-
-    // Make AJAX call to server to send verification code to phone number
-    $.ajax({
-        url: "/send_verification_code",
-        type: "POST",
-        data: { phone_number: phoneNumber },
-        success: function(response) {
-            // Handle success response from server
-            console.log(response);
-        },
-        error: function(xhr) {
-            // Handle error response from server
-            console.log(xhr.responseText);
-        }
+      $(document).ready(function() {
+    $("#verify-phone-btn").click(function() {
+      const phoneNumber = $("#account-phone").val();
+      const formattedPhoneNumber = '+216' + phoneNumber;
+      sendVerificationCode(formattedPhoneNumber);
     });
-}
+  });
+       // Your Twilio account SID and auth token from twilio.com/console
+    const accountSid = 'AC722e32116c6083cff1c7e8898c7a1dd5';
+    const authToken = '7a9334e17663891b9f651c3fdcbef544';
+    const client = Twilio(accountSid, authToken);
 
+    // Generate a random verification code
+    const verificationCode = Math.floor(1000 + Math.random() * 9000);
+
+    // Send the verification code via SMS
+    client.messages.create({
+      body: `Your verification code is: ${verificationCode}`,
+      from: '+15076088911',
+      to: formattedPhoneNumber
+    })
+    .then(function(message) {
+      console.log(message.sid);
+    })
+    .catch(function(error) {
+      console.error(error);
+    });
+  }
 </script>
+
+
 
 {% endblock %}

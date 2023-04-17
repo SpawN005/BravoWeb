@@ -26,6 +26,7 @@ use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
 use Twilio\Rest\Client;
+use App\Security\VerificationService;
 
 
 
@@ -65,10 +66,10 @@ class ClientController extends AbstractController
         }
     }
 
+
     
 
 #[Route('/client/profile/modifier', name: 'clientProfile',methods: ['GET', 'POST'])]
-
 public function userProfile(ManagerRegistry $doctrine, Request $request, UserRepository $repository, SluggerInterface $slugger): response
 {
     $user= $this->getUser();
@@ -120,83 +121,6 @@ public function userProfile(ManagerRegistry $doctrine, Request $request, UserRep
         'errors' => $errors
 
     ]);
-}
-
-
-
- #[Route('/client/profile/modifier/{id}', name: 'deleteProfile')]
-     
-public function DeleteUser(EntityManagerInterface $entityManager,User $user, UserRepository $repository,$id,ManagerRegistry $doctrine,Request $request ){
-
-    $session = $request->getSession();
-
-        $user = $repository->find($id);
-        if (!$user || !$user->getId()) {
-            throw new \Exception("User not found or has no identifier");
-        }
-        $entityManager =$doctrine->getManager();
-        $entityManager->remove($user);
-        $entityManager->flush();
-
-        $session->remove('user_id');
-        return $this->redirectToRoute('registration');
-
-  }
-
-/**
- * @Route("/sendVerificationCode", methods={"POST"})
- */
-public function sendVerificationCode(Request $request)
-{
-    // Extract the phone number from the form submission
-    $phoneNumber = $request->request->get('phone');
-
-    // Check whether the phone number already contains the country code
-    $phoneUtil = PhoneNumberUtil::getInstance();
-    try {
-        $numberProto = $phoneUtil->parse($phoneNumber, 'TN');
-        if (!$phoneUtil->isValidNumber($numberProto)) {
-            throw new NumberParseException(
-                NumberParseException::NOT_A_NUMBER,
-                'Invalid phone number'
-            );
-        }
-        if ($phoneUtil->getRegionCodeForNumber($numberProto) == 'TN') {
-            $phoneNumber = $phoneUtil->format($numberProto, PhoneNumberFormat::E164);
-        } else {
-            throw new NumberParseException(
-                NumberParseException::INVALID_COUNTRY_CODE,
-                'Invalid country code'
-            );
-        }
-    } catch (NumberParseException $e) {
-        // Handle the exception if the phone number is not valid
-        return new JsonResponse(['success' => false, 'message' => $e->getMessage()]);
-    }
-
-    // Generate a random verification code
-    $verificationCode = rand(1000, 9999);
-
-    // Store the verification code in the user's session
-    $session = $request->getSession();
-    $session->set('verification_code', $verificationCode);
-
-    // Send the verification code via Twilio
-    $sid = 'AC722e32116c6083cff1c7e8898c7a1dd5';
-    $token = '7a9334e17663891b9f651c3fdcbef544';
-    $client = new Client($sid, $token);
-    dump($phoneNumber);
-
-    $message = $client->messages->create(
-        $phoneNumber, // the phone number to send the verification code to
-        array(
-            'from' => '+15076088911', // your Twilio phone number
-            'body' => 'Your verification code is: ' . $verificationCode
-        )
-    );
-
-    // Return a JSON response indicating success
-    return new JsonResponse(['success' => true]);
 }
 
 
