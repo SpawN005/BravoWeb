@@ -85,14 +85,14 @@ public function findByTitleAndStateAndCreationDate($title, $etat, $dateCreation)
         ->getResult();
 }
 
-public function countByEtat()
-{
-    $qb = $this->createQueryBuilder('r')
-        ->select('r.etat, COUNT(r.id) as total')
-        ->groupBy('r.etat');
+// public function countByEtat()
+// {
+//     $qb = $this->createQueryBuilder('r')
+//         ->select('r.etat, COUNT(r.id) as total')
+//         ->groupBy('r.etat');
 
-    return $qb->getQuery()->getResult();
-}
+//     return $qb->getQuery()->getResult();
+// }
 
 
 

@@ -27,6 +27,8 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Chart;
 use CMEN\GoogleChartsBundle\GoogleCharts\EventType;
 use CMEN\GoogleChartsBundle\GoogleCharts\Options\ChartOptionsInterface;
 use CMEN\GoogleChartsBundle\GoogleCharts\Options\PieChart\PieChartOptions;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 
@@ -47,7 +49,7 @@ class ReclamationController extends AbstractController
     }
 // affichage des reclamations avec filtrage selon etat cote admin 
     #[Route('/readReclamation/{etat}', name: 'app_readR', methods: ['GET'])]
-public function readReclamation(ReclamationRepository $r, $etat = null,Request $request): Response
+public function readReclamation(ReclamationRepository $r, $etat = null,Request $request,PaginatorInterface $paginator): Response
 {
     $reclamations = [];
     $etat = $request->query->get('etat');
@@ -58,9 +60,15 @@ public function readReclamation(ReclamationRepository $r, $etat = null,Request $
         // Sinon, récupérer toutes les réclamations
         $reclamations = $r->findAll();
     }
+    // Paginer les résultats
+    $pagination = $paginator->paginate(
+        $reclamations,
+        $request->query->getInt('page', 1),
+        10 // nombre de résultats par page
+    );
     
     return $this->render('reclamation/readR.html.twig', [
-        'reclamations' => $reclamations,
+        'reclamations' => $pagination,
     ]);
 }
 
@@ -138,6 +146,8 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
                 return $this->renderForm("reclamation/updateR.html.twig",
                                                     array("form"=>$form));
      } 
+
+     //methode de recherche multicriteres titre +etat+datecreation
      #[Route('/searchReclamationBytitle', name: 'searchReclamationBytitle')]  
      public function searchReclamation(Request $request, ReclamationRepository $reclamationRepository)
      {
@@ -173,24 +183,27 @@ $form=$this->createForm(ReclamationFormType::class,$reclamation);
          ]);
      }
      
-     
-     
            
-     //affichege des reclamations coté user (ses propres reclam)
+     //affichage des reclamations coté user (ses propres reclam)
      #[Route('/UserReclamation', name: 'reclamation_user')]  
-     public function userReclamations(ReclamationRepository $r){
+     public function userReclamations(ReclamationRepository $r,PaginatorInterface $paginator,Request $request){
        // $user = $this->getUser(); // récupérer l'utilisateur connecté
        // $ownerId = $user->getId(); // récupérer l'id de l'utilisateur connecté
        // $reclamations = $userRepository->find($ownerId)->getReclamations(); // récupérer les réclamations de l'utilisateur
         $reclamations = $r->findBy(['ownerid' => 155]);
+        $pagination = $paginator->paginate(
+            $reclamations,
+            $request->query->getInt('page', 1), // numéro de la page
+            10 // nombre d'éléments par page
+        );
 
         return $this->render('reclamation/readUserR.html.twig', [
-            'reclamations' => $reclamations,
+            'reclamations' => $pagination,
         ]);
 
      }
 
-
+     //methode donner avis cote user 
      #[Route('/avisReclamation/{id}', name: 'reclamation_avis')]  
 public function avis($id, Request $request, ReclamationRepository $rep, EntityManagerInterface $entityManager, SessionInterface $session)
 {
@@ -241,7 +254,7 @@ public function avis($id, Request $request, ReclamationRepository $rep, EntityMa
     ]);
 }
 
-
+//methode de traitement de reclam cote admin 
      #[Route('/traiterReclamation/{id}', name: 'reclamation_traiter')]
     // #[IsGranted(Role_Admin)] 
      public function traiter(Request $request, Reclamation $reclamation,UserRepository $rep){
@@ -265,7 +278,7 @@ public function avis($id, Request $request, ReclamationRepository $rep, EntityMa
     return $this->redirectToRoute('app_readR',['etat' => 'on_hold']);
      }
 
-
+//methode de generation de pdf 
      #[Route('/genererPdf', name: 'genererPdf')]
      public function imprime(ReclamationRepository $repository): Response
      {
@@ -284,28 +297,48 @@ public function avis($id, Request $request, ReclamationRepository $rep, EntityMa
          ]);
          return $this->redirectToRoute('app_readR');
      }
-     //generer des stats selon etat piechart
 
-     #[Route('/genererstats', name: 'genererstats')]
-public function stats(ReclamationRepository $r): Response
-{
-    $reclamations=$r->findAll();
+//      //generer des stats selon etat piechart
+#[Route('/genererstats', name: 'genererstats')]
 
-    $reclamationsByEtat = $r->countByEtat();
-
-    $pieChart = new PieChart();
-    $pieChartData = [['Etat', 'Nombre de réclamations']];
-    foreach ($reclamationsByEtat as $etatData) {
-        $pieChartData[] = [$etatData['etat'], $etatData['total']];
+public function stats (Request $request ,ReclamationRepository $reclamationRepository): Response
+    {
+        $rec=$reclamationRepository->findAll();
+        $r1=0;
+        $r2=0;
+        $r3=0;
+        foreach ($rec as $reclamation) {
+            if ($reclamation->getEtat() == 'on hold') {
+                $r1 += 1;
+            } elseif ($reclamation->getEtat() == 'processing') {
+                $r2 += 1;
+            } else {
+                $r3 += 1;
+            }
+        }
+        
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable(
+            [['etat', 'nombre'],
+                ['on hold', $r1],
+                ['processing', $r2],
+                ['treated', $r3],
+            ]
+        );
+        $pieChart->getOptions()->setHeight(300);
+        $pieChart->getOptions()->setWidth(600);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->setBackgroundColor('#000000'); // noir
+        $pieChart->getOptions()->getLegend()->getTextStyle()->setColor('#FFFFFF');
+        $pieChart->getOptions()->setColors(['#FF0000', '#00FF00', '#0000FF']);
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+        return $this->render('reclamation/stats.html.twig', [
+            'reclamations' => $reclamation,'piechart' => $pieChart
+        ]);
     }
 
-    $pieChart->getData()->setArrayToDataTable($pieChartData);
-    $pieChart->getOptions()->setTitle('Réclamations par état');
-
-    return $this->render('reclamation/stats.html.twig', [
-            'reclamations' => $reclamations,'piechart' => $pieChart
-        ]);
-}
 
 
 

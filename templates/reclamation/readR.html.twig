@@ -9,6 +9,8 @@
                             <a href="{{ path('app_readTypeR')}}" class="dropdown-item">List of types</a>
                             <a href="{{ path('app_addR')}}" class="dropdown-item">Add new complaint</a>
                             <a href="{{ path('genererPdf')}}" class="dropdown-item">Generate pdf</a>
+                            <a href="{{ path('genererstats')}}" class="dropdown-item">Statistics</a>
+
 
                         </div>
                     </div>
@@ -20,13 +22,17 @@
             {% endblock %}
 
 {% block body %}
+{# ajouter des flash messages si user donne son avis #}
 {% if app.session.flashbag.has('satisfaction') %}
     <div class="alert alert-info">{{ app.session.flashbag.get('satisfaction')[0] }}</div>
 {% endif %}
 {% if app.session.flashbag.has('note') %}
     <div class="alert alert-info">{{ app.session.flashbag.get('note')[0] }}</div>
 {% endif %}
-
+{# ajouter des lien de pagination  #}
+<div class="pagination">
+    {{ knp_pagination_render(reclamations) }}
+</div>
     <h1>list of complaints</h1>
 
     <form method="get">
