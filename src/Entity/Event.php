@@ -59,6 +59,10 @@ class Event
     #[ORM\OneToMany(mappedBy: 'id_event', targetEntity: Reservation::class, cascade: ['remove'])]
     private Collection $reservations;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?User $participant = null;
+
+
     public function __construct()
     {
         $this->id_participant = new ArrayCollection();
@@ -241,6 +245,18 @@ class Event
                 $reservation->setIdEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getParticipant(): ?User
+    {
+        return $this->participant;
+    }
+
+    public function setParticipant(?User $participant): self
+    {
+        $this->participant = $participant;
 
         return $this;
     }

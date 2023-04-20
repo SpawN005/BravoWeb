@@ -16,7 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\EventRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
+use App\Service\SendMailService;
+use App\Service\QRCodeService;
+use App\Entity\User;
 
 
 
@@ -36,17 +38,22 @@ class ReservationController extends AbstractController
     
    
     #[Route('/reservationUser', name:'app_reservationUser')]
-    public function reservationUser( ManagerRegistry $doctrine)
-    {
-        $reservations = $doctrine->getRepository(Reservation::class)->findAll();
-        $eventRepository = $doctrine->getRepository(Event::class);
-        $eventId = $eventRepository->findOneBy([])->getId(); // get the ID of the first event in the database
-        $event = $eventRepository->find($eventId);
-        return $this->render('reservation/indexUser.html.twig', [
-            'reservations' => $reservations,
-            'event'=>$event
-        ]);
+public function reservationUser(ManagerRegistry $doctrine)
+{
+    $user = $doctrine->getRepository(User::class)->find(5);
+    if (!$user) {
+        throw $this->createNotFoundException('Utilisateur introuvable');
     }
+    
+    $reservations = $user->getReservations();
+    $event = $user->getEvents(); // récupérer le premier événement associé à l'utilisateur
+    
+    return $this->render('reservation/indexUser.html.twig', [
+        'reservations' => $reservations,
+        'event' => $event
+    ]);
+}
+
     
 
     
@@ -121,44 +128,212 @@ public function deleteReservationUser($id, ReservationRepository $re, ManagerReg
 }
 
 
-    #[Route('/addReservation', name: 'app_addReservation')]
-    public function addReservation(ManagerRegistry $doctrine, Request $request, EventRepository $eventRepository,SessionInterface $session): Response
-{
-    $reservations = new Reservation();
-    $form = $this->createForm(ReservationType::class,$reservations);
+//     #[Route('/addReservation', name: 'app_addReservation')]
+//     public function addReservation(ManagerRegistry $doctrine, Request $request, EventRepository $eventRepository, 
+//     SessionInterface $session, EmailService $emailService, QRCodeService $qrCodeService): Response
+//     {
+//     $reservations = new Reservation();
+//     $form = $this->createForm(ReservationType::class,$reservations);
+//     $form->handleRequest($request);
+//     if ($form->isSubmitted() && $form->isValid()) {
+//          // Récupérer l'événement associé à la réservation
+//          $eventId = $reservations->getIdEvent()->getId();
+//          $event = $eventRepository->find($eventId);
+//        // Mettre à jour la capacité de l'événement
+//         $reservedSeats = $reservations->getNbPlace();
+//         $availableSeats = $event->getNbPlaceMax();
+//         if ($availableSeats === 0) {
+//             $message = 'L\'événement est complet !';
+//             $flashBag = $session->getFlashBag();
+//             $flashBag->add('error', $message);
+//             return $this->redirectToRoute('app_addReservation');
+//         }elseif ($reservedSeats > $availableSeats) {
+//             $message = 'Nombre de places indisponible !';
+//             $flashBag = $session->getFlashBag();
+//             $flashBag->add('error', $message);
+//             return $this->redirectToRoute('app_addReservation');
+//         }
+//         $this->updateEventCapacity($event, $reservedSeats);
+//         $em = $doctrine->getManager();
+//         $em->persist($reservations);
+//         $em->flush();
+
+//       // Générer le code QR
+// $qrCode = $qrCodeService->generateQRCodeImage($reservations);
+// $qrCodePath = 'images/' . $reservations->getId() . '.png';
+// $qrCodeUrl = $this->getParameter('app.base_url') . '/' . $qrCodePath;
+// $qrCode->save($qrCodePath);
+
+// // Envoyer l'e-mail de confirmation
+// $recipientEmail = $reservations->getIdParticipant()->getEmail();
+// $subject = 'Confirmation de réservation';
+// $body = $this->renderView('email/confirmation.html.twig', [
+//     'reservation' => $reservations,
+//     'qrCodeUrl' => $qrCodeUrl,
+// ]);
+// $emailService->sendEmail($recipientEmail, $subject, $body);
+
+      
+//       // Ajouter un message flash pour confirmer que la réservation a été effectuée avec succès
+//       $message = 'La réservation a été effectuée avec succès !';
+//       $flashBag = $session->getFlashBag();
+//       $flashBag->add('success', $message);
+
+//       // Rediriger l'utilisateur vers la page de détails de l'événement
+//       return $this->redirectToRoute('event_details', ['id' => $event->getId()]);
+//   }
+
+//     return $this->renderForm("reservation/createReservation.html.twig", [
+//         "form" => $form
+//     ]);
+// }
+
+
+// #[Route('/addReservation', name: 'app_addReservation')]
+// public function addReservation(
+//     ManagerRegistry $doctrine,
+//     Request $request,
+//     EventRepository $eventRepository,
+//     SessionInterface $session,
+//     SendMailService $emailService,
+//     // QRCodeService $qrCodeService
+// ): Response {
+//     $reservation = new Reservation();
+//     $form = $this->createForm(ReservationType::class, $reservation);
+//     $form->handleRequest($request);
+
+//     if ($form->isSubmitted() && $form->isValid()) {
+//         $eventId = $reservation->getIdEvent()->getId();
+//         $event = $eventRepository->find($eventId);
+
+//         $reservedSeats = $reservation->getNbPlace();
+//         $availableSeats = $event->getNbPlaceMax();
+
+//         if ($availableSeats === 0) {
+//             $this->addFlash('error', 'L\'événement est complet !');
+//             return $this->redirectToRoute('app_reservationUser');
+//         }
+
+//         if ($reservedSeats > $availableSeats) {
+//             $this->addFlash('error', 'Nombre de places indisponible !');
+//             return $this->redirectToRoute('app_createReservation');
+//         }
+
+//         $em = $doctrine->getManager();
+
+//         $this->updateEventCapacity($event, $reservedSeats);
+
+//         $em->persist($reservation);
+//         $em->flush();
+
+//         // $qrCode = $qrCodeService->generateQRCodeImage($reservation);
+//         // $qrCodePath = 'images/' . $reservation->getId() . '.png';
+//         // $qrCodeUrl = $this->getParameter('app.base_url') . '/' . $qrCodePath;
+//         // $qrCode->save($qrCodePath);
+
+//         // $recipientEmail = $reservation->getIdParticipant()->getEmail();
+//         // $subject = 'Confirmation de réservation';
+//         // $body = $this->renderView('email/confirmation.html.twig', [
+//         //     'reservation' => $reservation,
+//         //     // 'qrCodeUrl' => $qrCodeUrl,
+//         // ]);
+//         // $emailService->sendEmail($recipientEmail, $subject, $body);
+        
+//         // Envoi du mail
+//         $emailService->sendMail(
+//             'meriam123.hammi@gmail.com', 'Tun art',
+//             $reservation->getIdParticipant()->getEmail(),
+
+//             'Account Approval Confirmation',
+//             'confirmation',
+           
+//         );
+
+//         $this->addFlash('success', 'La réservation a été effectuée avec succès !');
+
+//         return $this->redirectToRoute('app_addReservation');
+//     }
+
+//     return $this->renderForm("reservation/createReservation.html.twig", [
+//         "form" => $form
+//     ]);
+// }
+
+#[Route('/addReservation', name: 'app_addReservation')]
+public function addReservation(
+    ManagerRegistry $doctrine,
+    Request $request,
+    EventRepository $eventRepository,
+    SessionInterface $session,
+    SendMailService $emailService,
+    QRCodeService $qrCodeService
+): Response {
+    $reservation = new Reservation();
+    $form = $this->createForm(ReservationType::class, $reservation);
     $form->handleRequest($request);
+    $userRepository = $doctrine->getRepository(User::class);
+
+
     if ($form->isSubmitted() && $form->isValid()) {
-         // Récupérer l'événement associé à la réservation
-         $eventId = $reservations->getIdEvent()->getId();
-         $event = $eventRepository->find($eventId);
-       // Mettre à jour la capacité de l'événement
-        $reservedSeats = $reservations->getNbPlace();
+        $eventId = $reservation->getIdEvent()->getId();
+        $event = $eventRepository->find($eventId);
+
+        $reservedSeats = $reservation->getNbPlace();
         $availableSeats = $event->getNbPlaceMax();
+
         if ($availableSeats === 0) {
-            $message = 'L\'événement est complet !';
-            $flashBag = $session->getFlashBag();
-            $flashBag->add('error', $message);
-            return $this->redirectToRoute('app_addReservation');
-        }elseif ($reservedSeats > $availableSeats) {
-            $message = 'Nombre de places indisponible !';
-            $flashBag = $session->getFlashBag();
-            $flashBag->add('error', $message);
-            return $this->redirectToRoute('app_addReservation');
+            $this->addFlash('error', 'L\'événement est complet !');
+            return $this->redirectToRoute('app_reservationUser');
         }
-        $this->updateEventCapacity($event, $reservedSeats);
+
+        if ($reservedSeats > $availableSeats) {
+            $this->addFlash('error', 'Nombre de places indisponible !');
+            return $this->redirectToRoute('app_createReservation');
+        }
+
         $em = $doctrine->getManager();
-        $em->persist($reservations);
+
+        $this->updateEventCapacity($event, $reservedSeats);
+
+        $em->persist($reservation);
         $em->flush();
-        return $this->redirectToRoute("app_reservationUser");
+
+        $qrCode = $qrCodeService->generateQRCodeImage($reservation);
+        $qrCodePath = 'images/' . $reservation->getId() . '.png';
+        $qrCodeUrl = $this->getParameter('app.base_url') . '/' . $qrCodePath;
+        $qrCode->saveToFile($qrCodePath);
+
+        if ($reservation->getIdParticipant() === null) {
+            $this->addFlash('error', 'La réservation doit être liée à un utilisateur !');
+            return $this->redirectToRoute('app_reservationUser');
+        }
+            // Récupérer l'utilisateur d'id 5
+            $user = $userRepository->find(5);
+            $recipientEmail = $user->getEmail();
+
+        $subject = 'Confirmation de réservation';
+        $body = $this->renderView('email/confirmation.html.twig', [
+            'qrCodeUrl' => $qrCodeUrl,
+            'r' => $reservation,
+        ]);
+        $emailService->sendMail(
+            'meriam123.hammi@gmail.com',
+            'Tun art',
+            $recipientEmail,
+            $subject,
+            'confirmation',
+            ['body' => $body]
+        );
+        
+
+        return $this->redirectToRoute('app_reservationUser');
+        $this->addFlash('success', 'La réservation a été effectuée avec succès !');
     }
 
     return $this->renderForm("reservation/createReservation.html.twig", [
-        "form" => $form
+        "form" => $form,
     ]);
 }
-
-
-
 
     #[Route('/updateReservation/{id}', name: 'app_updateReservation')]
     public function updateReservation($id, ReservationRepository $re, ManagerRegistry $doctrine, Request $request): Response
@@ -178,14 +353,31 @@ public function deleteReservationUser($id, ReservationRepository $re, ManagerReg
         ]);
     }
 
+    // private function updateEventCapacity(Event $event, $reservedSeats)
+    // {
+    //     $currentCapacity = $event->getNbPlaceMax();
+    //     $newCapacity = $currentCapacity - $reservedSeats;
+    //     $event->setNbPlaceMax($newCapacity);
+
+    //     $em = $this->getDoctrine()->getManager();
+    //     $em->persist($event);
+    //     $em->flush();
+    // }
     private function updateEventCapacity(Event $event, $reservedSeats)
     {
         $currentCapacity = $event->getNbPlaceMax();
         $newCapacity = $currentCapacity - $reservedSeats;
-        $event->setNbPlaceMax($newCapacity);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($event);
-        $em->flush();
+        
+        // Vérifier si la nouvelle capacité est supérieure ou égale à zéro
+        if ($newCapacity >= 0) {
+            $event->setNbPlaceMax($newCapacity);
+    
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($event);
+            $em->flush();
+        }
     }
+    
+
+
 }

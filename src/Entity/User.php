@@ -40,6 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'id_participant', targetEntity: Reservation::class, cascade: ['remove'])]
     private Collection $reservations;
 
+    #[ORM\OneToMany(mappedBy: 'participant', targetEntity: Event::class)]
+    private Collection $events;
+
+    
+
     public function __construct()
     {
         $this->blogs = new ArrayCollection();
@@ -47,6 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isConfirmed = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,4 +235,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getParticipant() === $this) {
+                $event->setParticipant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

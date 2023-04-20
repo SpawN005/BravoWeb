@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
+use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 
 
@@ -41,7 +41,7 @@ class EventController extends AbstractController
     
     
     #[Route('/event/{id}', name: 'app_eventUser')]
-    public function indexUser(Request $request, EventRepository $eventRepository,EntityManagerInterface $entityManager): Response
+    public function indexUser(int $id,Request $request, EventRepository $eventRepository,EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SearchEventFormType::class);
         $form->handleRequest($request);
@@ -52,6 +52,8 @@ class EventController extends AbstractController
         } else {
             $ev = $eventRepository->findAll();
         }
+       
+
     
         return $this->render('event/indexUser.html.twig', [
             'ev' => $ev,
@@ -129,7 +131,7 @@ class EventController extends AbstractController
         // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
         foreach ($reservations as $reservation) {
             $user = $reservation->getIdParticipant();
-            $message = 'L\'événement "' . $event->getTitle() . '" a été supprimé.';
+            $message = 'The event "' . $event->getTitle() . '" has been cancelled.';
             $session->getFlashBag()->add('danger', $message);
         }
     

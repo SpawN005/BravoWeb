@@ -43,11 +43,15 @@
                     <div class="col-lg-8">
                  <div class="contact-form-validated contact-one__form" >
 
-  {% for flashError in app.flashes('error') %}
-        <div class="alert alert-danger" role="alert">
-            {{ flashError }}
-        </div>
-    {% endfor %}
+  {% for flashMessage in app.flashes('success') %}
+    <div class="alert alert-success">{{ flashMessage }}</div>
+{% endfor %}
+
+{% for flashMessage in app.flashes('error') %}
+    <div class="alert alert-danger">{{ flashMessage }}</div>
+{% endfor %}
+
+
 
                       {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
                             <div class="row">
