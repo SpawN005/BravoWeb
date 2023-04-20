@@ -48,6 +48,8 @@
     {{ form_widget(form.satisfait) }}
     {{ form_label(form.Note) }}
     {{ form_widget(form.Note) }}
+    {# Affiche les erreurs du champ 'Note' #}
+{{ form_errors(form.Note) }}
 
      <div class="col-lg-12">
     <button  type="submit" class="thm-btn contact-one__btn" >Envoyer</button>
