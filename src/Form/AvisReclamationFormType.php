@@ -51,6 +51,7 @@ class AvisReclamationFormType extends AbstractType
 
                         // Ajouter une contrainte si non stisfait la note doit etre <4
                         if (!$data['satisfait'] && in_array($value, ['4', '5'])) {
+                            $context->addViolation("Si vous êtes non satisfait, veuillez sélectionner une note 1 ou 2 ou 3.");
 
                         }
                     },

@@ -316,6 +316,9 @@ public function stats (Request $request ,ReclamationRepository $reclamationRepos
             } else {
                 $r3 += 1;
             }
+              // Ajoutez la date courante et le total actuel à vos tableaux
+        $dates[] = $reclamation->getDateCreation(); 
+        $totals[] = $r1 + $r2 + $r3;
 
         }
         // pour le graphique en secteur selon etat 
@@ -338,13 +341,28 @@ public function stats (Request $request ,ReclamationRepository $reclamationRepos
         $pieChart->getOptions()->setWidth(600);
         $pieChart->getOptions()->setBackgroundColor('#000000'); // noir
         $pieChart->getOptions()->setColors(['#FF0000', '#00FF00', '#0000FF']);
+
+         // pour le graphe en line chart evolution du nb de reclam
+    $lineChart = new LineChart();
+    $lineChart->getData()->setArrayToDataTable(
+        [['Date', 'Total réclamations']]
+        + array_map(null, $dates, $totals)
+    );
+    $lineChart->getOptions()->setTitle('Évolution du nombre total de réclamations');
+    $lineChart->getOptions()->getTitleTextStyle()->setBold(true);
+    $lineChart->getOptions()->getTitleTextStyle()->setItalic(true);
+    $lineChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+    $lineChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+    $lineChart->getOptions()->getTitleTextStyle()->setColor('#FFFFFF');
+    $lineChart->getOptions()->setHeight(300);
+    $lineChart->getOptions()->setWidth(600);
+    $lineChart->getOptions()->setBackgroundColor('#000000'); // noir
+    $lineChart->getOptions()->getLegend()->getTextStyle()->setColor('#FFFFFF');
+    $lineChart->getOptions()->setColors(['#FF0000', '#00FF00', '#0000FF']);
+
   
-
-       
-
-    
         return $this->render('reclamation/stats.html.twig', [
-            'reclamations' => $reclamation,'piechart' => $pieChart
+            'reclamations' => $reclamation,'piechart' => $pieChart,'linechart' => $lineChart
         ]);
     }
 
