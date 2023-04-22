@@ -1,0 +1,96 @@
+{#{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+{% block body %}
+<h1>La liste des blogs </h1>
+<table>
+    <tr>
+        <th>TITLE</th>
+        <th>DESCRIPTION</th>
+        <th>IMAGE</th>
+        <th>Delete</th>
+        <th>Update</th>
+    </tr>
+    {%for b in blog %}
+    <tr>
+        <td>{{b.title}}</td>
+        <td>{{b.description}}</td>
+        <td>{{b.image}}</td>
+
+        {#{# <td>{{b.categorie.NomCategorie}}</td> #}
+        {#<td><form action="{{path('app_delete_blog',{'id':b.id}) }}">
+            <button>Delete</button></form></td>
+        <td><form action="{{path('app_update_blog',{'id':b.id}) }}">
+                <button>Update</button></form></td>
+    </tr>
+    {%endfor%}
+
+</table>
+{% endblock %}#}
+
+{% extends 'base.html.twig' %}
+{% block body %}
+ <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>Your Blog</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+
+        <section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
+                {%for b in blog %}
+
+                    <h3><a href="{{ path('app_detail_blog', {'id': b.id}) }}">{{b.title}}</a></h3>
+                </div><!-- /.event-details__top -->
+                <div class="row high-gutter">
+                    <div class="col-lg-8">
+                        <div class="event-details__main">
+                            <div class="event-details__image">
+                                <img src="http://localhost/img/{{b.image}}" alt="" width="500" height="400">
+                            </div><!-- /.event-details__image -->
+                            <div class="event-details__content">
+                           <p> {{b.description}} </p>
+                           <p> {{b.author.name}}  </p>
+
+                           {% if app.user %}
+                                {% if app.user == b.user %}
+                                    <a href="{{path('article_edit', {'id' : b.id} )}}" 
+                                    class="btn btn-success mt-2 mb-5" >Edit</a>
+                                {% endif %}
+                            {% endif %}
+
+            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">      
+                            <li><form action="{{path('app_delete_blog',{'id':b.id}) }}">
+                        <button class="thm-btn contact-one__btn">Delete</button>
+                            </form>
+                            </li>
+                            
+                            <li> 
+                        <form action="{{path('app_update_blog',{'id':b.id}) }}">
+                        <button class="thm-btn contact-one__btn">Update</button>
+                        </form> 
+ </div>
+</li>
+{%endfor%}
+</section>
+                                </ul><!-- /.event-details__contact -->
+                            </div><!-- /.event-details__content -->
+                        </div><!-- /.event-details__main -->
+          
+                    </div><!-- /.col-lg-8 -->
+
+        <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
+            <div class="container text-center">
+                <h3>More Than 1250 Exhibits!</h3>
+                <p>Every day more exhibits arrive in our museum. Do not <br> wait and buy a ticket now.</p>
+                <div class="cta-one__btn-block">
+                    <a href="#" class="thm-btn cta-one__btn-one">Become A Member</a><!-- /.thm-btn cta-one__btn-one -->
+                    <a href="#" class="thm-btn cta-one__btn-two">Buy Online</a><!-- /.thm-btn cta-one__btn-two -->
+                </div><!-- /.cta-one__btn-block -->
+            </div><!-- /.container -->
+        </section><!-- /.cta-one -->
+        
+      
+{% endblock %}

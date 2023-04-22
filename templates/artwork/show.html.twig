@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artwork{% endblock %}
+
+{% block body %}
+    <h1>Artwork</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ artwork.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ artwork.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ artwork.description }}</td>
+            </tr>
+            <tr>
+                <th>Catégorie</th>
+                <td>{{ artwork.catégorie }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ artwork.url }}</td>
+            </tr>
+             <tr>
+                <th>owner</th>
+                <td>{{ artwork.owner }}</td>
+            </tr>
+              <tr>
+                <th>ownazeazeer</th>
+                <td>azeaze</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_artwork_index') }}">back to list</a>
+
+    <a href="{{ path('app_artwork_edit', {'id': artwork.id}) }}">edit</a>
+
+    {{ include('artwork/_delete_form.html.twig') }}
+{% endblock %}
