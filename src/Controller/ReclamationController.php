@@ -28,6 +28,7 @@ use CMEN\GoogleChartsBundle\GoogleCharts\EventType;
 use CMEN\GoogleChartsBundle\GoogleCharts\Options\ChartOptionsInterface;
 use CMEN\GoogleChartsBundle\GoogleCharts\Options\PieChart\PieChartOptions;
 use Knp\Component\Pager\PaginatorInterface;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
 
 
 
@@ -298,7 +299,7 @@ public function avis($id, Request $request, ReclamationRepository $rep, EntityMa
          return $this->redirectToRoute('app_readR');
      }
 
-//      //generer des stats selon etat piechart
+     //generer des stats selon etat piechart
 #[Route('/genererstats', name: 'genererstats')]
 
 public function stats (Request $request ,ReclamationRepository $reclamationRepository): Response
@@ -315,8 +316,9 @@ public function stats (Request $request ,ReclamationRepository $reclamationRepos
             } else {
                 $r3 += 1;
             }
+
         }
-        
+        // pour le graphique en secteur selon etat 
         $pieChart = new PieChart();
         $pieChart->getData()->setArrayToDataTable(
             [['etat', 'nombre'],
@@ -325,15 +327,22 @@ public function stats (Request $request ,ReclamationRepository $reclamationRepos
                 ['treated', $r3],
             ]
         );
-        $pieChart->getOptions()->setHeight(300);
-        $pieChart->getOptions()->setWidth(600);
+        $pieChart->getOptions()->setTitle('Nombre de reclamation par etat');
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#FFFFFF');
         $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
-        $pieChart->getOptions()->setBackgroundColor('#000000'); // noir
         $pieChart->getOptions()->getLegend()->getTextStyle()->setColor('#FFFFFF');
-        $pieChart->getOptions()->setColors(['#FF0000', '#00FF00', '#0000FF']);
         $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
         $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
         $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+        $pieChart->getOptions()->setHeight(300);
+        $pieChart->getOptions()->setWidth(600);
+        $pieChart->getOptions()->setBackgroundColor('#000000'); // noir
+        $pieChart->getOptions()->setColors(['#FF0000', '#00FF00', '#0000FF']);
+  
+
+       
+
+    
         return $this->render('reclamation/stats.html.twig', [
             'reclamations' => $reclamation,'piechart' => $pieChart
         ]);

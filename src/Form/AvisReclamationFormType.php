@@ -9,20 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-use Symfony\Component\Form\FormFactoryInterface; 
-use Symfony\Component\Validator\Context\ExecutionContextInterface; // Importer la classe ExecutionContextInterface
+use Symfony\Component\Validator\Context\ExecutionContextInterface; 
 use Symfony\Component\Validator\Constraints\Callback;
 
 
 
 class AvisReclamationFormType extends AbstractType
 {
-    private $formFactory; // Déclarer la propriété formFactory
-
-    public function __construct(FormFactoryInterface $formFactory) // Injecter FormFactoryInterface dans le constructeur
-    {
-        $this->formFactory = $formFactory;
-    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         
@@ -51,30 +44,20 @@ class AvisReclamationFormType extends AbstractType
                     'callback' => function ($value, ExecutionContextInterface $context) {
                         $form = $context->getRoot();
                         $data = $form->getData();
-
+                        // ajouter contrainte si satisfait note >4
                         if ($data['satisfait'] && in_array($value, ['1', '2', '3'])) {
                             $context->addViolation("Si vous êtes satisfait, veuillez sélectionner une note de 4 ou 5.");
                         }
 
-                        // Ajouter une nouvelle validation pour empêcher la sélection de notes 4 ou 5 si "satisfait" est défini sur "Non"
+                        // Ajouter une contrainte si non stisfait la note doit etre <4
                         if (!$data['satisfait'] && in_array($value, ['4', '5'])) {
-                            $context->addViolation("Si vous êtes non satisfait, veuillez sélectionner une note 1 ou 2 ou 3.");
+
                         }
                     },
                 ]),
             ],
-            'choice_attr' => function ($choice, $key, $value) use ($builder) {
-                $data = $builder->getData();
-                $satisfait = isset($data['satisfait']) ? $data['satisfait'] : null;//si on clique sur oui ou non il prend cette valeur sinon null
-                if ($satisfait && in_array($choice, ['1', '2', '3'])) {
-                    return ['disabled' => 'disabled'];//  si satsifait on desactive la note 1 2 et 3
-                }
-                return [];
-            },
-            
-            
+           
         ])
-
       ;
     }
 
