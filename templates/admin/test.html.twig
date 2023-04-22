@@ -185,7 +185,6 @@
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
                             <h6>{{app.user.firstName}} {{app.user.lastName}}</h6>
-                            <span>Web Designer</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -350,7 +349,7 @@
                     <br><br><br><br><br><br>
                     <div class="card-body">
 
-                        <h5 class="card-title">Users Table</h5>
+                        <h5 class="card-title">Ahmed Table</h5>
 
 
                         <!-- Table with stripped rows -->
@@ -394,6 +393,9 @@
                                         <th scope="col" data-sortable="" style="width: 19.1646%;">
                                             <a href="#" class="dataTable-sorter">Email</a>
                                         </th>
+                                        <th scope="col" data-sortable="" style="width: 19.1646%;">
+                                            <a href="#" class="dataTable-sorter">Status</a>
+                                        </th>
 
                                         <th scope="col" data-sortable="" style="width: 19.1646%;">
                                             <a href="#" class="dataTable-sorter">Actions</a>
@@ -421,6 +423,8 @@
                                         <td>{{u.lastName}}</td>
                                         <td>{{u.phone}}</td>
                                         <td>{{u.email}}</td>
+                                        <td>{{u.banned}}</td>
+
 
                                         <td>
 

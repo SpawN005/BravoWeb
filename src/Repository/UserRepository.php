@@ -94,4 +94,17 @@ public function findByRole($roles)
 }
 
 
+
+
+public function findBySearchQuery($searchQuery)
+{
+    $queryBuilder = $this->createQueryBuilder('u')
+        ->where('u.firstName LIKE :searchQuery OR u.lastName LIKE :searchQuery OR u.phone LIKE :searchQuery OR u.email LIKE :searchQuery')
+        ->setParameter('searchQuery', '%' . $searchQuery . '%');
+
+    return $queryBuilder->getQuery()->getResult();
+}
+
+
+
 }

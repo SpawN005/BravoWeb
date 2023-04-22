@@ -51,19 +51,6 @@ class AdminController extends AbstractController
 
 
 
-    // #[Route('/admin', name: 'admin')]
-    // public function index(UserRepository $repository): Response
-    // {
-
-    //     $user = $repository->findByRole('ROLE_ADMIN');
-    //     $userClient = $repository->findByRole('ROLE_USER');
-    //    return $this->render('admin/index.html.twig', [
-    //         'form' => $form->createView(),
-    //         'errors' => $errors,
-    //         'user'=>$user = $repository->findByRole('ROLE_ADMIN'),
-    //         'userClient'=>$userClient
-    //     ]);
-    // }
 
     #[Route('profile/modifier', name: 'adminProfile',methods: ['GET', 'POST'])]
 
@@ -183,6 +170,25 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
         return $this->redirectToRoute('adminbacks');
 
   }
+
+  #[Route('/admin/ban/{id}', name: 'banUser')]
+    public function banUser(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, int $id): Response
+  {
+      $user = $userRepository->find($id);
+  
+      if (!$user) {
+          throw $this->createNotFoundException('User not found');
+      }
+  
+      $user->setBanned(true);
+      $entityManager->flush();
+  
+      return $this->redirectToRoute('adminbacks');
+  }
+  
+  
+  
+  
 
 
     

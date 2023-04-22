@@ -179,7 +179,6 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{app.user.firstName}} {{app.user.lastName}}</h6>
-              <span>Web Designer</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -245,7 +244,14 @@
           <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">Users Table</h6>
             <a href="">Show All</a>
+            <a class="nav-link nav-icon search-bar-toggle " href="#">
+              <form class="d-none d-md-flex ms-4" id="search-form">
+                <input class="form-control bg-dark border-0" type="search" placeholder="Search" id="search-input">
+              </form>
+            </a>
+
           </div>
+        <div id="user-table">
           <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
               <thead>
@@ -267,6 +273,9 @@
                 </th>
                 <th scope="col" data-sortable="" style="width: 19.1646%;">
                   <a href="#" class="dataTable-sorter">Email</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Status</a>
                 </th>
 
                 <th scope="col" data-sortable="" style="width: 19.1646%;">
@@ -297,43 +306,31 @@
                 <td>{{u.email}}</td>
 
                 <td>
+                {% if u.banned == 0 %}
 
-                  <a type="button" class="btn btn-danger" href="{{ path('deleteUser', { 'id': u.getId()  }) }}">Delete</a>
+                  <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
+                {% else %}
+                  <span class="badge d-block bg-red bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">  BANNED </span>
+                {% endif %}
+                </td>
 
-                  {# <a type="button" class="btn btn-danger" data-target="#deleaate" data-toggle="modal">Delete</a> #}
-                  {# <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleaate" >Delete</a> #}
-                  {#
-                  <div class="modal fade" id="deleaate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Delete Admin</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                        Are you sure to delete this Admin ?
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <a type="button" class="btn btn-danger" href="{{ path('DeleteAdmin', { 'id': u.getId()  }) }}">Delete</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div> #}
+                
 
 
+                <td>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('deleteUser', { 'id': u.getId()  }) }}">Delete Account</a>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('banUser', { 'id': u.id }) }}">Ban User</a>
                 </td>
                 {% endfor %}
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ADD ADMIN</button>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ADD ADMIN</button>
                 {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
 
 
               </tbody>
             </table>
           </div>
+         </div> 
         </div>
       </div>
       <!-- Recent Sales End -->
@@ -396,6 +393,8 @@
               <td>{{u.lastName}}</td>
               <td>{{u.phone}}</td>
               <td>{{u.email}}</td>
+              <td>{{u.banned}}</td>
+
               <td>
 
                 {% if u.banned == 0 %}
@@ -408,7 +407,6 @@
               </td>
               <td>
 
-                {# <a class="btn btn-danger" href="{{ path('Update', { id: C.getIdCat()  }) }}" >Delete</a> #}
               </td>
 
               {% endfor %}
@@ -505,6 +503,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
   modal.find('.modal-body input')
 })
 </script>
+
 
 
 {% endblock %}

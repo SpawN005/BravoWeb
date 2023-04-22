@@ -11,4 +11,10 @@ app_send_verification_code:
     path: '/send-verification-code'
     controller: App\Controller\ClientController::sendVerificationCode
     methods: ['POST']
+# config/routes.yaml
+
+search_users:
+    path: /search
+    methods: [POST]
+    controller: App\Controller\UserController::searchUsers
 

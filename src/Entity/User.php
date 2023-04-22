@@ -52,8 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $phone = null;
 
 
-    #[ORM\Column]
-    private ?bool $banned = null;
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    private ?bool $banned;
+    
 
     #[ORM\Column(type: 'boolean', nullable:true)]
     private $isVerified = false;

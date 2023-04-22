@@ -50,20 +50,26 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-        $user=$token->getUser();
-        if(in_array('ROLE_ADMIN',$user->getRoles(),true)){
+    
+        $user = $token->getUser();
+    
+        // Check if the user is banned
+        if ($user->IsBanned()) {
+            $request->getSession()->getFlashBag()->add('warning', 'Your account has been banned.');
+            return new RedirectResponse($this->urlGenerator->generate(self::LOGIN_ROUTE));
+        }
+    
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             return new RedirectResponse($this->urlGenerator->generate('adminbacks'));
-         }
-        elseif (in_array('ROLE_ARTISTE',$user->getRoles(),true)){
+        } elseif (in_array('ROLE_ARTISTE', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('client'));
+        } else {
+            // For example:
+            // return new RedirectResponse($this->urlGenerator->generate('some_route'));
             return new RedirectResponse($this->urlGenerator->generate('client'));
         }
-       else {
-
-           // For example:
-           // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-           return new RedirectResponse($this->urlGenerator->generate('client'));
-       }
     }
+    
 
     protected function getLoginUrl(Request $request): string
     {

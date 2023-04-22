@@ -13,19 +13,31 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="assetsLogin/style.css" />
-    <title>Sign in & Sign up Form</title>
+    <title>Tun'ART Sign in</title>
   </head>
 <form method="post">
 
-     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% if error %}
+        {% if error.message == 'Your account has been banned.' %}
+            <div class="alert alert-danger">Your account has been banned.</div>
+        {% else %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
     {% endif %}
 
+
     {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
+        {% if app.user.isBanned() %}
+            <div class="mb-3">
+                It looks like your account has been banned. For further informations, feel free to contact us on ahmedaziz.rebhi@esprit.tn ^^ 
+            </div>
+        {% else %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
     {% endif %}
+
 
 
     
