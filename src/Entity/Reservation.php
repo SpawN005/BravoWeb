@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -22,7 +23,8 @@ class Reservation
     #[ORM\Column]
     private ?bool $isConfirmed = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
+    #[Assert\Range(min : 1, max : 10)]
     private ?int $nb_place = null;
 
     public function getId(): ?int

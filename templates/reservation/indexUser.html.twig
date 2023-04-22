@@ -18,6 +18,17 @@
             {% endfor %}
         </div>
     {% endif %}
+       {% for flashMessage in app.flashes('success') %}
+    <div class="alert alert-success">{{ flashMessage }}</div>
+{% endfor %}
+
+{% if app.session.flashbag.peek('error') is not empty %}
+    <div class="alert alert-danger">
+        {% for flash_message in app.session.flashbag.get('error') %}
+            {{ flash_message }}
+        {% endfor %}
+    </div>
+{% endif %}
 
 
 <div class="contact-one">
@@ -48,6 +59,7 @@
                     </div><!-- /.contact-one__box-social -->
                 </div><!-- /.contact-one__box -->
             </div><!-- /.col-lg-4 -->
+      
 
             <div class="col-lg-8">
                 <div class="contact-form-validated contact-one__form" >
@@ -63,26 +75,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for reservation in reservations %}
-                            <tr>
-                                <td>{{ reservation.id }}</td>
-                                <td>{{ reservation.idEvent.title }}</td>
-                                <td>{{ reservation.idParticipant.email }}</td>
-                                <td>{{ reservation.isConfirmed ? 'Confirmed' : 'Pending' }}</td>
-                                <td>{{ reservation.nbPlace }}</td>
-                                <td>
-                                    <a href="{{ path('app_deleteReservationUser', {'id': reservation.id}) }}">Delete</a>
-                                </td>
-                                <td>
-                                    <a href="{{ path('app_updateReservation', {'id': reservation.id}) }}">Edit</a>
-                                </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="6">no records found</td>
-                            </tr>
-                           
-                        {% endfor %}
+                       {% if qrCodeImage is defined %}
+    <img src="{{ qrCodeImage.getDataUri() }}" alt="QR code">
+{% endif %}
+
+
+                       {% for reservation in reservations %}
+    <tr>
+        <td>{{ reservation.id }}</td>
+        <td>{{ reservation.idEvent.title }}</td>
+        <td>{{ reservation.idParticipant.email }}</td>
+        <td>{{ reservation.isConfirmed ? 'Confirmed' : 'Pending' }}</td>
+        <td>{{ reservation.nbPlace }}</td>
+
+        <td>
+            <a href="{{ path('app_deleteReservationUser', {'id': reservation.id}) }}">Delete</a>
+        </td>
+        <td>
+            <a href="{{ path('app_updateReservation', {'id': reservation.id}) }}">Edit</a>
+        </td>
+        
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="6">no records found</td>
+    </tr>
+{% endfor %}
+
                         </tbody>
                     </table>
                 </div><!-- /.contact-form-validated -->

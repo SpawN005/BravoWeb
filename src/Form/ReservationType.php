@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Event;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ReservationType extends AbstractType
 {
@@ -17,7 +19,11 @@ class ReservationType extends AbstractType
     {
         $builder
             ->add('isConfirmed')
-            ->add('nb_place')
+            ->add('nb_place', IntegerType::class, [
+                'attr' => ['min' => 1, 'max' => 10],
+                'constraints' => [new Range(['min' => 1, 'max' => 10])]
+            ])
+
             ->add('id_event',EntityType::class, [
                 'class'=>Event::class,
                 'choice_label' => 'title',

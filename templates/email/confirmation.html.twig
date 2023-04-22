@@ -1,16 +1,17 @@
-{% extends 'base.html.twig' %}
 {% block subject %}
     Confirmation de réservation
 {% endblock %}
 
 {% block body %}
-    <h1>Confirmation de réservation</h1>
+    
 
     {# <p>Bonjour {{ r.idParticipant.nom }} {{ r.idParticipant.prenom }},</p> #}
-     {% if r is defined %}
+    
     <p>Bonjour,</p>
 
-    <p>Nous vous confirmons votre réservation pour l'événement "{{ r.idEvent.title }}" qui aura lieu le {{ r.idEvent.dateBeg|date('d/m/Y') }} à {{ r.idEvent.dateEnd|date('d/m/Y') }}.</p>
+    <p>Nous vous confirmons votre réservation pour l'événement</p>
+     {# {% if r is defined %} #}
+     {# "{{ r.idEvent.title }}" qui aura lieu le {{ r.idEvent.dateBeg|date('d/m/Y') }} à {{ r.idEvent.dateEnd|date('d/m/Y') }}.
 
     <p>Veuillez trouver ci-dessous le récapitulatif de votre réservation :</p>
 
@@ -20,11 +21,11 @@
         <li>Nombre de places réservées : {{ r.nbPlace }}</li>
     </ul>
 
-    {% if qrCodeUrl is defined %}
+    {# {% if qrCodeUrl is defined %}
         <p>Voici votre QR Code :</p>
         <img src="{{ qrCodeUrl }}" alt="QR Code">
-    {% endif %}
+    {% endif %} #}
 
     <p>Merci pour votre réservation et à bientôt !</p>
-    {% endif %}
+    {# {% endif %} #}
 {% endblock %}

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Service\SendMailService;
 use App\Service\QRCodeService;
 use App\Entity\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 
@@ -38,22 +39,23 @@ class ReservationController extends AbstractController
     
    
     #[Route('/reservationUser', name:'app_reservationUser')]
-public function reservationUser(ManagerRegistry $doctrine)
-{
-    $user = $doctrine->getRepository(User::class)->find(5);
-    if (!$user) {
-        throw $this->createNotFoundException('Utilisateur introuvable');
+    public function reservationUser(ManagerRegistry $doctrine)
+    {
+        $user = $doctrine->getRepository(User::class)->find(5);
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur introuvable');
+        }
+        
+        $reservations = $user->getReservations();
+        $event = $user->getEvents(); // récupérer le premier événement associé à l'utilisateur
+        
+        return $this->render('reservation/indexUser.html.twig', [
+            'reservations' => $reservations,
+            'event' => $event
+        ]);
     }
     
-    $reservations = $user->getReservations();
-    $event = $user->getEvents(); // récupérer le premier événement associé à l'utilisateur
     
-    return $this->render('reservation/indexUser.html.twig', [
-        'reservations' => $reservations,
-        'event' => $event
-    ]);
-}
-
     
 
     
@@ -102,13 +104,24 @@ public function deleteReservation($id, ReservationRepository $re, ManagerRegistr
     //     return $this->redirectToRoute("app_reservationUser");
     // }
     #[Route('/deleteReservationUser/{id}', name: 'app_deleteReservationUser')]
-public function deleteReservationUser($id, ReservationRepository $re, ManagerRegistry $doctrine, EventRepository $eventRepository): Response
+public function deleteReservationUser($id, ReservationRepository $re, ManagerRegistry $doctrine, EventRepository $eventRepository,
+SessionInterface $session): Response
 {
     //récupérer la classe à supprimer
     $reservations = $re->find($id);
     if (!$reservations) {
         throw $this->createNotFoundException('Reservation not found for id '.$id);
     }
+
+    // vérifier si la date de début de l'événement est dans plus de 24h
+    $eventDate = $reservations->getIdEvent()->getDateBeg();
+    $now = new \DateTime();
+    $diff = $now->diff($eventDate);
+    if ($diff->days < 1) {
+        $session->getFlashBag()->add('error', 'You cannot delete your reservation less than 1 day before the event');
+        return $this->redirectToRoute('app_reservationUser');
+    }
+
     //Action de suppression
     //récupérer l'Entitye manager
     $em = $doctrine->getManager();
@@ -266,7 +279,8 @@ public function addReservation(
     EventRepository $eventRepository,
     SessionInterface $session,
     SendMailService $emailService,
-    QRCodeService $qrCodeService
+
+    // QRCodeService $qrCodeService
 ): Response {
     $reservation = new Reservation();
     $form = $this->createForm(ReservationType::class, $reservation);
@@ -298,10 +312,10 @@ public function addReservation(
         $em->persist($reservation);
         $em->flush();
 
-        $qrCode = $qrCodeService->generateQRCodeImage($reservation);
-        $qrCodePath = 'images/' . $reservation->getId() . '.png';
-        $qrCodeUrl = $this->getParameter('app.base_url') . '/' . $qrCodePath;
-        $qrCode->saveToFile($qrCodePath);
+        // $qrCode = $qrCodeService->generateQRCodeImage($reservation);
+        // $qrCodePath = 'images/' . $reservation->getId() . '.png';
+        // $qrCodeUrl = $this->getParameter('app.base_url') . '/' . $qrCodePath;
+        // $qrCode->saveToFile($qrCodePath);
 
         if ($reservation->getIdParticipant() === null) {
             $this->addFlash('error', 'La réservation doit être liée à un utilisateur !');
@@ -312,22 +326,26 @@ public function addReservation(
             $recipientEmail = $user->getEmail();
 
         $subject = 'Confirmation de réservation';
-        $body = $this->renderView('email/confirmation.html.twig', [
-            'qrCodeUrl' => $qrCodeUrl,
-            'r' => $reservation,
-        ]);
+        // $body = $this->renderView('email/confirmation.html.twig', [
+        //     // 'qrCodeUrl' => $qrCodeUrl,
+        //     'r' => $reservation,
+        // ]);
+        $body = "Votre réservation pour l'événement #" . $eventId . " a été effectuée avec succès.";
+
         $emailService->sendMail(
             'meriam123.hammi@gmail.com',
             'Tun art',
-            $recipientEmail,
+            'myriam123.hammi@gmail.com',
             $subject,
             'confirmation',
             ['body' => $body]
         );
         
+        
+        
+        $this->addFlash('success', 'La réservation a été effectuée avec succès !');
 
         return $this->redirectToRoute('app_reservationUser');
-        $this->addFlash('success', 'La réservation a été effectuée avec succès !');
     }
 
     return $this->renderForm("reservation/createReservation.html.twig", [
