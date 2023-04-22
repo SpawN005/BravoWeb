@@ -6,12 +6,16 @@
 parameters:
         app.path.product_images: '%kernel.project_dir%/public/uploads/images'
 services:
+    App\Service\VerificationService:
+        arguments:
+            $twilioClient: '@twilio.client'
+            $twilioNumber: '%env(TWILIO_NUMBER)%'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            $replyTo: 'a.rebhhy10@gmail.com'
+            $replyTo: 'a.rebhy10@gmail.com'
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
