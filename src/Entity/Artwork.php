@@ -148,4 +148,8 @@ class Artwork
 
         return $this;
     }
+    public function __toString(): string
+    {
+        return $this->getTitle(); // assuming the Artwork entity has a "title" property
+    }
 }

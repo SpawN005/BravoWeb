@@ -69,14 +69,14 @@ class User
      *
      */
     #[ORM\Column(name: 'image', type: 'string', length: 255, nullable: true, options: ['default' => "'aze.png'"])]
-    private $image = '\'aze.png\'';
+    private $image = 'aze.png';
 
     /**
      * @var string
      *
      */
     #[ORM\Column(name: 'checker', type: 'string', length: 200, nullable: false, options: ['default' => "'usable'"])]
-    private $checker = '\'usable\'';
+    private $checker = 'usable';
 
     public function getId(): ?int
     {

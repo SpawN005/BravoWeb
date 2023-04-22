@@ -70,7 +70,61 @@
                 </div><!-- /.row -->
             </div><!-- /.container -->
         </section><!-- /.event-details -->
+<div class="container mt-5 mb-5">
 
+            <div class="row  d-flex justify-content-center">
+
+                <div class="col-md-8">
+
+                    <div class="headings d-flex justify-content-between align-items-center mb-3">
+                        <h5> Comments({{comments|length}})</h5>      
+                    </div>
+{% for comment in comments %}  
+                    <div class="card p-3 mt-2">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                      <div class="user d-flex flex-row align-items-center">
+
+                        <img src="http://localhost/img/{{comment.user.image}}"  width="30" height="30" class="user-img rounded-circle mr-2">
+                        <span><small class="font-weight-bold text-primary">{{comment.user.FirstName}} {{comment.user.LastName}}</small> </span>
+                          
+                      </div>
+
+
+                      <small>{{comment.timestamp.format('Y-m-d H:i:s')}}</small>
+
+                      </div>
+
+
+                      <div class="action d-flex justify-content-between mt-2 align-items-center">
+
+             {{comment.comment}}
+
+                        <div class="icons align-items-center">
+                           
+                            <i class="fa fa-check-circle-o check-icon text-primary"></i>
+                            
+                        </div>
+                    
+                      </div>
+                    </div>
+                             {% else %} 
+                         <p>No Comments</p>
+            
+        {% endfor %}
+       
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate' , 'name': 'comment_form'} }) }}
+        {{ form_widget(form.comment ,{'attr': {'class': 'form-control  mt-2 p-3'}}) }}
+        {{ form_errors (form.comment) }} 
+        <button class="thm-btn contact-one__btn mt-2" >Submit</button>
+        {{ form_end(form) }}
+
+      
+                </div>
+                      
+            </div>
+        </div>
         <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
             <div class="container text-center">
                 <h3>More Than 1250 Exhibits!</h3>
@@ -81,6 +135,7 @@
                 </div><!-- /.cta-one__btn-block -->
             </div><!-- /.container -->
         </section><!-- /.cta-one -->
-        
-      
+       
+    
 {% endblock %}
+ 

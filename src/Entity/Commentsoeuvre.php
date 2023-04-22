@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Commentsoeuvre
@@ -28,15 +29,17 @@ class Commentsoeuvre
      * @var string
      *
      */
+
     #[ORM\Column(name: 'comment', type: 'string', length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "Comment cannot be empty")]
     private $comment;
 
     /**
      * @var \DateTime
      *
      */
-    #[ORM\Column(name: 'timestamp', type: 'datetime', nullable: false, options: ['default' => 'current_timestamp()'])]
-    private $timestamp = 'current_timestamp()';
+    #[ORM\Column(name: 'timestamp', type: 'datetime', nullable: false)]
+    private $timestamp = null;
 
     /**
      * @var \Artwork
@@ -54,6 +57,11 @@ class Commentsoeuvre
     #[ORM\ManyToOne(targetEntity: 'User')]
     private $user;
 
+    public function __construct()
+    {
+        $this->timestamp = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,7 +72,7 @@ class Commentsoeuvre
         return $this->comment;
     }
 
-    public function setComment(string $comment): self
+    public function setComment(?string $comment): self
     {
         $this->comment = $comment;
 
@@ -76,7 +84,7 @@ class Commentsoeuvre
         return $this->timestamp;
     }
 
-    public function setTimestamp(\DateTimeInterface $timestamp): self
+    public function setTimestamp(?\DateTimeInterface $timestamp): self
     {
         $this->timestamp = $timestamp;
 
@@ -106,6 +114,4 @@ class Commentsoeuvre
 
         return $this;
     }
-
-
 }
