@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Commentsoeuvre;
+use App\Entity\Noteoeuvre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,14 +14,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method CategorieBlog[]    findAll()
  * @method CategorieBlog[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommentsoeuvreRepository extends ServiceEntityRepository
+class NoteoeuvreRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Commentsoeuvre::class);
+        parent::__construct($registry, Noteoeuvre::class);
     }
 
-    public function save(Commentsoeuvre $entity, bool $flush = false): void
+    public function save(Noteoeuvre $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class CommentsoeuvreRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Commentsoeuvre $entity, bool $flush = false): void
+    public function remove(Noteoeuvre $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -38,21 +38,12 @@ class CommentsoeuvreRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function findByOeuvreId($oeuvreId): array
-    {
-        return $this->createQueryBuilder('c')
-            ->leftJoin('c.oeuvre', 'o')
-            ->andWhere('o.id = :oeuvreId')
-            ->setParameter('oeuvreId', $oeuvreId)
-            ->getQuery()
-            ->getResult();
-    }
     public function removeByOeuvreId($oeuvreId): void
     {
-        $entities = $this->createQueryBuilder('c')
-            ->leftJoin('c.oeuvre', 'o')
-            ->andWhere('o.id = :oeuvreId')
-            ->setParameter('oeuvreId', $oeuvreId)
+        $entities = $this->createQueryBuilder('n')
+            ->leftJoin('n.idOeuvre', 'o')
+            ->andWhere('o.id = :idOeuvre')
+            ->setParameter('idOeuvre', $oeuvreId)
             ->getQuery()
             ->getResult();
 

@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Artwork;
 use App\Entity\Categorie;
 use App\Form\CategorieType;
+use App\Repository\ArtworkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,9 +74,10 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_categorie_delete', methods: ['POST'])]
-    public function delete(Request $request, Categorie $categorie, EntityManagerInterface $entityManager): Response
+    public function delete(ArtworkRepository $artworkRepository, Request $request, Categorie $categorie, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
+            $artworkRepository->removeByCategoryId($categorie->getId());
             $entityManager->remove($categorie);
             $entityManager->flush();
         }

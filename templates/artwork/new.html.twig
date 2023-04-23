@@ -72,6 +72,10 @@
                                      {{ form_label (form.description, "Description") }} 
                                 {{ form_widget(form.description) }} 
                                  {{ form_errors (form.description) }} 
+                                  </div>
+                                  <div class="col-lg-6">
+                                {{ form_widget(form.captcha) }} 
+                                 {{ form_errors (form.captcha) }} 
                                 </div><!-- /.col-lg-12 -->
                                     <div class="col-lg-12">
                                     <button class="thm-btn contact-one__btn" >{{ button_label|default('Submit') }}</button>

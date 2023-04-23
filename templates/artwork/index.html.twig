@@ -29,7 +29,7 @@
                       
                <!-- /.block-title -->
                        </div><!-- /.collection-grid__top --> <div class="row high-gutter filter-layout masonary-layout">
-{% for artwork in artworks %}  
+{% for artwork in pagination %}  
                
                     <div class="col-lg-4 col-md-6 filter-item masonary-item {{artwork.categorie}}">
                         <div class="collection-grid__single">
@@ -42,6 +42,7 @@
                                 <p>{{artwork.owner.FirstName}} {{artwork.owner.LastName}}</p>
                             </div><!-- /.collection-grid__content -->
                         </div><!-- /.collection-grid__single -->
+                          
                     </div><!-- /.col-lg-4 -->
                    {% else %} 
                          <p>no records found</p>
@@ -49,6 +50,8 @@
         {% endfor %}
                 </div><!-- /.row -->
             </div><!-- /.container -->
+            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">   {{ knp_pagination_render(pagination) }}</div>
+      
         </section><!-- /.collection-grid -->
 
             
