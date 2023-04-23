@@ -65,8 +65,24 @@ class BlogRepository extends ServiceEntityRepository
 //    }
 
 
+public function findByTitleAndCategorie($title, $categorie)
+{
+    $qb = $this->createQueryBuilder('b')
+        ->where('b.title LIKE :title')
+        ->setParameter('title', '%'.$title.'%');
+    
+    if ($categorie) {
+        $qb->andWhere('b.categorie = :categorie')
+            ->setParameter('categorie', $categorie);
+    }
+    
+    return $qb->getQuery()
+        ->getResult();
+}
 
-    public function findSearch( ?string $title, ?string $categorie)
+
+
+   /* public function findSearch( ?string $title, ?string $categorie)
     {
         $qb = $this->createQueryBuilder('b');
         
@@ -84,16 +100,16 @@ class BlogRepository extends ServiceEntityRepository
         }
         
     return $qb->getQuery()->getResult();
-}
+}*/
 
 
-    public function countByNote(): ?float
+    /*public function countByNote(): ?float
     {
         $qb = $this->createQueryBuilder('n')
                 ->select('AVG(n.note) as average')
                 ->getQuery();
 
         return $qb->getSingleScalarResult();
-    }
+    }*/
 
 }

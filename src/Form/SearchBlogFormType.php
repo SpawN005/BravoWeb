@@ -20,10 +20,10 @@ class SearchBlogFormType extends AbstractType
     {
         $builder
 
-        ->add('title',TextType::class, [
-            'attr' => ['placeholder' => 'Rechercher...'],
-                'constraints' => [new NotBlank()]
-            ])
+        ->add('title', TextType::class, [
+            'label' => 'Write a title',
+            'required' => false,
+        ])
 
         ->add('categorie', EntityType::class, [
             'class' => CategorieBlog::class,

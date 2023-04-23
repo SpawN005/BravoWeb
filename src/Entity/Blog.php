@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 #[UniqueEntity(fields:["title", "description"], message:"This Blog Already Exist.")]
 
-
-
 class Blog
 {
     #[ORM\Id]

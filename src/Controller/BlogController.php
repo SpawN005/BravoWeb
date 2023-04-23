@@ -5,16 +5,21 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Blog;
+use App\Entity\CategorieBlog;
 use App\Entity\NoteBlog;
 use App\Form\BlogType;
 use App\Form\SearchBlogFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use App\Repository\BlogRepository;
 use App\Repository\NoteBlogRepository;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+
 
 
 #[Route('/blog')]
@@ -119,19 +124,46 @@ class BlogController extends AbstractController
     #[Route('/readBlog', name: 'app_read_blog')]
     public function readBlog(Request $request, BlogRepository $r): Response
     {
-        $form = $this->createForm(SearchBlogFormType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $blogs = $r->findSearch($data['title'], $data['categorie']);
-        }else {
-            $blogs=$r->findAll();
-        }
+        //récupérer le repository 
+        $r=$this->getDoctrine()->getRepository(Blog::class);
+        $blogs=$r->findAll();
+        
             return $this->render('blog/readBlog.html.twig', [
             'blog' => $blogs,
-            'form' => $form->createView(),
         ]);
     }
+
+    //la méthode de recherche
+#[Route('/searchBlogByTitle', name: 'app_search_blog')]  
+    public function searchBlog(Request $r, BlogRepository $rep)
+    {
+        $title = null;
+        $categorie = null;
+        $blogs = [];
+        $form = $this->createForm(SearchBlogFormType::class);
+        $form->handleRequest($r);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $title = $form->get('title')->getData();
+            $categorie = $form->get('categorie')->getData();
+
+            $resultOfSearch = $rep->findByTitleAndCategorie($title,$categorie);
+
+            return $this->renderForm('blog/search.html.twig', [
+                'blog' => $resultOfSearch,
+                'searchBlogByTitle' => $form,
+
+            ]);
+        } 
+        $blogs = $rep->findAll();     
+        
+        return $this->renderForm('blog/search.html.twig', ['blog' => $blogs , 
+                        'searchBlogByTitle' => $form,
+                        'title' =>$title,
+                        'categorie' => $categorie,
+                        ]);    
+     
+    }
+
 
     
 
