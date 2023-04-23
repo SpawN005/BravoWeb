@@ -21,6 +21,12 @@ use App\Repository\NoteoeuvreRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use MercurySeries\FlashyBundle\FlashyNotifier;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+
+
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 
 
@@ -59,21 +65,66 @@ class ArtworkController extends AbstractController
     }
 
     #[Route('/new', name: 'app_artwork_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
+    public function new(HttpClientInterface $httpClient, Request $request, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
     {
+
         $artwork = new Artwork();
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
+        $artworks = $entityManager
+            ->getRepository(Artwork::class)
+            ->findByTitle($form['title']->getData());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form['url']->getData();
-            $fileName = $file->getClientOriginalName();
-            $file->move("C:/xampp/htdocs/img", $fileName);
-            $artwork->setUrl($fileName);
-            $entityManager->persist($artwork);
-            $entityManager->flush();
-            $flashy->info('Artwork Created!', 'http://your-awesome-link.com');
-            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        if ($artworks) {
+            $flashy->info("Title taken");
+        } else {
+            if ($form->isSubmitted() && $form->isValid()) {
+
+
+
+
+
+
+                $translate = $httpClient->request('POST', 'https://rapid-translate-multi-traduction.p.rapidapi.com/t', [
+                    'headers' => [
+                        'content-type' => 'application/json',
+                        'X-RapidAPI-Key' => '5663b0b24emsh9f1230312127163p13953ajsnc45c9ef48937',
+                        'X-RapidAPI-Host' => 'rapid-translate-multi-traduction.p.rapidapi.com',
+                    ],
+                    'body' => json_encode([
+                        'from' => 'fr',
+                        'to' =>  'en',
+                        'q' => $form['description']->getData()
+
+                    ]),
+                ]);
+
+                $response = $httpClient->request('POST', 'https://profanity-cleaner-bad-word-filter.p.rapidapi.com/profanity', [
+                    'headers' => [
+                        'content-type' => 'application/json',
+                        'X-RapidAPI-Key' => '5663b0b24emsh9f1230312127163p13953ajsnc45c9ef48937',
+                        'X-RapidAPI-Host' => 'profanity-cleaner-bad-word-filter.p.rapidapi.com',
+                    ],
+                    'body' => json_encode([
+                        'text' => $translate->toArray()[0],
+                        'maskCharacter' =>  'x',
+                        'language' => 'en'
+                    ]),
+                ]);
+                if ($response->toArray()["profanities"]) {
+                    $flashy->error('Bad Word detected!', 'http://your-awesome-link.com');
+                } else {
+                    $file = $form['url']->getData();
+                    $fileName = $file->getClientOriginalName();
+                    $file->move("C:/xampp/htdocs/img", $fileName);
+                    $artwork->setUrl($fileName);
+                    $entityManager->persist($artwork);
+                    $entityManager->flush();
+                    $flashy->info('Artwork Created!', 'http://your-awesome-link.com');
+
+                    return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+                }
+            }
         }
 
         return $this->renderForm('artwork/new.html.twig', [

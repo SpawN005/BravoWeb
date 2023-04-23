@@ -13,6 +13,7 @@
         "doctrine/orm": "^2.14",
         "excelwebzone/recaptcha-bundle": "^1.5",
         "gregwar/captcha-bundle": "2.1.2",
+        "guzzlehttp/guzzle": "^7.5",
         "kartik-v/bootstrap-star-rating": "^4.1",
         "kartik-v/yii2-widget-rating": "^1.0",
         "knplabs/knp-paginator-bundle": "^5.9",
