@@ -1,0 +1,31 @@
+{% extends "back.html.twig" %}
+
+{% block title %}Donations Available{% endblock %}
+
+{% block body %}
+        <h1>List Donations</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>title</th>
+                <th>description</th>
+                <th>date creation</th>
+                <th>date expiration</th>
+                <th>amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for d in donation %}
+                <tr>
+                    <td>{{ d.id }}</td>
+                    <td>{{ d.title }}</td>
+                    <td>{{ d.description }}</td>
+                    <td>{{ d.datecreation|date('d-m-Y') }}</td>
+                    <td>{{ d.dateexpiration|date('d-m-Y') }}</td>
+                    <td>{{ d.amount }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
