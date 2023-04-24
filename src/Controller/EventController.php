@@ -16,6 +16,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use Swift_Mailer;
+use Swift_Message;
+use Swift_SmtpTransport;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 
 class EventController extends AbstractController
@@ -114,7 +119,7 @@ class EventController extends AbstractController
 
 
     #[Route('/deleteEvent/{id}', name: 'app_deleteEvent')]
-    public function deleteEvent($id, EventRepository $rep, ReservationRepository $reservationRep, ManagerRegistry $doctrine, SessionInterface $session): Response
+    public function deleteEvent($id, EventRepository $rep, ReservationRepository $reservationRep, ManagerRegistry $doctrine, SessionInterface $session,Swift_Mailer $mailer): Response
     {
         //récupérer la classe à supprimer
         $event=$rep->find($id);
@@ -129,12 +134,15 @@ class EventController extends AbstractController
         $em->remove($event);
     
         // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
-        foreach ($reservations as $reservation) {
-            $user = $reservation->getIdParticipant();
-            $message = 'The event "' . $event->getTitle() . '" has been cancelled.';
-            $session->getFlashBag()->add('danger', $message);
-        }
-    
+       // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
+foreach ($reservations as $reservation) {
+    $user = $reservation->getIdParticipant();
+    $eventTitle = $event->getTitle();
+    $message = 'The event "' . $eventTitle . '" has been cancelled.';
+}
+    $session->getFlashBag()->add('danger', $message);
+    $this->email($user, $eventTitle, $mailer);
+
         // Enregistrer les modifications dans la base de données
         $em->flush();
     
@@ -180,5 +188,24 @@ $form=$this->createForm(EventType::class,$event);
                            return $this->redirectToRoute("app_event");
                        }
                        return $this->renderForm("event/updateEvent.html.twig", array("form"=>$form));
-                   }          
+                   }   
+                   
+                   public function email ($user,$eventTitle, $mailer){
+                    // Create a new SMTP transport with the desired configuration
+                    $dsn = getenv('MAILER_DSN');
+                    $transport = new Swift_SmtpTransport('smtp.gmail.com', 587, 'tls');
+                    $transport->setUsername('meriam123.hammi@gmail.com');
+                    $transport->setPassword('wnevuhcvabtqhhiz');
+                
+                    $mailer = new Swift_Mailer($transport);
+                
+                    //BUNDLE MAILER
+                    $message = (new Swift_Message('Annulaion evenement'))
+                        ->setFrom('meriam123.hammi@gmail.com')
+                        ->setTo($user->getEmail())
+                        ->setBody(" Bonjour,\n Nous vous informons que l'événement \"$eventTitle\"pour lequel vous avez réservé des places a été annulé.");
+                
+                    //send mail
+                    $mailer->send($message);
+                }
 }
