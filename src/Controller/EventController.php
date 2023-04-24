@@ -133,7 +133,7 @@ class EventController extends AbstractController
         $em=$doctrine->getManager();
         $em->remove($event);
     
-        // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
+       
        // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
 foreach ($reservations as $reservation) {
     $user = $reservation->getIdParticipant();
@@ -141,7 +141,7 @@ foreach ($reservations as $reservation) {
     $message = 'The event "' . $eventTitle . '" has been cancelled.';
 }
     $session->getFlashBag()->add('danger', $message);
-    $this->email($user, $eventTitle, $mailer);
+    $this->emailAnnulation($user, $eventTitle, $mailer);
 
         // Enregistrer les modifications dans la base de données
         $em->flush();
@@ -173,7 +173,7 @@ $form=$this->createForm(EventType::class,$event);
 
                    #[Route('/updateEvent/{id}', name: 'app_updateEvent')]
                    public function updateEvent($id, EventRepository $eventRepository, ManagerRegistry $doctrine, Request $request,
-                   EntityManagerInterface $entityManager)
+                   EntityManagerInterface $entityManager,Swift_Mailer $mailer, ReservationRepository $reservationRep)
                    {
                        //récupérer la classe à modifier
                        $event = $eventRepository->find($id);
@@ -185,12 +185,23 @@ $form=$this->createForm(EventType::class,$event);
                         $file->move("C:/xampp/htdocs/img", $fileName);
                         $event->setImage($fileName);
                         $entityManager->flush();
+
+ // Récupérer toutes les réservations de cet événement
+        $reservations = $reservationRep->findBy(['id_event' => $event]);
+    
+                         // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
+                        foreach ($reservations as $reservation) {
+                              $user = $reservation->getIdParticipant();
+                             $eventTitle = $event->getTitle();
+                     }
+                            
+                            $this->emailUpdate($user, $eventTitle, $mailer);
                            return $this->redirectToRoute("app_event");
                        }
                        return $this->renderForm("event/updateEvent.html.twig", array("form"=>$form));
                    }   
                    
-                   public function email ($user,$eventTitle, $mailer){
+                   public function emailAnnulation ($user,$eventTitle, $mailer){
                     // Create a new SMTP transport with the desired configuration
                     $dsn = getenv('MAILER_DSN');
                     $transport = new Swift_SmtpTransport('smtp.gmail.com', 587, 'tls');
@@ -204,6 +215,24 @@ $form=$this->createForm(EventType::class,$event);
                         ->setFrom('meriam123.hammi@gmail.com')
                         ->setTo($user->getEmail())
                         ->setBody(" Bonjour,\n Nous vous informons que l'événement \"$eventTitle\"pour lequel vous avez réservé des places a été annulé.");
+                
+                    //send mail
+                    $mailer->send($message);
+                }
+                public function emailUpdate ($user,$eventTitle, $mailer){
+                    // Create a new SMTP transport with the desired configuration
+                    $dsn = getenv('MAILER_DSN');
+                    $transport = new Swift_SmtpTransport('smtp.gmail.com', 587, 'tls');
+                    $transport->setUsername('meriam123.hammi@gmail.com');
+                    $transport->setPassword('wnevuhcvabtqhhiz');
+                
+                    $mailer = new Swift_Mailer($transport);
+                
+                    //BUNDLE MAILER
+                    $message = (new Swift_Message('Modification evenement'))
+                        ->setFrom('meriam123.hammi@gmail.com')
+                        ->setTo($user->getEmail())
+                        ->setBody(" Bonjour,\n Nous vous informons que l'événement \"$eventTitle\"pour lequel vous avez réservé des places a été modifié, veuillez consulter dans notre site web.");
                 
                     //send mail
                     $mailer->send($message);

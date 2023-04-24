@@ -276,6 +276,8 @@ public function addReservation(
     //send mail
     $mailer->send($message);
     }
+   
+
 
 
 }

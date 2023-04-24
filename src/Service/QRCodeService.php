@@ -28,28 +28,7 @@ class QrcodeService
         $this->builder = $builder;
         
     }
-    // public function getEventInfoString(Reservation $reservation)
-    //  {
     
-    //     $qrCodeContent = '';
-
-    //     $event = $reservation->getIdEvent();
-    // if ($event) {
-
-    //     $qrCodeContent .= 'BEGIN:VEVENT' . PHP_EOL;
-    //     $qrCodeContent .= 'SUMMARY:' . $reservation->getIdEvent()->getTitle() . PHP_EOL;
-    //     $qrCodeContent .= 'DTSTART:' . date_format($reservation->getIdEvent()->getDateBeg(), 'Ymd\THis\Z') . PHP_EOL;
-    //     $qrCodeContent .= 'DTEND:' . date_format($reservation->getIdEvent()->getDateEnd(), 'Ymd\THis\Z') . PHP_EOL;
-    //     $qrCodeContent .= 'Nombre de places réservées: ' . $reservation->getNbPlace() . "\n";
-    //     $qrCodeContent .= 'DESCRIPTION:' . $reservation->getIdEvent()->getDescription() . PHP_EOL;
-    //     $qrCodeContent .= 'END:VEVENT';
-    // }
-      
-
-    //     return $qrCodeContent;
-    //  }
-
-
 
     public function qrcode($eventName, $eventId, $eventdesc, $eventdate1, $eventdate2)
     {
