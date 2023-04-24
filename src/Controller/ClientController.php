@@ -23,10 +23,14 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Twilio\Rest\Client;
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 
+=======
+use App\Security\VerificationService;
+>>>>>>> f4de068c876dd7233105b8b740150d56f49afc0b
 
 
 
@@ -66,10 +70,15 @@ class ClientController extends AbstractController
         }
     }
 
+
     
 
+<<<<<<< HEAD
     #[Route('/client/profile/modifier', name: 'clientProfile', methods: ['GET', 'POST'])]
 
+=======
+#[Route('/client/profile/modifier', name: 'clientProfile',methods: ['GET', 'POST'])]
+>>>>>>> f4de068c876dd7233105b8b740150d56f49afc0b
 public function userProfile(ManagerRegistry $doctrine, Request $request, UserRepository $repository, SluggerInterface $slugger): response
 {
     $user= $this->getUser();
@@ -125,6 +134,7 @@ public function userProfile(ManagerRegistry $doctrine, Request $request, UserRep
 
 
 
+<<<<<<< HEAD
  #[Route('/client/profile/modifier/{id}', name: 'deleteProfile')]
      
 public function DeleteUser(EntityManagerInterface $entityManager,User $user, UserRepository $repository,$id,ManagerRegistry $doctrine,Request $request ){
@@ -209,6 +219,8 @@ public function verifyCode(Request $request, EntityManagerInterface $em): JsonRe
   
 
 
+=======
+>>>>>>> f4de068c876dd7233105b8b740150d56f49afc0b
   
 
 

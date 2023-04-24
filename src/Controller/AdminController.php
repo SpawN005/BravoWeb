@@ -171,6 +171,7 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
 
   }
 
+<<<<<<< HEAD
   #[Route('/admin/ban/{id}', name: 'banUser')]
     public function banUser(Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, int $id): Response
   {
@@ -189,6 +190,27 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
   
   
   
+=======
+  #[Route('/admin/{id}', name: 'banUser')]
+public function banUser(EntityManagerInterface $entityManager, UserRepository $repository, $id, Request $request) 
+{
+    $userId = $this->getUser()->getId();
+    $session = $request->getSession();
+
+    $user = $entityManager->getRepository(User::class)->find($userId);
+
+    if ($user) {
+        $user->setBanned(1);
+        $entityManager->flush();
+        $session->set('setBanned', 1);
+
+        $session->remove($id);
+    }
+
+    return $this->redirectToRoute('adminbacks');
+}
+
+>>>>>>> f4de068c876dd7233105b8b740150d56f49afc0b
 
 
     
