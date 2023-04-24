@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 
 
+
 class DonationController extends AbstractController
 {
     #[Route('/donation', name: 'app_donation', methods: ['GET'])]
@@ -28,16 +29,23 @@ class DonationController extends AbstractController
         ]);
     }
     #[Route('/donation/show', name: 'app_donation_show', methods:['GET'])]
-    public function show(EntityManagerInterface $entityManager): Response
-{
-    $donations = $entityManager
-        ->getRepository(Donation::class)
-        ->findAll();
+    public function show(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $searchTerm = $request->query->get('search');
+        $donations = $entityManager->getRepository(Donation::class)->findAll();
+        if ($searchTerm) {
+            $donations = $entityManager->getRepository(Donation::class)->createQueryBuilder('d')
+                ->where('d.title LIKE :title')
+                ->setParameter('title', '%' . $searchTerm . '%')
+                ->getQuery()
+                ->getResult();
+        }
         return $this->render('donation/show.html.twig', [
             'controller_name' => 'DonationController',
-            'donation' => $donations
+            'donation' => $donations,
+            'searchTerm' => $searchTerm
         ]);
-}
+    }
     #[Route('/donation/back', name: 'app_donation_back', methods:['GET'])]
     public function back(EntityManagerInterface $entityManager): Response
     {
