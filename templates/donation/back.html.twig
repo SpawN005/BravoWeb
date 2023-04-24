@@ -13,6 +13,7 @@
                 <th>date creation</th>
                 <th>date expiration</th>
                 <th>amount</th>
+                <th>Owner</th>
             </tr>
             </thead>
             <tbody>
@@ -24,6 +25,8 @@
                     <td>{{ d.datecreation|date('d-m-Y') }}</td>
                     <td>{{ d.dateexpiration|date('d-m-Y') }}</td>
                     <td>{{ d.amount }}</td>
+                    <td>{{ d.owner }}</td>
+
                 </tr>
             {% endfor %}
             </tbody>
