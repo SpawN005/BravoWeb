@@ -6,6 +6,8 @@ use App\Entity\NoteBlog;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class NoteBlogType extends AbstractType
 {
@@ -13,6 +15,9 @@ class NoteBlogType extends AbstractType
     {
         $builder
             ->add('note')
+
+            ->add('Add',SubmitType::class)
+
            
         ;
     }
