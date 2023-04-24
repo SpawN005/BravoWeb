@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Blog;
+use App\Entity\TwilioSmS;
+
 use App\Entity\CategorieBlog;
 use App\Entity\NoteBlog;
 use App\Form\NoteBlogType;
@@ -65,6 +67,15 @@ class BlogController extends AbstractController
             $em =$doctrine->getManager() ;
             $em->persist($blog);
             $em->flush();
+
+
+            $twilio = new TwilioSmS('ACf4d21551919fa154b13f7057f9474002',
+             '0b2fecada12dc7ea90b60b62cc39edcd', '+16813666808');
+            $twilio->sendSMS('+21655757442', 'Nouveau blog est ajouté !');
+
+
+
+
             return $this->redirectToRoute("app_blog");
         }
     return $this->renderForm("blog/addBlog.html.twig",array("f"=>$form));
