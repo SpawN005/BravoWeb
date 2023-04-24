@@ -49,11 +49,9 @@ class ReservationController extends AbstractController
         }
         
         $reservations = $user->getReservations();
-        $event = $user->getEvents(); // récupérer le premier événement associé à l'utilisateur
         
         return $this->render('reservation/indexUser.html.twig', [
             'reservations' => $reservations,
-            'event' => $event
         ]);
     }
     
@@ -275,14 +273,14 @@ SessionInterface $session): Response
 //     ]);
 // }
 
-#[Route('/addReservation', name: 'app_addReservation')]
+#[Route('/addReservation/{id}', name: 'app_addReservation')]
 public function addReservation(
     ManagerRegistry $doctrine,
     Request $request,
     EventRepository $eventRepository,
     SessionInterface $session,
     SendMailService $emailService,
-
+    $id,
     QrcodeService $qrcodeService
 ): Response {
     $reservation = new Reservation();
@@ -292,9 +290,10 @@ public function addReservation(
     $em=$this->getDoctrine()->getManager();
     
     // in index function
-    $eventId = 39; // replace with the ID of the desired event
+    // $eventId = 39; // replace with the ID of the desired event
+
     $eventRepository = $em->getRepository(Event::class);
-    $event = $eventRepository->find($eventId);
+    $event = $eventRepository->find($id);
 
     $qrcodeDataUri = $qrcodeService->qrcode($event->getTitle(), $event->getId(),$event->getDescription(),$event->getdateBeg(),$event->getdateEnd());
 
@@ -306,12 +305,13 @@ public function addReservation(
 
 
     if ($form->isSubmitted() && $form->isValid()) {
-        $eventId = $reservation->getIdEvent()->getId();
-        $event = $eventRepository->find($eventId);
+        // $eventId = $reservation->getIdEvent()->getId();
+        $event = $eventRepository->find($id);
         $reservation = $form->getData();
 
         $reservedSeats = $reservation->getNbPlace();
         $availableSeats = $event->getNbPlaceMax();
+        $reservation ->setIdEvent($event);
 
         if ($availableSeats === 0) {
             $this->addFlash('error', 'L\'événement est complet !');

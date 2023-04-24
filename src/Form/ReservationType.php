@@ -27,11 +27,11 @@ class ReservationType extends AbstractType
             ])
             
 
-            ->add('id_event',EntityType::class, [
-                'class'=>Event::class,
-                'choice_label' => 'title',
+            // ->add('id_event',EntityType::class, [
+            //     'class'=>Event::class,
+            //     'choice_label' => 'title',
                
-            ])
+            // ])
             ->add('id_participant',EntityType::class, [
                 'class'=>User::class,
                 'query_builder' => function (EntityRepository $er) {
