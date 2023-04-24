@@ -12,6 +12,8 @@ use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ReservationType extends AbstractType
 {
@@ -23,6 +25,7 @@ class ReservationType extends AbstractType
                 'attr' => ['min' => 1, 'max' => 10],
                 'constraints' => [new Range(['min' => 1, 'max' => 10])]
             ])
+            
 
             ->add('id_event',EntityType::class, [
                 'class'=>Event::class,
@@ -47,6 +50,7 @@ class ReservationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Reservation::class,
+            
         ]);
     }
 }

@@ -71,13 +71,15 @@
                                 <th>Participant</th>
                                 <th>Confirmation</th>
                                 <th>Number of places</th>
+                                
                                 <th>Action</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
-                       {% if qrCodeImage is defined %}
+                       {# {% if qrCodeImage is defined %}
     <img src="{{ qrCodeImage.getDataUri() }}" alt="QR code">
-{% endif %}
+{% endif %} #}
 
 
                        {% for reservation in reservations %}
@@ -87,6 +89,7 @@
         <td>{{ reservation.idParticipant.email }}</td>
         <td>{{ reservation.isConfirmed ? 'Confirmed' : 'Pending' }}</td>
         <td>{{ reservation.nbPlace }}</td>
+       
 
         <td>
             <a href="{{ path('app_deleteReservationUser', {'id': reservation.id}) }}">Delete</a>

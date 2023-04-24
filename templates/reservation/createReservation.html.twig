@@ -51,6 +51,7 @@
 
 
 
+
                       {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
                             <div class="row">
                                 <div class="col-lg-6">
@@ -73,8 +74,9 @@
                                 {{ form_label (form.nb_place, "Number of places") }} 
                                 {{ form_widget(form.nb_place) }} 
                                  {{ form_errors (form.nb_place) }} 
-                                 </div>
-                                 
+
+                   
+
 
                                 
                             </div><!-- /.row -->
@@ -82,9 +84,13 @@
                                     <div class="col-lg-12 mt-3">
                                     <button class="thm-btn contact-one__btn" >{{ button_label|default('Confirmed') }}</button>
                                 </div><!-- /.col-lg-12 -->
+                                 
                             <a href="{{ path('app_reservationUser')  }}">Retour</a>
                     {{form_end(form)}}
-                     
+
+                    
+                     <img style="" src="{{ qrcodeDataUri }}" alt="QR Code">
+
                  
                     </div><!-- /.col-lg-8 -->
                    

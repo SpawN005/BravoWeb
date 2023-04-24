@@ -17,9 +17,11 @@ use App\Repository\EventRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Service\SendMailService;
-use App\Service\QRCodeService;
+use App\Service\QrcodeService;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 
 
@@ -55,7 +57,8 @@ class ReservationController extends AbstractController
         ]);
     }
     
-    
+   
+
     
 
     
@@ -280,17 +283,32 @@ public function addReservation(
     SessionInterface $session,
     SendMailService $emailService,
 
-    // QRCodeService $qrCodeService
+    QrcodeService $qrcodeService
 ): Response {
     $reservation = new Reservation();
     $form = $this->createForm(ReservationType::class, $reservation);
+    
+
+    $em=$this->getDoctrine()->getManager();
+    
+    // in index function
+    $eventId = 39; // replace with the ID of the desired event
+    $eventRepository = $em->getRepository(Event::class);
+    $event = $eventRepository->find($eventId);
+
+    $qrcodeDataUri = $qrcodeService->qrcode($event->getTitle(), $event->getId(),$event->getDescription(),$event->getdateBeg(),$event->getdateEnd());
+
+   
+
     $form->handleRequest($request);
     $userRepository = $doctrine->getRepository(User::class);
+
 
 
     if ($form->isSubmitted() && $form->isValid()) {
         $eventId = $reservation->getIdEvent()->getId();
         $event = $eventRepository->find($eventId);
+        $reservation = $form->getData();
 
         $reservedSeats = $reservation->getNbPlace();
         $availableSeats = $event->getNbPlaceMax();
@@ -312,44 +330,52 @@ public function addReservation(
         $em->persist($reservation);
         $em->flush();
 
-        // $qrCode = $qrCodeService->generateQRCodeImage($reservation);
-        // $qrCodePath = 'images/' . $reservation->getId() . '.png';
-        // $qrCodeUrl = $this->getParameter('app.base_url') . '/' . $qrCodePath;
-        // $qrCode->saveToFile($qrCodePath);
+       
+    //    Mettez à jour l'URL du QR Code après la génération de la réservation
+        // $qrCodeFileName = $qrCodeService->generateQRCodeImage($reservation);
+        // $qrCodeUrl = $this->getParameter('app.base_url') . '/images/qr-code/' . $qrCodeFileName;
 
-        if ($reservation->getIdParticipant() === null) {
-            $this->addFlash('error', 'La réservation doit être liée à un utilisateur !');
-            return $this->redirectToRoute('app_reservationUser');
-        }
-            // Récupérer l'utilisateur d'id 5
-            $user = $userRepository->find(5);
-            $recipientEmail = $user->getEmail();
 
-        $subject = 'Confirmation de réservation';
+
+        // if ($reservation->getIdParticipant() === null) {
+        //     $this->addFlash('error', 'La réservation doit être liée à un utilisateur !');
+        //     return $this->redirectToRoute('app_reservationUser');
+        // }
+        //     // Récupérer l'utilisateur d'id 
+        //     $user = $userRepository->find($reservation->getIdParticipant());
+        //     $recipientEmail = $user->getEmail();
+
+        // $subject = 'Confirmation de réservation';
+
+
         // $body = $this->renderView('email/confirmation.html.twig', [
         //     // 'qrCodeUrl' => $qrCodeUrl,
         //     'r' => $reservation,
         // ]);
-        $body = "Votre réservation pour l'événement #" . $eventId . " a été effectuée avec succès.";
 
-        $emailService->sendMail(
-            'meriam123.hammi@gmail.com',
-            'Tun art',
-            'myriam123.hammi@gmail.com',
-            $subject,
-            'confirmation',
-            ['body' => $body]
-        );
+
+        // $body = "Votre réservation pour l'événement #" . $eventId . " a été effectuée avec succès.";
+
+        // $emailService->sendMail(
+        //     $this->getParameter('meriam123.hammi@gmail.com'),
+        //     $this->getParameter('Tun art'),
+        //     $recipientEmail,
+        //     $subject,
+        //     'confirmation',
+        //     ['body' => $body]
+        // );
         
         
         
-        $this->addFlash('success', 'La réservation a été effectuée avec succès !');
+        // $this->addFlash('success', 'La réservation a été effectuée avec succès !');
 
         return $this->redirectToRoute('app_reservationUser');
     }
 
     return $this->renderForm("reservation/createReservation.html.twig", [
         "form" => $form,
+        // "qrCodeUrl" => $qrCodeUrl,
+         "qrcodeDataUri" => $qrcodeDataUri,
     ]);
 }
 
@@ -395,6 +421,31 @@ public function addReservation(
             $em->flush();
         }
     }
+
+//     public function generateqrCode(Reservation $reservation)
+// {
+//     $qrCodeService = new QRCodeService();
+//     $qrCodeImage = $qrCodeService->generateQRCodeImage($reservation);
+
+//     $fileName = 'qrcode_' . $reservation->getId() . '.png';
+//     $qrCodePath = 'images/' . $fileName;
+
+//     $publicDirectory = $this->getParameter('kernel.project_dir') . '/public';
+//     $qrCodeFullPath = $publicDirectory . '/' . $qrCodePath;
+
+//     if (!file_exists($qrCodeFullPath)) {
+//         $qrCodeFile = fopen($qrCodeFullPath, 'w');
+//         fwrite($qrCodeFile, $qrCodeImage);
+//         fclose($qrCodeFile);
+//         $qrCodePath = 'images/' . $fileName;
+//     }
+
+//     return $this->render('reservation/createReservation.html.twig', [
+//         'reservationForm' => $form->createView(),
+//         'qrCodePath' => $qrCodePath,
+//     ]);
+// }
+
     
 
 
