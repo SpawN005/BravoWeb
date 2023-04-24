@@ -29,6 +29,9 @@ use CMEN\GoogleChartsBundle\GoogleCharts\Options\ChartOptionsInterface;
 use CMEN\GoogleChartsBundle\GoogleCharts\Options\PieChart\PieChartOptions;
 use Knp\Component\Pager\PaginatorInterface;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\BarChart\BarChartOptions;;
+
 
 
 
@@ -360,11 +363,35 @@ public function stats (Request $request ,ReclamationRepository $reclamationRepos
     $lineChart->getOptions()->getLegend()->getTextStyle()->setColor('#FFFFFF');
     $lineChart->getOptions()->setColors(['#FF0000', '#00FF00', '#0000FF']);
 
-  
-        return $this->render('reclamation/stats.html.twig', [
-            'reclamations' => $reclamation,'piechart' => $pieChart,'linechart' => $lineChart
-        ]);
-    }
+     // pour le graphique à barres selon la note
+$barChart = new BarChart();
+$reclamationsByNote = $reclamationRepository->countByNote();
+
+$dataArray = [['Note', 'Nombre de réclamations']];
+foreach ($reclamationsByNote as $reclamationByNote) {
+    $dataArray[] = [$reclamationByNote['note'], $reclamationByNote['count']];
+}
+
+$barChart->getData()->setArrayToDataTable($dataArray);
+$barChart->getOptions()->setTitle('Nombre de réclamations par note');
+$barChart->getOptions()->getTitleTextStyle()->setColor('#FFFFFF');
+$barChart->getOptions()->getTitleTextStyle()->setBold(true);
+$barChart->getOptions()->getTitleTextStyle()->setItalic(true);
+$barChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+$barChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+$barChart->getOptions()->setHeight(300);
+$barChart->getOptions()->setWidth(600);
+$barChart->getOptions()->setBackgroundColor('#000000'); // noir
+$barChart->getOptions()->getLegend()->getTextStyle()->setColor('#FFFFFF');
+$barChart->getOptions()->setColors(['#0000FF']);
+
+return $this->render('reclamation/stats.html.twig', [
+    'reclamations' => $reclamation,
+    'piechart' => $pieChart,
+    'linechart' => $lineChart,
+    'barchart' => $barChart
+]);
+
 
 
 
@@ -388,5 +415,5 @@ public function stats (Request $request ,ReclamationRepository $reclamationRepos
 
 
      
-
+}
 }

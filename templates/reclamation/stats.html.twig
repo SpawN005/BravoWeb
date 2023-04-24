@@ -26,13 +26,17 @@
                         <div class="side-app">
                             <div id="div_chart"></div>
                             <div id="div_line_chart"></div>
+                            <div id="div_barchart"></div>
+
 
 
                             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js
 "></script>
                             <script type="text/javascript">
                                 {{ gc_draw(piechart, 'div_chart') }}
-                                 {{ gc_draw(linechart, 'div_line_chart') }}
+                                {{ gc_draw(linechart, 'div_line_chart') }}
+                                {{ gc_draw(barchart, 'div_barchart') }}
+
                             </script>
                         </div>
                     </div>
