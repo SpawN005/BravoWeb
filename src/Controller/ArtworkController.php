@@ -79,24 +79,17 @@ class ArtworkController extends AbstractController
             $flashy->info("Title taken");
         } else {
             if ($form->isSubmitted() && $form->isValid()) {
-
-
-
-
-
-
-                $translate = $httpClient->request('POST', 'https://rapid-translate-multi-traduction.p.rapidapi.com/t', [
+                $translate = $httpClient->request('POST', 'https://google-translate1.p.rapidapi.com/language/translate/v2', [
                     'headers' => [
-                        'content-type' => 'application/json',
+                        'content-type' => 'application/x-www-form-urlencoded',
+                        'Accept-Encoding' => 'application/gzip',
                         'X-RapidAPI-Key' => '5663b0b24emsh9f1230312127163p13953ajsnc45c9ef48937',
-                        'X-RapidAPI-Host' => 'rapid-translate-multi-traduction.p.rapidapi.com',
+                        'X-RapidAPI-Host' => 'google-translate1.p.rapidapi.com',
                     ],
-                    'body' => json_encode([
-                        'from' => 'fr',
-                        'to' =>  'en',
-                        'q' => $form['description']->getData()
-
-                    ]),
+                    'body' => [
+                        'q' => $form['description']->getData(),
+                        'target' =>  'en',
+                    ],
                 ]);
 
                 $response = $httpClient->request('POST', 'https://profanity-cleaner-bad-word-filter.p.rapidapi.com/profanity', [
@@ -106,7 +99,7 @@ class ArtworkController extends AbstractController
                         'X-RapidAPI-Host' => 'profanity-cleaner-bad-word-filter.p.rapidapi.com',
                     ],
                     'body' => json_encode([
-                        'text' => $translate->toArray()[0],
+                        'text' => $translate->toArray()["data"]["translations"][0]["translatedText"],
                         'maskCharacter' =>  'x',
                         'language' => 'en'
                     ]),
