@@ -77,6 +77,17 @@ class User
      */
     #[ORM\Column(name: 'checker', type: 'string', length: 200, nullable: false, options: ['default' => "'usable'"])]
     private $checker = '\'usable\'';
+    #[ORM\OneToMany(targetEntity: 'Donater', mappedBy: 'idUser')]
+
+    private $donaters;
+    public function __construct()
+    {
+        $this->donaters = new ArrayCollection();
+    }
+    public function getDonaters()
+    {
+        return $this->donaters;
+    }
 
     public function getId(): ?int
     {

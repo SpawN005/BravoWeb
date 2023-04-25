@@ -82,6 +82,22 @@ class Donation
     #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'CategorieDonation')]
     private $categorie;
+    #[ORM\OneToMany(targetEntity: 'Donater', mappedBy: 'idDonation')]
+
+    private $donaters;
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+    public function __construct()
+    {
+        $this->donaters = new ArrayCollection();
+    }
+    public function getDonaters()
+    {
+        return $this->donaters;
+    }
+
 
     public function getId(): ?int
     {
