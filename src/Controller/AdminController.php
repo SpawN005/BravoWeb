@@ -185,6 +185,15 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
   
       return $this->redirectToRoute('adminbacks');
   }
+
+
+
+    #[Route("/admin/chart.html", name:"admin_chart")]
+    public function chart(UserRepository $userRepository)
+    {
+        return $this->render('admin/chart.html.twig',['user'=>$userRepository->findAll()]);
+        
+    }
   
   
   

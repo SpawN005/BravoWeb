@@ -147,9 +147,8 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
   #[Route('/client/profile/modifier/{id}/sendVerificationCode', methods: ['POST'])]
   public function sendVerificationCode(Request $request)
   {
-      // Extract the phone number from the form submission
-    // Extract the phone number from the form submission
-    $phoneNumber = '+21656918803';
+
+    $phoneNumber = '+21655249321';
 
       // Check whether the phone number already contains the country code
       if (!preg_match('/^\+216\d{8}$/', $phoneNumber)) {
@@ -163,7 +162,6 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
       $session = $request->getSession();
       $session->set('verification_code', $verificationCode);
   
-      // Send the verification code via Twilio
       $sid = 'AC722e32116c6083cff1c7e8898c7a1dd5';
       $token = '7a9334e17663891b9f651c3fdcbef544';
       $client = new Client($sid, $token);
@@ -171,12 +169,11 @@ public function DeleteUser(EntityManagerInterface $entityManager,User $user, Use
       $message = $client->messages->create(
           $phoneNumber, // the phone number to send the verification code to
           array(
-              'from' => '+15076088911', // your Twilio phone number
+              'from' => '+15076088911',
               'body' => 'Your TunART verification code is: ' . $verificationCode
           )
       );
   
-      // Return a JSON response indicating success
       return new JsonResponse(['success' => true]);
   }
 

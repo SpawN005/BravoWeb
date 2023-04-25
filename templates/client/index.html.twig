@@ -470,7 +470,6 @@ function CustomAlert(){
 let customAlert = new CustomAlert();
 
 </script>
-<!-- Video and picture-taking functionality -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   const video = document.getElementById('video');
@@ -478,7 +477,6 @@ let customAlert = new CustomAlert();
   const snap = document.getElementById('snap');
   const constraints = { video: true };
 
-  // Attach the video stream to the video element and update the canvas with the video frame
   function handleSuccess(stream) {
     video.srcObject = stream;
     setInterval(() => {
@@ -486,17 +484,14 @@ let customAlert = new CustomAlert();
     }, 100);
   }
 
-  // Handle errors if there are any
   function handleError(error) {
     console.error(`Error: ${error}`);
   }
 
-  // Attach the video stream to the video element and update the canvas with the video frame
   navigator.mediaDevices.getUserMedia(constraints)
     .then(handleSuccess)
     .catch(handleError);
   
-  // Take a picture by drawing the current canvas image to a new canvas element
   snap.addEventListener('click', () => {
     const imgData = canvas.toDataURL('image/png');
     console.log('Image data:', imgData);
@@ -532,32 +527,24 @@ $(document).ready(function() {
 
 function sendVerificationCode() {
     console.log('sendVerificationCode function called!');
-    var phoneNumber = '+21656918803' 
+    var phoneNumber = '+21655249321' 
     console.log("Phone number: " + phoneNumber);
-    
-    // Perform validation on the phone number here, if necessary
-    // ...
-    
-    // Make AJAX call to server to send verification code to phone number
+
     $.ajax({
         url: "/client/profile/modifier/{id}/sendVerificationCode",
         type: "POST",
         data: { phone: phoneNumber },
         success: function(response) {
-            // Handle success response from server
             console.log(response);
             
-            // Display flash message and prompt user for verification code
             var flashMessage = 'Verification code sent to ' + phoneNumber + '. Please enter the code below:';
             var verificationCode = prompt(flashMessage);
             
-            // Make AJAX call to server to verify the code
             $.ajax({
                 url: "/client/profile/modifier/{id}/verifyCode",
                 type: "POST",
                 data: { code: verificationCode },
                 success: function(response) {
-                    // Handle success response from server
                     console.log(response);
                     if (response.success) {
                         alert('Your phone has been verified successfully!');
@@ -569,7 +556,6 @@ function sendVerificationCode() {
                 },
 
                 error: function(xhr) {
-                    // Handle error response from server
                     console.log(xhr.responseText);
                     alert('Please make sure you typed the right code.');
                 }

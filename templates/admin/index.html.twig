@@ -246,14 +246,14 @@
             <a href="">Show All</a>
             <a class="nav-link nav-icon search-bar-toggle " href="#">
               <form class="d-none d-md-flex ms-4" id="search-form">
-                <input class="form-control bg-dark border-0" type="search" placeholder="Search" id="search-input">
+                <input class="form-control bg-dark border-0" type="search" placeholder="Seaaaaarch" id="filter-name">
               </form>
             </a>
 
           </div>
         <div id="user-table">
           <div class="table-responsive">
-            <table class="table text-start align-middle table-bordered table-hover mb-0">
+            <table class="table text-start align-middle table-bordered table-hover mb-0" id="customers-table">
               <thead>
               <tr>
                 <th scope="col" data-sortable="" style="width: 7.37101%;">
@@ -284,29 +284,30 @@
               </tr>
               </thead>
               <tbody >
-              {% for u in userClient %}
-              <tr >
-                <th scope="row">{{u.id}}</th>
+              {% for u in range (0,4) %}
+              <tr class="ls1" data-name="{{ userClient[u].firstName }}">
+                <th scope="row">{{userClient[u].id}}</th>
                 <td>
 
-                  {% if u.image == null %}
+                  {% if userClient[u].image == null %}
 
                     <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
                   {% else %}
 
-                    <img src="{{ asset('/uploads/images/' ~ u.image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                    <img src="{{ asset('/uploads/images/' ~ userClient[u].image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
                   {% endif %}
 
 
 
                 </td>
-                <td>{{u.firstName}}</td>
-                <td>{{u.lastName}}</td>
-                <td>{{u.phone}}</td>
-                <td>{{u.email}}</td>
+                <td data-lastname="{{ userClient[u].lastName }}">{{userClient[u].firstName}}</td>
+                <td data-lastname="{{ userClient[u].lastName }}">{{userClient[u].lastName}}</td>
+                <td data-phone="{{ userClient[u].phone }}">{{userClient[u].phone}}</td>
+                <td data-email="{{ userClient[u].email }}">{{userClient[u].email}}</td>
+
 
                 <td>
-                {% if u.banned == 0 %}
+                {% if userClient[u].banned == 0 %}
 
                   <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
                 {% else %}
@@ -318,18 +319,111 @@
 
 
                 <td>
-                  <a type="button" class="btn btn-danger m-2" href="{{ path('deleteUser', { 'id': u.getId()  }) }}">Delete Account</a>
-                  <a type="button" class="btn btn-danger m-2" href="{{ path('banUser', { 'id': u.id }) }}">Ban User</a>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('deleteUser', { 'id': userClient[u].getId()  }) }}">Delete Account</a>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('banUser', { 'id': userClient[u].id }) }}">Ban User</a>
                 </td>
                 {% endfor %}
 
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ADD ADMIN</button>
+                {% for u in range (5,userClient|length -1) %}
+
+
+              <tr class="ls2" style="display: none;" data-name="{{ userClient[u].firstName }}">
+                <th scope="row">{{userClient[u].id}}</th>
+                <td>
+
+                  {% if userClient[u].image == null %}
+
+                    <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                  {% else %}
+
+                    <img src="{{ asset('/uploads/images/' ~ userClient[u].image) }}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                  {% endif %}
+
+
+
+                </td>
+                <td data-lastname="{{ userClient[u].lastName }}">{{userClient[u].firstName}}</td>
+                <td data-lastname="{{ userClient[u].lastName }}">{{userClient[u].lastName}}</td>
+                <td data-phone="{{ userClient[u].phone }}">{{userClient[u].phone}}</td>
+                <td data-email="{{ userClient[u].email }}">{{userClient[u].email}}</td>
+
+                <td>
+                {% if userClient[u].banned == 0 %}
+
+                  <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
+                {% else %}
+                  <span class="badge d-block bg-red bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">  BANNED </span>
+                {% endif %}
+                </td>
+
+                
+
+
+                <td>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('deleteUser', { 'id': userClient[u].getId()  }) }}">Delete Account</a>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('banUser', { 'id': userClient[u].id }) }}">Ban User</a>
+                </td>
+                {% endfor %}
                 {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
 
 
               </tbody>
+<div align="center">
+<br>
             </table>
-          </div>
+            <table width="100%">
+            <tr>  <td style="color: transparent;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+            <td>           
+              <button id="prev-btn" class="btn btn-primary"><</button>              </td><td>
+              <button id="prev1-btn" class="btn btn-primary">1</button>             </td><td>
+              <button id="next-btn" class="btn btn-primary">2</button></td><td>
+              <button id="next1-btn" class="btn btn-primary">></button></td>    <td style="color: transparent;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+</tr></table></div>
+
+                <script>
+        const nextBtn = document.getElementById('next-btn');
+        const prevtBtn = document.getElementById('prev-btn');
+        const nextBtn1 = document.getElementById('next1-btn');
+        const prevtBtn1 = document.getElementById('prev1-btn');
+        const ls1 = document.getElementsByClassName('ls1');
+        const ls2 = document.getElementsByClassName('ls2');
+
+        nextBtn.addEventListener('click', () => {
+          for (let i = 0; i < ls1.length; i++) {
+            ls1[i].style.display = 'none';
+          }
+          for (let i = 0; i < ls2.length; i++) {
+            ls2[i].style.display = 'table-row';
+          }
+        });
+
+        prevtBtn.addEventListener('click', () => {
+          for (let i = 0; i < ls1.length; i++) {
+            ls1[i].style.display = 'table-row';
+          }
+          for (let i = 0; i < ls2.length; i++) {
+            ls2[i].style.display = 'none';
+          }
+        });
+        nextBtn1.addEventListener('click', () => {
+          for (let i = 0; i < ls1.length; i++) {
+            ls1[i].style.display = 'none';
+          }
+          for (let i = 0; i < ls2.length; i++) {
+            ls2[i].style.display = 'table-row';
+          }
+        });
+
+        prevtBtn1.addEventListener('click', () => {
+          for (let i = 0; i < ls1.length; i++) {
+            ls1[i].style.display = 'table-row';
+          }
+          for (let i = 0; i < ls2.length; i++) {
+            ls2[i].style.display = 'none';
+          }
+        });
+      </script>
+          
          </div> 
         </div>
       </div>
@@ -505,5 +599,40 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 </script>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+const filterInput = document.querySelector('#filter-name');
+const tableRows = document.querySelectorAll('#customers-table tbody tr');
 
+filterInput.addEventListener('keyup', () => {
+  const filterValue = filterInput.value.toLowerCase();
+  tableRows.forEach(row => {
+    const dataAttributes = row.dataset;
+    let matchFound = false;
+    for (let attribute in dataAttributes) {
+      if (dataAttributes.hasOwnProperty(attribute)) {
+        const attributeValue = dataAttributes[attribute].toLowerCase();
+        if (attributeValue.indexOf(filterValue) > -1) {
+          matchFound = true;
+          break;
+        }
+      }
+    }
+    const lastName = row.querySelector('[data-lastname]').getAttribute('data-lastname').toLowerCase();
+    const phone = row.querySelector('[data-phone]').getAttribute('data-phone').toLowerCase();
+    const email = row.querySelector('[data-email]').getAttribute('data-email').toLowerCase();
+    if (lastName.indexOf(filterValue) > -1 || phone.indexOf(filterValue) > -1 || email.indexOf(filterValue) > -1) {
+      matchFound = true;
+    }
+    if (matchFound) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
+
+
+
+    </script>
 {% endblock %}

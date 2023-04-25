@@ -2,32 +2,26 @@
 
 namespace App\Entity;
 
+use repository;
+use App\Entity\User;
+use App\Entity\Categorie;
+use App\Repository\DonationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Donation
- *
- */
+
 #[ORM\Table(name: 'donation')]
 #[ORM\Index(name: 'owner', columns: ['owner'])]
 #[ORM\Index(name: 'FK_donationcat', columns: ['categorie'])]
 #[ORM\Entity]
 class Donation
 {
-    /**
-     * @var int
-     *
-     */
+   
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
-    /**
-     * @var string
-     *
-     */
     #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
     private $title;
 

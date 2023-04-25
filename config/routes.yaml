@@ -18,3 +18,8 @@ search_users:
     methods: [POST]
     controller: App\Controller\UserController::searchUsers
 
+app_chart:
+    path: /admin/chart.html
+    controller: App\Controller\AdminController::chart
+
+
