@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,13 +25,13 @@ class RegistrationaaaController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
 
-   
-    #[Route('/registration', name: 'registration',methods: ['GET', 'POST'])]
 
-    public function index(Request $request,ManagerRegistry $doctrine)
+    #[Route('/registration', name: 'registration', methods: ['GET', 'POST'])]
+
+    public function index(Request $request, ManagerRegistry $doctrine)
     {
         $user = new User();
-    
+
         $form = $this->createForm(UserType::class, $user);
         // $form->add('Add',SubmitType::class);
 
@@ -43,7 +44,7 @@ class RegistrationaaaController extends AbstractController
 
             // Set their role
 
-            
+
             // Save
             $em = $doctrine->getManager();
             $em->persist($user);
@@ -55,10 +56,8 @@ class RegistrationaaaController extends AbstractController
             // $mailMessage=$user->getuserName();
             // $mailer->sendEmail($mailMessage);
             return $this->redirectToRoute('app_login');
-
-
         }
-     
+
         return $this->render('registration/index.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors

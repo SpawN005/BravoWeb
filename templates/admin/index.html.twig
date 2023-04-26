@@ -47,7 +47,8 @@
               </tr>
               </thead>
               <tbody >
-           {% for userClient in user %}
+           {% for userClient in userClient %}
+            
               <tr class="ls1" data-name="{{ userClient.firstName }}">
                 <th scope="row">{{userClient.id}}</th>
                 <td>
@@ -92,10 +93,8 @@
 <div align="center">
 <br>
             </table>
-            <table width="100%">
-            <tr>  <td style="color: transparent;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
-            <td>           
-{{ knp_pagination_render(user) }}</tr></table></div>
+    <div class="mt-4 d-flex justify-content-center items-align-center"> {{ knp_pagination_render(userClient) }}   </div>        
+</div>
 
                
           

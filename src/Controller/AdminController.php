@@ -140,15 +140,10 @@ class AdminController extends AbstractController
         $pagination = $paginator->paginate(
             $userClient,
             $request->query->getInt('page', 1),
-            3,
+            4,
 
         );
-        $pagination1 = $paginator->paginate(
-            $userAdmin,
-            $request->query->getInt('page', 1),
-            3,
 
-        );
         if ($form->isSubmitted() && $form->isValid()) {
             // Encode the new users password
             $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
@@ -167,7 +162,7 @@ class AdminController extends AbstractController
         return $this->render('admin/index.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'user' =>  $pagination1,
+            'user' =>  $userAdmin,
             'userClient' =>  $pagination
         ]);
     }
