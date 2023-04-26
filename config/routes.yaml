@@ -1,3 +1,29 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+app_save_image:
+  path: "/save-image"
+  controller: App\Controller\YourController::saveImage'
+  methods: ["POST"]
+
+app_send_verification_code:
+  path: "/send-verification-code"
+  controller: App\Controller\ClientController::sendVerificationCode
+  methods: ["POST"]
+# config/routes.yaml
+
+search_users:
+  path: /search
+  methods: [POST]
+  controller: App\Controller\UserController::searchUsers
+
+app_chart:
+  path: /admin/chart.html
+  controller: App\Controller\AdminController::chart
+
+catch_all:
+  path: /{any}
+  controller: App\Controller\HomeController::index
+  requirements:
+    any: ".*"

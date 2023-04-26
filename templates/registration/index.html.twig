@@ -1,0 +1,139 @@
+{% extends "back.html.twig" %}
+
+
+{% block header %}{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block main %}{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="#" class="logo d-flex align-items-center w-auto">
+
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4" style="color: orangered;">Create an Account</h5>
+                    <p class="text-center small">Enter your personal details to create account</p>
+                  </div>
+
+                  
+
+                 {{form_start(form,{'attr':{'novalidate':'novalidate'}})}}
+                    
+               {# {% if form_errors(form.firstName) and form_errors(form.secondName) %} #}
+                               
+   {% if   form.vars.submitted and not form.vars.valid %}
+
+ <div class="alert alert-danger alert-dismissible fade show"  role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                {{ form_errors(form.firstName) }}
+                 {{ form_errors(form.lastName) }}
+                 {{ form_errors(form.email) }}
+                  {{ form_errors(form.password.first) }}
+                  {{ form_errors(form.password.second) }}
+                  {{ form_errors(form.phone) }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+{% endif %}
+                 {# {% endif %} #}
+                 
+                   <div class="col-12">
+                      <label for="yourEmail" class="form-label">First Name</label>
+                      {{form_widget(form.firstName,{'attr':{'class':'form-control'}})}}
+                       
+
+                      <div class="invalid-feedback">Please enter a valid Fist Name!</div>
+                    </div>
+
+                   <div class="col-12">
+                      <label for="yourEmail" class="form-label">Last Name</label>
+                      {{form_widget(form.lastName,{'attr':{'class':'form-control'}})}}
+                      
+                      <div class="invalid-feedback">Please enter a valid  Last Name!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourEmail" class="form-label">Email</label>
+                      {{form_widget(form.email,{'attr':{'class':'form-control'}})}}
+
+                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourName" class="form-label">Phone number</label>
+                   {{form_widget(form.phone,{'attr':{'class':'form-control'}})}}
+
+                      <div class="invalid-feedback">Please, enter a valid Phone Number!</div>
+                    </div>
+                    <div class="col-12">
+                        <label for="yourName" class="form-label">Role</label>
+                        {{form_widget(form.roles,{'attr':{'class':'form-control'}})}}
+
+                        <div class="invalid-feedback">Please, select the type of your account</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">Password</label>
+                  {{form_widget(form.password.first,{'attr':{'class':'form-control'}})}}
+                      <div class="invalid-feedback">Please enter your password!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label"> Confirm Password</label>
+                  {{form_widget(form.password.second,{'attr':{'class':'form-control'}})}}
+                      <div class="invalid-feedback">Please Confirm your password!</div>
+                    </div>
+                   
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required="">
+                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#"  style="color: orangered;">terms and conditions</a></label>
+                        <div class="invalid-feedback">You must agree before submitting.</div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit" style="background-color: orangered;" style="border-color: orangered;">Create Account</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Already have an account? <a href="{{path('app_login')}}"  style="color: orangered;">Log in</a></p>
+                    </div>
+                  
+                   {{form_end(form)}}
+                </div>
+              </div>
+
+              
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

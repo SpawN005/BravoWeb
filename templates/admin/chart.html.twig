@@ -1,0 +1,183 @@
+{% extends 'dashboard-base.html.twig' %}
+{% block body %}
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        <!-- Spinner Start -->
+            <!-- Chart Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Chart of Banned users </h6>
+<canvas id="myChart2"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const chartData22 = {
+    banned: 0,
+    notBanned: 0,
+  };
+
+  {% for k in user %}
+    {% if k.isBanned() %}
+      chartData22["banned"] += 1;
+    {% else %}
+      chartData22["notBanned"] += 1;
+    {% endif %}
+  {% endfor %}
+
+  const ctxss = document.getElementById('myChart2');
+
+  new Chart(ctxss, {
+    type: 'pie',
+    data: {
+      labels: ["Banned", "Not Banned"],
+      datasets: [{
+        label: 'Banned users',
+        data: [chartData22["banned"], chartData22["notBanned"]],
+        backgroundColor: [
+          "rgba(235, 22, 22, .7)",
+          "rgba(60, 179, 113, .7)"
+        ]
+      }]
+    }
+  });
+</script>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Statistics about Verified users</h6>
+                            <canvas id="myChart3"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const chartData = {};
+
+  {% for k in user %}
+    if ("{{ k.isVerified }}" === "1") {
+      if (!chartData["Verified"]) {
+        chartData["Verified"] = 1;
+      } else {
+        chartData["Verified"]++;
+      }
+    } else {
+      if (!chartData["Unverified"]) {
+        chartData["Unverified"] = 1;
+      } else {
+        chartData["Unverified"]++;
+      }
+    }
+  {% endfor %}
+
+  const ctx = document.getElementById('myChart3');
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(chartData),
+      datasets: [{
+        label: 'reference',
+        data: Object.values(chartData),
+        backgroundColor: [
+          "rgba(54, 162, 235, 0.7)",
+          "rgba(54, 162, 235, 0.4)"
+        ]
+      }]
+    }
+  });
+</script>
+
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Names of Users:</h6>
+                            <canvas id="myChart4"></canvas>
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                            <script>
+                            const chartData4 = {};
+
+                            {% for k in user %}
+                                if (!chartData4["{{ k.firstname }}"]) {
+                                chartData4["{{ k.firstname }}"] = {{ k.id }};
+                                } else {
+                                chartData4["{{ k.firstname }}"] += {{ k.id }};
+                                }
+                            {% endfor %}
+
+                            const ctx22 = document.getElementById('myChart4');
+
+                            new Chart(ctx22, {
+                                type: 'doughnut',
+                                data: {
+                                labels: Object.keys(chartData4),
+                                datasets: [{
+                                    label: 'reference',
+                                    data: Object.values(chartData4),
+                                    backgroundColor: [
+                                    "rgba(235, 22, 22, .7)",
+                                                "rgba(235, 22, 22, .6)",
+                                                "rgba(235, 22, 22, .5)",
+                                                "rgba(235, 22, 22, .4)",
+                                                "rgba(235, 22, 22, .3)"
+                                    ]
+                                }]
+                                }
+                            });
+                            </script>
+                                                    
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Number of Active users</h6>
+                            {% if user is defined and user is iterable and user|length > 0 %}
+                                <p>Total registered users: {{ user|length }}</p>
+                            {% else %}
+                                <p>No registered users found</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+
+            <!-- Chart End -->
+
+
+            <!-- Footer Start -->
+          
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+   
+</body>
+
+{% endblock %}

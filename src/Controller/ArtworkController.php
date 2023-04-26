@@ -67,8 +67,11 @@ class ArtworkController extends AbstractController
     #[Route('/new', name: 'app_artwork_new', methods: ['GET', 'POST'])]
     public function new(HttpClientInterface $httpClient, Request $request, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
     {
+        $user = $this->getUser();
+
 
         $artwork = new Artwork();
+        $artwork->setOwner($user);
         $form = $this->createForm(ArtworkType::class, $artwork);
         $form->handleRequest($request);
         $artworks = $entityManager
@@ -140,9 +143,7 @@ class ArtworkController extends AbstractController
         }
 
         $average = $count > 0 ? $total / $count : 0;
-        $user = $entityManager
-            ->getRepository(User::class)
-            ->findOneById(1);
+        $user = $this->getUser();
         $comments = $commentsoeuvreRepository->findByOeuvreId($artwork->getId());
         $form = $this->createForm(CommentoeuvreType::class, new Commentsoeuvre());
         $form->handleRequest($request);

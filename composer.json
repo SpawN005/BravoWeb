@@ -19,6 +19,7 @@
         "knplabs/knp-paginator-bundle": "^5.9",
         "knplabs/knp-time-bundle": "^1.20",
         "mercuryseries/flashy-bundle": "^5.1",
+        "lexik/jwt-authentication-bundle": "^2.18",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.16",
         "sensio/framework-extra-bundle": "^6.1",
@@ -30,6 +31,7 @@
         "symfony/flex": "^1.17|^2",
         "symfony/form": "5.4.*",
         "symfony/framework-bundle": "5.4.*",
+        "symfony/google-mailer": "5.4.*",
         "symfony/http-client": "5.4.*",
         "symfony/intl": "5.4.*",
         "symfony/mailer": "5.4.*",
@@ -43,13 +45,18 @@
         "symfony/security-bundle": "5.4.*",
         "symfony/serializer": "5.4.*",
         "symfony/string": "5.4.*",
+        "symfony/swiftmailer-bundle": "*",
         "symfony/translation": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
         "symfony/validator": "5.4.*",
         "symfony/web-link": "5.4.*",
         "symfony/yaml": "5.4.*",
+        "symfonycasts/reset-password-bundle": "^1.17",
+        "symfonycasts/verify-email-bundle": "*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "*"
+        "twig/twig": "^2.12|^3.0",
+        "twilio/sdk": "^7.2",
+        "vich/uploader-bundle": "*"
     },
     "config": {
         "allow-plugins": {
@@ -101,6 +108,7 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "*",
         "phpunit/phpunit": "^9.5",
         "rector/rector": "^0.15.23",
         "symfony/browser-kit": "5.4.*",

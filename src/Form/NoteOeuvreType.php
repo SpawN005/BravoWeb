@@ -15,8 +15,7 @@ class NoteOeuvreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('note')
-            ->add('submit', SubmitType::class);
+            ->add('note');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

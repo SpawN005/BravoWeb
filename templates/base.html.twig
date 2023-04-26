@@ -2,10 +2,13 @@
 <html lang="en" dir="ltr">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tun'art</title>
+    <audio autoplay loop id="myaudio">
+  <source src="{{asset('audio/test.mp3')}}" type="audio/mpeg" >
+  Your browser does not support the audio element.
+</audio>
 {% block flavicons %}
     <!-- favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images/favicon/apple-touch-icon.png')}}">
@@ -45,7 +48,7 @@
 
 </head>
 
-<body>
+{% block loader %}<body>
     <div class="preloader">
         <div class="lds-ripple">
             <div></div>
@@ -810,11 +813,29 @@
     <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
     <!-- Include Flashy default partial -->
     {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+    <script>
+  var audio = document.getElementById("myaudio");
+  audio.volume = 0.04;
+   
 
+  // Check if the current time position is stored in local storage
+  if (localStorage.getItem('audioTime')) {
+    // Set the current time position of the audio element to the stored value
+    audio.currentTime = localStorage.getItem('audioTime');
+  }
+
+  // Listen for the 'timeupdate' event on the audio element
+  audio.addEventListener('timeupdate', function() {
+    // Store the current time position in local storage
+    localStorage.setItem('audioTime', audio.currentTime);
+  });
+
+</script>
     <!-- Custom Scripts -->
     <script src="{{asset('js/theme.js')}}"></script>
     {% endblock %}
-</body>
+</body>{% endblock %}
+
 
 
 </html>

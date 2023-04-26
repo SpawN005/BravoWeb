@@ -14,15 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    #[Route('/dashboard', name: 'app_dashboard')]
-    public function index(): Response
-    {
-        return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
-        ]);
-    }
-
-    #[Route('/dashboard/artwork', name: 'dashboard_artwork_index', methods: ['GET'])]
+    #[Route('/admin/artwork', name: 'dashboard_artwork_index', methods: ['GET'])]
     public function indexDashboard(EntityManagerInterface $entityManager): Response
     {
         $artworks = $entityManager

@@ -1,0 +1,313 @@
+{% extends 'dashboard-base.html.twig' %}
+{% block body %}
+  <section class="section">
+    <div class="row">
+      <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Users Table</h6>
+            <a href="">Show All</a>
+            <a class="nav-link nav-icon search-bar-toggle " href="#">
+              <form class="d-none d-md-flex ms-4" id="search-form">
+                <input class="form-control bg-dark border-0" type="search" placeholder="Seaaaaarch" id="filter-name">
+              </form>
+            </a>
+
+          </div>
+        <div id="user-table">
+          <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0" id="customers-table">
+              <thead>
+              <tr>
+                <th scope="col" data-sortable="" style="width: 7.37101%;">
+                  <a href="#" class="dataTable-sorter">#</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 12.285%;">
+                  <a href="#" class="dataTable-sorter">Image</a>
+                </th>
+                <th scope="col" data-sortable="" style="width:12.285%;">
+                  <a href="#" class="dataTable-sorter">First Name</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 12.285%;">
+                  <a href="#" class="dataTable-sorter">Last Name </a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Phone Number</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Email</a>
+                </th>
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Status</a>
+                </th>
+
+                <th scope="col" data-sortable="" style="width: 19.1646%;">
+                  <a href="#" class="dataTable-sorter">Actions</a>
+                </th>
+              </tr>
+              </thead>
+              <tbody >
+           {% for userClient in user %}
+              <tr class="ls1" data-name="{{ userClient.firstName }}">
+                <th scope="row">{{userClient.id}}</th>
+                <td>
+
+                  {% if userClient.image == null %}
+
+                    <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                  {% else %}
+
+                    <img src="http://localhost/img/{{userClient.image}}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                  {% endif %}
+
+
+
+                </td>
+                <td data-lastname="{{ userClient.lastName }}">{{userClient.firstName}}</td>
+                <td data-lastname="{{ userClient.lastName }}">{{userClient.lastName}}</td>
+                <td data-phone="{{ userClient.phone }}">{{userClient.phone}}</td>
+                <td data-email="{{ userClient.email }}">{{userClient.email}}</td>
+
+
+                <td>
+                {% if userClient.banned == 0 %}
+
+                  <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
+                {% else %}
+                  <span class="badge d-block bg-red bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">  BANNED </span>
+                {% endif %}
+                </td>
+
+                
+
+
+                <td>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('deleteUser', { 'id': userClient.getId()  }) }}">Delete Account</a>
+                  <a type="button" class="btn btn-danger m-2" href="{{ path('banUser', { 'id': userClient.id }) }}">Ban User</a>
+                </td>
+                {% endfor %}
+
+
+              </tbody>
+<div align="center">
+<br>
+            </table>
+            <table width="100%">
+            <tr>  <td style="color: transparent;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+            <td>           
+{{ knp_pagination_render(user) }}</tr></table></div>
+
+               
+          
+         </div> 
+        </div>
+      </div>
+      <!-- Recent Sales End -->
+
+    </div>
+  </section>
+
+  <div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h6 class="mb-0">ADMINs Table</h6>
+        <a href="">Show All</a>
+      </div>
+      <div class="table-responsive">
+        <div class="dataTable-container">
+          <table class="table datatable dataTable-table">
+            <thead>
+            <tr>
+              <th scope="col" data-sortable="" style="width: 7.37101%;">
+                <a href="#" class="dataTable-sorter">#</a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 12.285%;">
+                <a href="#" class="dataTable-sorter">Image</a>
+              </th>
+              <th scope="col" data-sortable="" style="width:12.285%;">
+                <a href="#" class="dataTable-sorter">First name</a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 12.285%;">
+                <a href="#" class="dataTable-sorter">Last name </a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 19.1646%;">
+                <a href="#" class="dataTable-sorter">Phone</a>
+              </th>
+              <th scope="col" data-sortable="" style="width: 19.1646%;">
+                <a href="#" class="dataTable-sorter">Email</a>
+              </th>
+
+              </th>
+
+            </tr>
+            </thead>
+            <tbody >
+            {% for u in user %}
+            <tr >
+              <th scope="row">{{u.id}}</th>
+              <td>
+
+                {% if u.image == null %}
+
+                  <img src="{{ asset('/uploads/images/user.jpg') }}" width="100px" height="100px" alt=""class="rounded-circle" />
+                {% else %}
+
+                  <img src=" http://localhost/img/{{u.image}}" width="100px" height="100px" alt="" class="rounded-circle"/>
+                {% endif %}
+
+
+
+              </td>
+              <td>{{u.firstName}}</td>
+              <td>{{u.lastName}}</td>
+              <td>{{u.phone}}</td>
+              <td>{{u.email}}</td>
+              <td>{{u.banned}}</td>
+
+              <td>
+
+                {% if u.banned == 0 %}
+
+                  <span class="badge d-block bg-theme bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">ACTIVE</span>
+                {% else %}
+                  <span class="badge d-block bg-red bg-opacity-50 rounded-0 pt-5px w-70px" style="min-height: 18px">  BANNED </span>
+                {% endif %}
+
+              </td>
+              <td>
+
+              </td>
+
+              {% endfor %}
+              {# <h2 style="color:red;">Welcome {{app.user.firstName}} {{app.user.secondName}} it's  {{ "now"|date("H:i:s  d/m/Y") }}</h2> #}
+
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="dataTable-bottom">
+
+          <div class="dataTable-info">Showing 1 to 5 of 5 entries</div>
+          <nav class="dataTable-pagination">
+            <ul class="dataTable-pagination-list"></ul>
+          </nav>
+
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Admin </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{form_start(form,{'attr':{'novalidate':'novalidate'}})}}
+{% if   form.vars.submitted and not form.vars.valid %}
+
+ <div class="alert alert-danger alert-dismissible fade show"  role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                {{ form_errors(form.firstName) }}
+                 {{ form_errors(form.lastName) }}
+                 {{ form_errors(form.email) }}
+                  {{ form_errors(form.password.first) }}
+                  {{ form_errors(form.password.second) }}
+                  {{ form_errors(form.phone) }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+{% endif %}
+
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">First Name :</label>
+           {{form_widget(form.firstName,{'attr':{'class':'form-control'}})}}
+          </div>
+
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Last Name :</label>
+           {{form_widget(form.lastName,{'attr':{'class':'form-control'}})}}
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">email:</label>
+           {{form_widget(form.email,{'attr':{'class':'form-control'}})}}
+          </div>
+            <div class="form-group">
+            <label for="message-text" class="col-form-label">phone:</label>
+           {{form_widget(form.phone,{'attr':{'class':'form-control'}})}}
+          </div>
+
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">password:</label>
+           {{form_widget(form.password.first,{'attr':{'class':'form-control'}})}}
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">confirm password:</label>
+           {{form_widget(form.password.second,{'attr':{'class':'form-control'}})}}
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">ADD</button>
+      </div>
+       {{form_end(form)}}
+    </div>
+  </div>
+</div>
+<script>
+$('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('Add Admin ' )
+  modal.find('.modal-body input')
+})
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+const filterInput = document.querySelector('#filter-name');
+const tableRows = document.querySelectorAll('#customers-table tbody tr');
+
+filterInput.addEventListener('keyup', () => {
+  const filterValue = filterInput.value.toLowerCase();
+  tableRows.forEach(row => {
+    const dataAttributes = row.dataset;
+    let matchFound = false;
+    for (let attribute in dataAttributes) {
+      if (dataAttributes.hasOwnProperty(attribute)) {
+        const attributeValue = dataAttributes[attribute].toLowerCase();
+        if (attributeValue.indexOf(filterValue) > -1) {
+          matchFound = true;
+          break;
+        }
+      }
+    }
+    const lastName = row.querySelector('[data-lastname]').getAttribute('data-lastname').toLowerCase();
+    const phone = row.querySelector('[data-phone]').getAttribute('data-phone').toLowerCase();
+    const email = row.querySelector('[data-email]').getAttribute('data-email').toLowerCase();
+    if (lastName.indexOf(filterValue) > -1 || phone.indexOf(filterValue) > -1 || email.indexOf(filterValue) > -1) {
+      matchFound = true;
+    }
+    if (matchFound) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+});
+
+
+
+    </script>
+{% endblock %}

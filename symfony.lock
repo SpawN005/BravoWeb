@@ -25,6 +25,18 @@
             "./src/Repository/.gitignore"
         ]
     },
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "3.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "1f5514cfa15b947298df4d771e694e578d4c204d"
+        },
+        "files": [
+            "./src/DataFixtures/AppFixtures.php"
+        ]
+    },
     "doctrine/doctrine-migrations-bundle": {
         "version": "3.2",
         "recipe": {
@@ -66,7 +78,18 @@
         "version": "v1.20.0"
     },
     "mercuryseries/flashy-bundle": {
-        "version": "v5.1.0"
+        "version": "v5.1.0"},
+    "lexik/jwt-authentication-bundle": {
+        "version": "2.18",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.5",
+            "ref": "e9481b233a11ef7e15fe055a2b21fd3ac1aa2bb7"
+        },
+        "files": [
+            "./config/packages/lexik_jwt_authentication.yaml"
+        ]
     },
     "phpunit/phpunit": {
         "version": "9.6",
@@ -148,6 +171,15 @@
             "./src/Controller/.gitignore",
             "./src/Kernel.php"
         ]
+    },
+    "symfony/google-mailer": {
+        "version": "5.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
     },
     "symfony/mailer": {
         "version": "5.4",
@@ -246,6 +278,9 @@
             "./config/packages/security.yaml"
         ]
     },
+    "symfony/swiftmailer-bundle": {
+        "version": "v2.3.8"
+    },
     "symfony/translation": {
         "version": "5.4",
         "recipe": {
@@ -309,7 +344,31 @@
             "./config/packages/messenger.yaml"
         ]
     },
+    "symfonycasts/reset-password-bundle": {
+        "version": "1.17",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "97c1627c0384534997ae1047b93be517ca16de43"
+        },
+        "files": [
+            "./config/packages/reset_password.yaml"
+        ]
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.13.0"
+    },
     "twig/extra-bundle": {
         "version": "v3.5.1"
+    },
+    "vich/uploader-bundle": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.13",
+            "ref": "1b3064c2f6b255c2bc2f56461aaeb76b11e07e36"
+        }
     }
 }

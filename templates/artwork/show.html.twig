@@ -36,17 +36,20 @@
                                     </li>
                                     <li>
                                         <span>Phone:</span>
-                                      {{artwork.owner.phoneNumber}}
+                                      {{artwork.owner.phone}}
                                     </li>
-                                
-                 <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">    
-                 {{ include('artwork/_delete_form.html.twig') }}
-</li>
-<li> 
-<form method="post" action="{{ path('app_artwork_edit', {'id': artwork.id}) }}">
-    <button class="thm-btn contact-one__btn">Update</button>
-</form>  </div>
-</li>
+                  {% if app.user is not null %}
+    {% if app.user.id == artwork.owner.id %}
+        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center; margin-top:40px;">    
+            {{ include('artwork/_delete_form.html.twig') }}
+            
+            <form method="post" action="{{ path('app_artwork_edit', {'id': artwork.id}) }}">
+                <button class="thm-btn contact-one__btn">Update</button>
+            </form>  
+        </div>
+    {% endif %}
+{% endif %}
+
                                 </ul><!-- /.event-details__contact -->
                             </div><!-- /.event-details__content -->
                         </div><!-- /.event-details__main -->
@@ -65,10 +68,15 @@
                                   {{artwork.owner.FirstName}}      {{artwork.owner.LastName}}
                                 </li>
                                 <li>       
+                                 
+                    
     {{ form_start(note,{'attr': {'novalidate': 'novalidate' } }) }}
-  {{ form_widget(note.note, { 'attr': { 'class': 'rating', 'data-size': 'sm','data-stars': 5,'value': notes,'step': 1} }) }}
-   {{ form_widget(note.submit, { 'attr': { 'class': 'thm-btn contact-one__btn mt-2'} }) }}
-        {{ form_end(note) }}</li>
+  {{ form_widget(note.note, { 'attr': { 'class': 'rating', 'data-size': 'sm','data-stars': 5,'value': notes,'step': 1 ,'disabled': (app.user is not null ? false : true)} }) }}
+     {% if app.user is not null %}
+<button class="thm-btn contact-one__btn" >{{ button_label|default('Submit') }}</button>
+   {% endif %}
+        {{ form_end(note) }}
+         </li>
       
                             </ul><!-- /.event-details__booking-info list-unstyled -->
                  
@@ -112,8 +120,13 @@
              {{comment.comment}}
 </div>
                         <div class="icons align-items-center">
-                           
-                            <a href="/artwork/{{comment.id}}/comment/delete" class="fa fa-check-circle-o check-icon text-danger">x</a>
+                         {% if app.user is not null %}
+                         
+                             {% if app.user.id == comment.user.id %} 
+                             <a href="/artwork/{{comment.id}}/comment/delete" class="fa fa-check-circle-o check-icon text-danger">x</a>
+{% endif %}
+{% endif %}
+                            
                             
                         </div>
                     
@@ -123,12 +136,14 @@
                          <p>No Comments</p>
             
         {% endfor %}
-       
+        {% if app.user is not null %}
+                       
     {{ form_start(form,{'attr': {'novalidate': 'novalidate' , 'name': 'comment_form'} }) }}
         {{ form_widget(form.comment ,{'attr': {'class': 'form-control  mt-2 p-3'}}) }}
         {{ form_errors (form.comment) }} 
         <button class="thm-btn contact-one__btn mt-2" >Submit</button>
         {{ form_end(form) }}
+          {% endif %}
 
       
                 </div>

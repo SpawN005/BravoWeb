@@ -1,0 +1,8 @@
+vich_uploader:
+  db_driver: orm
+
+  mappings:
+    products:
+      uri_prefix: /img
+      upload_destination: "%app.path.product_images%"
+      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

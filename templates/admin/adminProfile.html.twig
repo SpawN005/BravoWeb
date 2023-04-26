@@ -1,0 +1,212 @@
+{% extends "back.html.twig" %}
+
+{% block body %}{% endblock %}
+{% block main %}{% endblock %}
+
+
+{% block bodyAdmin %}
+
+
+
+<section class="section profile">
+      <div class="row" style="padding-top: 150px; padding-left:150px;">
+        <div class="col-xl-4" >
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+              {% if app.user.image == null   %}
+                        <img src="{{asset('/uploads/images/user.jpg')}}" alt="Profile"  class="rounded-circle">
+                        {% else %}
+                        <img src="http://localhost/img/{{app.user.image}}" alt="Profile"  class="rounded-circle">
+                       {% endif %}
+              <h2>{{app.user.firstName}} {{app.user.lastName}}</h2>
+              <h3>Web Designer</h3>
+              <div class="social-links mt-2">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                </li>
+
+                <li class="nav-item">
+                 <a class="nav-link active"  href="{{path('adminProfile')}}">Edit Profile</a>
+                </li>
+
+
+
+                <li class="nav-item" >
+                {# <a href="{{path('changePass')}}">aaaaaa</a> #}
+                 {# <a class="nav-link" href="{{path('changePass')}}" >Change Password</a> #}
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade profile-overview" id="profile-overview">
+                  <h5 class="card-title">About</h5>
+                  <p class="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+
+                  <h5 class="card-title">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                    <div class="col-lg-9 col-md-8">{{app.user.firstName}} {{app.user.lastName}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Company</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Job</div>
+                    <div class="col-lg-9 col-md-8">BACKEND DEV</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Country</div>
+                    <div class="col-lg-9 col-md-8">TUNISIA</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Address</div>
+                    <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                    <div class="col-lg-9 col-md-8">{{app.user.phone}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8">{{app.user.email}}</div>
+                  </div>
+
+                </div>
+
+
+                      <div class="tab-pane fade profile-edit pt-3 active show" id="profile-edit">
+
+                  <!-- Profile Edit Form -->
+                  {{form_start(form,{'attr':{'novalidate':'novalidate'}})}}
+
+
+{% if   form.vars.submitted and not form.vars.valid %}
+
+ <div class="alert alert-danger alert-dismissible fade show"  role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                {{ form_errors(form.firstName) }}
+                 {{ form_errors(form.lastName) }}
+                 {{ form_errors(form.email) }}
+
+                  {{ form_errors(form.phone) }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+{% endif %}
+                    <div class="row mb-3">
+                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                      <div class="col-md-8 col-lg-9">
+                       {% if app.user.image == null   %}
+                        <img src="{{asset('/uploads/images/user.jpg')}}" alt="Profile"  class="rounded-circle">
+                        {% else %}
+                        <img src="http://localhost/img/{{app.user.image}}" alt="Profile"  class="rounded-circle">
+                       {% endif %}
+
+                        <div class="pt-2">
+                          <a href="#" class="btn btn-primary btn-sm" name="image[image]" title="Upload new profile image">{{form_widget(form.image,{'attr':{'class':'bi bi-upload'}})}}</a>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    </div>
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        {{form_widget(form.firstName,{'attr':{'class':'form-control'}})}}
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Last Name </label>
+                      <div class="col-md-8 col-lg-9">
+                        {{form_widget(form.lastName,{'attr':{'class':'form-control'}})}}
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                      <div class="col-md-8 col-lg-9">
+                        {{form_widget(form.email,{'attr':{'class':'form-control'}})}}
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                      <div class="col-md-8 col-lg-9">
+                        {{form_widget(form.phone,{'attr':{'class':'form-control'}})}}
+                      </div>
+                    </div>
+
+
+
+                    <div class="text-center">
+
+
+                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete">Save Changes</button>
+{# <button type="submit" class="btn btn-primary">Save Changes</button> #}
+<!-- Modal -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modify Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Are you sure to Modify your profile ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+                    </div>
+                  <!-- End Profile Edit Form -->
+{{form_end(form)}}
+                </div>
+
+
+                </div>
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+{% endblock %}
