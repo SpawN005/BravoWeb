@@ -44,7 +44,6 @@ class BlogController extends AbstractController
         ]);
     }
 
-
     #[Route('/new', name: 'app_new_blog')]
     public function addBlog(ManagerRegistry $doctrine,
     Request $request, UserRepository $rep)
@@ -68,13 +67,10 @@ class BlogController extends AbstractController
             $em->persist($blog);
             $em->flush();
 
-
+            // envoyer un message a l'artiste pour lui informer que son blog est ajouté avec succes
             $twilio = new TwilioSmS('ACf4d21551919fa154b13f7057f9474002',
              '0b2fecada12dc7ea90b60b62cc39edcd', '+16813666808');
-            $twilio->sendSMS('+21655757442', 'Nouveau blog est ajouté !');
-
-
-
+            $twilio->sendSMS('+21655757442', 'Your blog is added successfuly  !');
 
             return $this->redirectToRoute("app_blog");
         }
@@ -126,7 +122,7 @@ class BlogController extends AbstractController
         $blogId = $blogs->getId();
         $note = $nb->countByNote($id);
         $noteblog= new NoteBlog();
-        $form = $this->createForm(NoteBlogType::class, $noteblog );
+        $form = $this->createForm(NoteBlogType::class, $noteblog, ['csrf_protection' => false] );
         $form->handleRequest($request);
         
 

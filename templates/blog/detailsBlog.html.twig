@@ -55,6 +55,11 @@
         {{form_start(form)}}
         <section class="blog-rating">
         <div class="container">
+
+        
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
             <h3></h3>
             {# {% include 'note_blog/note.html.twig' with {
                 'name': 'blog',
