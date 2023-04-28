@@ -61,9 +61,6 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             return new RedirectResponse($this->urlGenerator->generate('adminbacks'));
-        } elseif (in_array('ROLE_ARTISTE', $user->getRoles(), true)) {
-
-            return new RedirectResponse("/");
         } else {
             // For example:
             // return new RedirectResponse($this->urlGenerator->generate('some_route'));

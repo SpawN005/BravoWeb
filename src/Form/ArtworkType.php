@@ -36,8 +36,6 @@ class ArtworkType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Artwork::class,
-
-
         ]);
     }
 }

@@ -41,11 +41,7 @@ class ClientController extends AbstractController
     }
 
 
-    #[Route('/front', name: 'front', methods: ['GET', 'POST'])]
-    public function Front(): Response
-    {
-        return $this->render('frontTest.html.twig');
-    }
+
 
 
 

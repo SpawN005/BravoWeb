@@ -14,8 +14,6 @@ use App\Form\UserEditType;
 use App\Entity\User;
 use Symfony\Component\Routing\Annotation\Route;
 
-
-
 class YourController extends AbstractController
 {
     /**

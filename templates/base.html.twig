@@ -76,7 +76,7 @@
                 <div class="inner-container">
                     <div class="logo-box">
                         <a href="/">
-                            <img src="{{asset('images/logo-1-1.png')}}" alt="" width="143">
+                            <img src="{{asset('assetsFront/images/logo.png')}}" alt="" width="75">
                         </a>
                         <a href="#" class="side-menu__toggler"><i class="muzex-icon-menu"></i></a>
                     </div><!-- /.logo-box -->
@@ -138,16 +138,19 @@
                                     <li><a href="membership.html">Membership</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
-                                <a href="news-standard.html">News</a>
-                                <ul>
-                                    <li><a href="news-standard.html">News Standard</a></li>
-                                    <li><a href="news-grid.html">News Grid</a></li>
-                                    <li><a href="news-masonary.html">News Masonary</a></li>
-                                    <li><a href="news-details.html">News Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="contact.html">Contact</a></li>
+                          
+                           {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('app_admin') }}">Dashboard</a></li>
+                             {% elseif is_granted('ROLE_ARTISTE') %}
+                             <li><a href="{{ path('artiste') }}">Profile</a></li>
+                             {% elseif is_granted('ROLE_USER') %}
+                             <li><a href="{{ path('clientProfile') }}">Profile</a></li>
+                            {% endif %}
+                            
+                        {% if app.user %} 
+                             <li><a href="{{ path('app_logout') }}">Logout</a></li>
+                            {% endif %}
+                            
                         </ul><!-- /.main-nav__navigation-box -->
                     </div><!-- /.main-nav__main-navigation -->
                     <div class="main-nav__right">
@@ -693,7 +696,7 @@
                     <div class="inner-container">
                         <p>&copy; Copyright 2020 Muzex. All Rights Reserved</p>
                         <a href="index.html" class="site-footer__bottom-logo">
-                            <img src="{{asset('images/logo-footer-1.png')}}" alt="">
+                            <img src="{{asset('assetsFront/images/logo.png')}}" alt="" width="75">
                         </a>
                         <div class="site-footer__bottom-links">
                             <a href="#">Terms & conditions</a>
@@ -725,7 +728,7 @@
         </div><!-- /.side-content__block-overlay -->
         <div class="side-content__block-inner ">
             <a href="index.html">
-                <img src="{{asset('images/logo-1-1.png')}}" alt="" width="143">
+                <img src="{{asset('assetsFront/images/logo.png')}}" alt="" width="75">
             </a>
             <div class="side-content__block-about">
                 <h3 class="side-content__block__title">About Us</h3><!-- /.side-content__block__title -->
@@ -815,7 +818,7 @@
     {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
     <script>
   var audio = document.getElementById("myaudio");
-  audio.volume = 0.04;
+  audio.volume = 0.5;
    
 
   // Check if the current time position is stored in local storage

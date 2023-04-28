@@ -64,7 +64,7 @@ class ArtworkController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_artwork_new', methods: ['GET', 'POST'])]
+    #[Route('artiste/newArt', name: 'app_artwork_new', methods: ['GET', 'POST'])]
     public function new(HttpClientInterface $httpClient, Request $request, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
     {
         $user = $this->getUser();
@@ -182,7 +182,7 @@ class ArtworkController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_artwork_edit', methods: ['GET', 'POST'])]
+    #[Route('artiste/{id}/editArt', name: 'app_artwork_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Artwork $artwork, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
     {
         $form = $this->createForm(ArtworkType::class, $artwork);
@@ -209,7 +209,7 @@ class ArtworkController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'app_artwork_delete', methods: ['POST'])]
+    #[Route('artiste/{id}/deleteArt', name: 'app_artwork_delete', methods: ['POST'])]
     public function delete(NoteoeuvreRepository $noteoeuvreRepository, CommentsoeuvreRepository $commentsoeuvreRepository, Request $request, Artwork $artwork, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
     {
 
