@@ -1,0 +1,13 @@
+# knp_snappy:
+#     pdf:
+#         enabled:    true
+#         binary:    C:\Users\ferie\scoop\buckets\main\bin # Chemin vers wkhtmltopdf
+#         options:    []
+#     image:
+#         enabled:    true
+#         binary:      # Chemin vers wkhtmltoimage
+#         options:    []
+
+
+#/usr/local/bin/wkhtmltopdf 
+#/usr/local/bin/wkhtmltoimage

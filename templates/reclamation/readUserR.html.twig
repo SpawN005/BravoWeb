@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+{#{% block title %}<h1>My Complaints</h1>{% endblock %}#}
+   <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>My Complaints</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+<section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
+
+                 
+    <table class="table">
+           {% if app.session.flashbag.has('success') %}
+   <div class="alert alert-success">{{ app.session.flashbag.get('success')[0] }}</div>
+   {% endif %}
+     
+        <thead>
+            <tr>
+                 <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Date_Creation</th>
+                <th>Etat</th>
+                <th>date_Traitement</th>
+                <th>note</th>
+                <th>typereclamation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reclamation in reclamations %}
+                <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.title }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateCreation|date('d/m/Y')  }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
+                <td>{{ reclamation.note|default('-') }}</td>
+                <td>{{ reclamation.typereclamation}}</td>
+
+                
+                <td>
+                {% if reclamation.etat == "on hold" %}
+                    <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="thm-btn contact-one__btn">delete</a>
+                {% endif %}
+                <a href="{{ path('app_updateR', {'id': reclamation.id}) }}" class="thm-btn contact-one__btn">update</a>
+                {% if reclamation.etat == 'processing' %}
+
+                <a href="{{ path('reclamation_avis', {id: reclamation.id}) }}" class="thm-btn contact-one__btn">Donner mon avis</a>
+                {% endif %}
+
+            </td>
+            {% endfor %}
+            <div class="pagination">
+    {{ knp_pagination_render(reclamations) }}
+</div>
+        </tbody>
+    </table>
+    
+    <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
+            <div class="container text-center">
+                <h3>We are at your disposal</h3>
+                <p>do not hesitate to claim again if necessary <br> thank you for your engagement.</p>
+                <div class="cta-one__btn-block">
+                    <a href="{{ path('app_addR') }}" class="thm-btn cta-one__btn-one">Create new</a><!-- /.thm-btn cta-one__btn-one -->
+                    <a href="{{ path('searchReclamationBytitle') }}" class="thm-btn cta-one__btn-two">Search</a><!-- /.thm-btn cta-one__btn-two -->
+
+                </div><!-- /.cta-one__btn-block -->
+            </div><!-- /.container -->
+        </section><!-- /.cta-one -->
+
+{% endblock %}
+

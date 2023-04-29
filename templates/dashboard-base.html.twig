@@ -68,6 +68,16 @@
                     <!-- <a class="nav-item nav-link " href="{{path('adminbacks')}}"   ><i class="fa fa-keyboard me-2"></i>
                         <span >Charts</span>
                     </a> -->
+                     <div class="nav-item dropdown">
+                        <a href="{{ path('app_readR', {'etat': 'on_hold'}) }}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Gestion reclamations</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="{{ path('app_addTypeR')}}" class="dropdown-item">Add new type</a>
+                            <a href="{{ path('app_readTypeR')}}" class="dropdown-item">List of types</a>
+                            <a href="{{ path('app_readR', {'etat': 'on_hold'}) }}" class="dropdown-item">List of complaints</a>
+                            <a href="{{ path('genererPdf')}}" class="dropdown-item">Generate pdf</a>
+                            <a href="{{ path('genererstats')}}" class="dropdown-item">Statistics</a>
+                        </div>
+                    </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Events</a>
                     <div class="dropdown-menu bg-transparent border-0">

@@ -1,0 +1,94 @@
+{% extends 'dashboard-base.html.twig' %}
+{% block nav %}
+<div class="navbar-nav w-100">
+                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="{{ path('app_readR', {'etat': 'on_hold'}) }}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Gestion reclamations</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="{{ path('app_addTypeR')}}" class="dropdown-item">Add new type</a>
+                            <a href="{{ path('app_readTypeR')}}" class="dropdown-item">List of types</a>
+                            <a href="{{ path('app_addR')}}" class="dropdown-item">Add new complaint</a>
+                            <a href="{{ path('genererPdf')}}" class="dropdown-item">Generate pdf</a>
+                            <a href="{{ path('genererstats')}}" class="dropdown-item">Statistics</a>
+
+
+                        </div>
+                    </div>
+                   
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+            {% endblock %}
+
+{% block body %}
+{# ajouter des flash messages si user donne son avis #}
+{% if app.session.flashbag.has('satisfaction') %}
+    <div class="alert alert-info">{{ app.session.flashbag.get('satisfaction')[0] }}</div>
+{% endif %}
+{% if app.session.flashbag.has('note') %}
+    <div class="alert alert-info">{{ app.session.flashbag.get('note')[0] }}</div>
+{% endif %}
+{# ajouter des lien de pagination  #}
+<div class="pagination">
+    {{ knp_pagination_render(reclamations) }}
+</div>
+    <h1>list of complaints</h1>
+
+    <form method="get">
+    <label for="etat">Filtrer par état:</label>
+    <select name="etat" id="etat">
+        <option value="">Tous les états</option>
+        <option value="on hold">On hold</option>
+        <option value="processing">Processing</option>
+        <option value="treated">Treated</option>
+    </select>
+    <button type="submit">Filtrer</button>
+</form>
+   {% if reclamations %}
+    <table >
+       <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Date_Creation</th>
+                <th>Etat</th>
+                <th>OwnerID</th>
+                <th>date_Traitement</th>
+                <th>note</th>
+                <th>typereclamation</th>
+                <th>actions</th>
+            </tr>
+       </thead>
+       <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                <td>{{ reclamation.id }}</td>
+                <td>{{ reclamation.title }}</td>
+                <td>{{ reclamation.description }}</td>
+                <td>{{ reclamation.dateCreation|date('d/m/Y')  }}</td>
+                <td>{{ reclamation.etat }}</td>
+                <td>{{ reclamation.ownerID.firstname }}</td>
+                <td>{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
+                <td>{{ reclamation.note|default('-') }}</td>
+                <td>{{ reclamation.typereclamation }}</td>
+                 <td>
+                {% if reclamation.etat == "on hold" %}
+                    <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="btn btn-primary">delete</a>
+                    <a href="{{ path('reclamation_traiter', {id: reclamation.id}) }}" class="btn btn-primary">Traiter</a>
+                {% endif %}
+                <a href="{{ path('app_updateR', {'id': reclamation.id}) }}"class="btn btn-primary">update</a>
+            
+            </td>
+               
+            </tr>
+        
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucune réclamation trouvée.</p>
+{% endif %}
+    {% endblock %}
+

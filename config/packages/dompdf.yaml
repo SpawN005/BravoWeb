@@ -1,0 +1,5 @@
+# dompdf:
+#     enable_remote: true
+#     font_directory: '%kernel.project_dir%/fonts'
+#     font_cache: '%kernel.cache_dir%/dompdf'
+#     dpi: 1

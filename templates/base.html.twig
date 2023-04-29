@@ -118,38 +118,35 @@
                                     <li><a href="collection-masonary.html">Collections Masonary</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
-                                <a href="#">Pages</a>
-                                <ul>
-                                    <li class="dropdown">
-                                        <a href="event-1.html">Events</a>
-                                        <ul>
-                                            <li><a href="event-1.html">Events 01</a></li>
-                                            <li><a href="event-2.html">Events 02</a></li>
-                                            <li><a href="event-3.html">Events 03</a></li>
-                                            <li><a href="event-details.html">Events Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="team.html">Team</a></li>
-                                    <li><a href="donate.html">Donate</a></li>
-                                    <li><a href="venue.html">Veneu</a></li>
-                                    <li><a href="faq.html">FAQ</a></li>
-                                    <li><a href="membership.html">Membership</a></li>
-                                </ul>
-                            </li>
+
+                          
                           
                            {% if is_granted('ROLE_ADMIN') %}
                             <li><a href="{{ path('app_admin') }}">Dashboard</a></li>
                              {% elseif is_granted('ROLE_ARTISTE') %}
                              <li><a href="{{ path('artiste') }}">Profile</a></li>
+                             
                              {% elseif is_granted('ROLE_USER') %}
                              <li><a href="{{ path('clientProfile') }}">Profile</a></li>
                             {% endif %}
+                                {% if  is_granted('ROLE_ADMIN') %}
+                              <li class="dropdown">
+                                <a href="#">Complaints</a>
+                                <ul>
+                                   
+                                    <li><a href="{{ path('reclamation_user')}}">My complaints</a></li>
+                                    <li><a href="{{ path('app_addR') }}">Add complaint</a></li>
+                        
+                                </ul>
+                            </li>
+                              {% endif %}
                             
                         {% if app.user %} 
                              <li><a href="{{ path('app_logout') }}">Logout</a></li>
-                            {% endif %}
+                           
+                               {% else %}
+                                 <li><a href="{{ path('app_login') }}">Login</a></li>
+                                {% endif %}
                             
                         </ul><!-- /.main-nav__navigation-box -->
                     </div><!-- /.main-nav__main-navigation -->

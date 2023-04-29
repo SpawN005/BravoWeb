@@ -27,3 +27,6 @@ catch_all:
   controller: App\Controller\HomeController::index
   requirements:
     any: ".*"
+generer_pdf:
+  path: /generer-pdf
+  controller: App\Controller\ReclamationController::generatePdfAction

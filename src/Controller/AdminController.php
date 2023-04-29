@@ -40,11 +40,13 @@ class AdminController extends AbstractController
     #[Route('/', name: 'app_admin')]
     public function index(Security $security, UserRepository $userRepository): Response
     {
+        $form = $this->createForm(AdminType::class,);
         if ($security->getUser()) {
             if (in_array("ROLE_ADMIN", $security->getUser()->getRoles())) {
                 return $this->render('admin/index.html.twig', [
                     'controller_name' => 'AdminController',
-                    'user' => $userRepository->findAll()
+                    'user' => $userRepository->findAll(),
+
                 ]);
             } else {
                 return $this->redirectToRoute("app_login");

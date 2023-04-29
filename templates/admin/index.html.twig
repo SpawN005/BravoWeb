@@ -46,7 +46,8 @@
                 </th>
               </tr>
               </thead>
-              <tbody >
+              <tbody >  
+              {% if userClient is defined %}
            {% for userClient in userClient %}
             
               <tr class="ls1" data-name="{{ userClient.firstName }}">
@@ -87,13 +88,16 @@
                   <a type="button" class="btn btn-danger m-2" href="{{ path('banUser', { 'id': userClient.id }) }}">Ban User</a>
                 </td>
                 {% endfor %}
+                  {% endif %}
 
 
               </tbody>
 <div align="center">
 <br>
             </table>
-    <div class="mt-4 d-flex justify-content-center items-align-center"> {{ knp_pagination_render(userClient) }}   </div>        
+               {% if userClient is defined %}
+    <div class="mt-4 d-flex justify-content-center items-align-center"> {{ knp_pagination_render(userClient) }}   </div>  
+      {% endif %}      
 </div>
 
                
@@ -199,67 +203,7 @@
       </div>
     </div>
   </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Admin </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{form_start(form,{'attr':{'novalidate':'novalidate'}})}}
-{% if   form.vars.submitted and not form.vars.valid %}
 
- <div class="alert alert-danger alert-dismissible fade show"  role="alert">
-                <i class="bi bi-exclamation-octagon me-1"></i>
-                {{ form_errors(form.firstName) }}
-                 {{ form_errors(form.lastName) }}
-                 {{ form_errors(form.email) }}
-                  {{ form_errors(form.password.first) }}
-                  {{ form_errors(form.password.second) }}
-                  {{ form_errors(form.phone) }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-{% endif %}
-
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">First Name :</label>
-           {{form_widget(form.firstName,{'attr':{'class':'form-control'}})}}
-          </div>
-
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Last Name :</label>
-           {{form_widget(form.lastName,{'attr':{'class':'form-control'}})}}
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">email:</label>
-           {{form_widget(form.email,{'attr':{'class':'form-control'}})}}
-          </div>
-            <div class="form-group">
-            <label for="message-text" class="col-form-label">phone:</label>
-           {{form_widget(form.phone,{'attr':{'class':'form-control'}})}}
-          </div>
-
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">password:</label>
-           {{form_widget(form.password.first,{'attr':{'class':'form-control'}})}}
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">confirm password:</label>
-           {{form_widget(form.password.second,{'attr':{'class':'form-control'}})}}
-          </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">ADD</button>
-      </div>
-       {{form_end(form)}}
-    </div>
-  </div>
-</div>
 <script>
 $('#exampleModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal

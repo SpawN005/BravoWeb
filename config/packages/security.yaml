@@ -39,6 +39,7 @@ security:
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/artiste, roles: ROLE_ARTISTE }
     - { path: ^/client, roles: ROLE_USER }
+    - { path: ^/reclamation, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
   security:

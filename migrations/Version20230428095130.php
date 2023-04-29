@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230425111109 extends AbstractMigration
+final class Version20230428095130 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -34,11 +34,11 @@ final class Version20230425111109 extends AbstractMigration
         $this->addSql('CREATE TABLE event (id INT AUTO_INCREMENT NOT NULL, categorie INT DEFAULT NULL, title VARCHAR(30) NOT NULL, description VARCHAR(100) NOT NULL, nb_placeMax INT NOT NULL, date_beg DATE NOT NULL, date_end DATE NOT NULL, url VARCHAR(255) NOT NULL, INDEX FK_eventcat (categorie), UNIQUE INDEX uk_title (title), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE noteblog (id INT AUTO_INCREMENT NOT NULL, id_blog INT DEFAULT NULL, note INT NOT NULL, INDEX id_blog (id_blog), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE noteoeuvre (id INT AUTO_INCREMENT NOT NULL, id_oeuvre INT DEFAULT NULL, id_user INT DEFAULT NULL, note INT NOT NULL, INDEX fk_user (id_user), INDEX IDX_DAD661B513C99B13 (id_oeuvre), UNIQUE INDEX idx_noteoeuvre_id (id_oeuvre, id_user), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE reclamation (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(30) NOT NULL, description VARCHAR(100) NOT NULL, date_creation DATE NOT NULL, etat VARCHAR(30) NOT NULL, date_treatment DATE NOT NULL, note INT NOT NULL, ownerID INT DEFAULT NULL, INDEX ownerID (ownerID), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE reclamation (id INT AUTO_INCREMENT NOT NULL, typereclamation INT DEFAULT NULL, title VARCHAR(30) NOT NULL, description VARCHAR(100) NOT NULL, date_creation DATE NOT NULL, etat VARCHAR(30) NOT NULL, date_treatment DATE DEFAULT NULL, note INT NOT NULL, ownerID INT DEFAULT NULL, INDEX IDX_CE606404B0284259 (typereclamation), INDEX ownerID (ownerID), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reservation (id INT AUTO_INCREMENT NOT NULL, id_event INT DEFAULT NULL, id_participant INT DEFAULT NULL, isConfirmed TINYINT(1) NOT NULL, nb_place INT NOT NULL, INDEX fk_id_participant (id_participant), INDEX fk_event (id_event), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reset_password_request (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, selector VARCHAR(20) NOT NULL, hashed_token VARCHAR(100) NOT NULL, requested_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', expires_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_7CE748AA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE role (user_id INT DEFAULT NULL, role_ID INT AUTO_INCREMENT NOT NULL, role VARCHAR(20) DEFAULT \'guest\', INDEX user_id (user_id), PRIMARY KEY(role_ID)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE typereclamation (id INT NOT NULL, typeReclamation VARCHAR(30) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE typereclamation (id INT AUTO_INCREMENT NOT NULL, typeReclamation VARCHAR(30) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, image VARCHAR(255) DEFAULT \'\'\'aze.png\'\'\', phone INT NOT NULL, banned TINYINT(1) DEFAULT 0 NOT NULL, is_verified TINYINT(1) DEFAULT NULL, first_name VARCHAR(255) DEFAULT NULL, last_name VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL, available_at DATETIME NOT NULL, delivered_at DATETIME DEFAULT NULL, INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE artwork ADD CONSTRAINT FK_881FC576497DD634 FOREIGN KEY (categorie) REFERENCES categorie (id)');
@@ -58,11 +58,11 @@ final class Version20230425111109 extends AbstractMigration
         $this->addSql('ALTER TABLE noteoeuvre ADD CONSTRAINT FK_DAD661B513C99B13 FOREIGN KEY (id_oeuvre) REFERENCES artwork (id)');
         $this->addSql('ALTER TABLE noteoeuvre ADD CONSTRAINT FK_DAD661B56B3CA4B FOREIGN KEY (id_user) REFERENCES user (id)');
         $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404DB30DDED FOREIGN KEY (ownerID) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404B0284259 FOREIGN KEY (typereclamation) REFERENCES typereclamation (id) ON DELETE RESTRICT');
         $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955D52B4B97 FOREIGN KEY (id_event) REFERENCES event (id)');
         $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955CF8DA6E6 FOREIGN KEY (id_participant) REFERENCES user (id)');
         $this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE role ADD CONSTRAINT FK_57698A6AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
-        $this->addSql('ALTER TABLE typereclamation ADD CONSTRAINT FK_B0284259BF396750 FOREIGN KEY (id) REFERENCES reclamation (id)');
     }
 
     public function down(Schema $schema): void
@@ -85,11 +85,11 @@ final class Version20230425111109 extends AbstractMigration
         $this->addSql('ALTER TABLE noteoeuvre DROP FOREIGN KEY FK_DAD661B513C99B13');
         $this->addSql('ALTER TABLE noteoeuvre DROP FOREIGN KEY FK_DAD661B56B3CA4B');
         $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404DB30DDED');
+        $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404B0284259');
         $this->addSql('ALTER TABLE reservation DROP FOREIGN KEY FK_42C84955D52B4B97');
         $this->addSql('ALTER TABLE reservation DROP FOREIGN KEY FK_42C84955CF8DA6E6');
         $this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
         $this->addSql('ALTER TABLE role DROP FOREIGN KEY FK_57698A6AA76ED395');
-        $this->addSql('ALTER TABLE typereclamation DROP FOREIGN KEY FK_B0284259BF396750');
         $this->addSql('DROP TABLE artwork');
         $this->addSql('DROP TABLE blog');
         $this->addSql('DROP TABLE categorie');

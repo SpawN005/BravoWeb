@@ -1,0 +1,11 @@
+# config/packages/cmen_google_charts.yaml
+cmen_google_charts:
+    language: en
+    version: current
+
+# services:
+#     cmen_google_charts.twig.google_charts_extension:
+#         class: CMEN\GoogleChartsBundle\Twig\GoogleChartsExtension
+#         public: false
+#         tags:
+#             - { name: twig.extension }
