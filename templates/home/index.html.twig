@@ -14,6 +14,35 @@
                 <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
+        
 
       {% endblock %}
+        {% block blog %}
+              {% for blog in blogs %}
+                <div class="col-lg-4">
+                        <div class="blog-one__single">
+                            <div class="blog-one__image">
+                                <img src="http://localhost/img/{{blog.image}}" alt="">
+                                <div class="blog-one__date">
+                                    <i class="far fa-calendar-alt"></i>
+                                    Oct 25, 2020
+                                </div><!-- /.blog-one__date -->
+                            </div><!-- /.blog-one__image -->
+                            <div class="blog-one__content">
+                                <ul class="blog-one__meta list-unstyled">
+                                    <li><a href="#">By {{blog.author.firstName}} {{blog.author.lastName}}</a></li>
+                                    <li><a href="#">03 Comments</a></li>
+                                </ul><!-- /.blog-one__meta list-unstyled -->
+                                <h3><a href="news-details.html">{{blog.title}}</a></h3>
+                                <p>{{blog.description}}</p>
+                                <a href="{{ path('app_detail_blog', {'id': blog.id}) }}" class="blog-one__link">Learn More</a><!-- /.blog-one__link -->
+                            </div><!-- /.blog-one__content -->
+                        </div><!-- /.blog-one__single -->
+                    </div>
+                      {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+         {% endblock %}
 

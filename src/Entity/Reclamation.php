@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert; 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
@@ -15,11 +15,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table(name: 'reclamation')]
 #[ORM\Index(name: 'ownerID', columns: ['ownerID'])]
 #[ORM\Entity]
-#[UniqueEntity(fields:["title", "description"], message:"Cette réclamation existe déjà.")]
+#[UniqueEntity(fields: ["title", "description"], message: "Cette réclamation existe déjà.")]
 
 class Reclamation
 {
-    
+
     /**
      * @var int
      *
@@ -33,11 +33,11 @@ class Reclamation
      * @var string
      *
      */
-    
+
     #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
-    #[Assert\NotBlank(message:"Le champ Titre ne peut pas être vide")]
-    #[Assert\Length(max:10, maxMessage:"Le champ Titre ne peut pas contenir plus de {{ 10 }} caractères")]
-    #[Assert\Regex(pattern:"/^[a-zA-Z0-9 ]*$/", message:"Le champ Titre ne peut contenir que des lettres, des chiffres et des espaces")]
+    #[Assert\NotBlank(message: "Le champ Titre ne peut pas être vide")]
+    #[Assert\Length(max: 10, maxMessage: "Le champ Titre ne peut pas contenir plus de {{ 10 }} caractères")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "Le champ Titre ne peut contenir que des lettres, des chiffres et des espaces")]
     private $title;
 
     /**
@@ -45,8 +45,8 @@ class Reclamation
      *
      */
     #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
-    #[Assert\NotBlank(message:"Le champ Description ne peut pas être vide")]
-    #[Assert\Regex(pattern:"/^[a-zA-Z0-9 ]*$/", message:"Le champ Description ne peut contenir que des lettres, des chiffres et des espaces")]
+    #[Assert\NotBlank(message: "Le champ Description ne peut pas être vide")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "Le champ Description ne peut contenir que des lettres, des chiffres et des espaces")]
     private $description;
 
     /**
@@ -85,7 +85,7 @@ class Reclamation
     #[ORM\ManyToOne(targetEntity: 'User')]
     private $ownerid;
 
-    #[ORM\JoinColumn(name: 'typereclamation', referencedColumnName: 'id',onDelete:"RESTRICT")]
+    #[ORM\JoinColumn(name: 'typereclamation', referencedColumnName: 'id', onDelete: "RESTRICT")]
     #[ORM\ManyToOne(targetEntity: 'Typereclamation')]
     private $typereclamation;
 
@@ -178,18 +178,19 @@ class Reclamation
         return $this;
     }
     public function __toString(): string
-{
-    return sprintf("Reclamation #%d: %s\nDescription: %s\nDate de création: %s\nEtat: %s\nDate de traitement: %s\nNote: %d\nPropriétaire: %s",
-        $this->id,
-        $this->title,
-        $this->description,
-        $this->dateCreation->format('Y-m-d'),
-        $this->etat,
-        $this->dateTreatment ? $this->dateTreatment->format('Y-m-d') : 'N/A',
-        $this->note,
-        $this->ownerid ? $this->ownerid->getFirstname() : 'Anonyme'
-    );
-}
+    {
+        return sprintf(
+            "Reclamation #%d: %s\nDescription: %s\nDate de création: %s\nEtat: %s\nDate de traitement: %s\nNote: %d\nPropriétaire: %s",
+            $this->id,
+            $this->title,
+            $this->description,
+            $this->dateCreation->format('Y-m-d'),
+            $this->etat,
+            $this->dateTreatment ? $this->dateTreatment->format('Y-m-d') : 'N/A',
+            $this->note,
+            $this->ownerid ? $this->ownerid->getFirstname() : 'Anonyme'
+        );
+    }
 
     public function getTypereclamation(): ?Typereclamation
     {
@@ -202,9 +203,4 @@ class Reclamation
 
         return $this;
     }
-
-   
-
-
-
 }

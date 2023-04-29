@@ -1,0 +1,84 @@
+{% extends 'base-back.html.twig' %}
+
+
+ {% block nav %}
+                <div class="navbar-nav w-100">
+                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Gestion events</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="{{ path('app_addEvent')}}" class="dropdown-item">create event</a>
+                            <a href="{{ path('app_addCategorie')}}" class="dropdown-item">create type</a>
+                            <a href="{{ path('app_event_categorie')}}" class="dropdown-item">list type</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </nav>
+        </div>
+
+        <!-- Sidebar End -->
+{% endblock %}
+{% block body %}
+<h1>New Event </h1>
+
+ 
+
+                      {{form_start(form,{'attr': {'novalidate': 'novalidate'}} )}}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                {{ form_label (form.title, "Title") }} 
+                                {{ form_widget(form.title,{'attr': {'class': 'form-control'}}) }} 
+                                 {{ form_errors (form.title) }} 
+                                </div>
+                                <div class="col-lg-12">
+                                     {{ form_label (form.description, "Description") }} 
+                                {{ form_widget(form.description,{'attr': {'class': 'form-control'}}) }} 
+                                 {{ form_errors (form.description) }} 
+                               
+                                  <div class="col-lg-6">
+                                {{ form_label (form.nb_placeMax, "Max number of places") }} 
+                                {{ form_widget(form.nb_placeMax,{'attr': {'class': 'form-control', 'min': '1'}}) }} 
+                                 {{ form_errors (form.nb_placeMax) }} 
+                                 </div>
+                                <div class="col-lg-6">
+    {{ form_label (form.date_beg, "Start date") }} 
+    {{ form_widget(form.date_beg) }} 
+    {{ form_errors (form.date_beg) }} 
+</div>
+<div class="col-lg-6">
+    {{ form_label (form.date_end, "End date") }} 
+{{ form_widget(form.date_end) }}
+    {{ form_errors (form.date_end) }} 
+</div>
+                                 <div class="col-lg-6">
+                                {{ form_label (form.image, "Image") }} 
+                                {{ form_widget(form.image,{'attr': {'class': 'form-control'}}) }} 
+                                 {{ form_errors (form.image) }} 
+                                 </div>
+                                  <div class="col-lg-6">
+                                    {{ form_label(form.categorie, "categorie") }} 
+                                    {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }} 
+                                    {{ form_errors(form.categorie) }} 
+                                </div>
+
+                                
+                            </div><!-- /.row -->
+                             </div><!-- /.col-lg-12 -->
+                                    <div class="col-lg-12 mt-3">
+                                    <button class="thm-btn contact-one__btn" >{{ button_label|default('Create') }}</button>
+                                </div><!-- /.col-lg-12 -->
+                            <a href="{{ path('app_event') }}">Retour</a>
+                    {{form_end(form)}}
+                     
+                 
+                    </div><!-- /.col-lg-8 -->
+                   
+                </div><!-- /.row --></div>
+            </div><!-- /.container -->
+        </div><!-- /.contact-one -->
+
+       
+
+        
+{% endblock %}

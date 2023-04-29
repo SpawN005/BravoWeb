@@ -2,70 +2,58 @@
 
 namespace App\Entity;
 
+use App\Repository\BlogRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Blog
- *
- */
-#[ORM\Table(name: 'blog')]
-#[ORM\Index(name: 'FK_blogcat', columns: ['categorie'])]
-#[ORM\Index(name: 'fk_user', columns: ['author'])]
-#[ORM\Entity]
+
+#[ORM\Entity(repositoryClass: BlogRepository::class)]
+#[UniqueEntity(fields: ["title", "description"], message: "This Blog Already Exist.")]
+
 class Blog
 {
-    /**
-     * @var int
-     *
-     */
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     */
-    #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
-    private $title;
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: "The Field Title Cannot be empty")]
+    #[Assert\Length(max: 20, maxMessage: "The Field Title cannot cannot contain more than {{20}} caracters")]
+    #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "The Field Title can only contain letters and numbers")]
+    private ?string $title = null;
 
-    /**
-     * @var string
-     *
-     */
-    #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
-    private $description;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "The Field Description Cannot be empty")]
+    #[Assert\Length(max: 100, maxMessage: "The Field Desciption cannot cannot contain more than {{20}} caracters")]
+    private ?string $description = null;
 
-    /**
-     * @var string
-     *
-     */
-    #[ORM\Column(name: 'url', type: 'string', length: 10000, nullable: false)]
-    private $url;
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
-    /**
-     * @var string
-     *
-     */
-    #[ORM\Column(name: 'content', type: 'string', length: 1000, nullable: false)]
-    private $content;
+    #[ORM\Column(length: 1000)]
+    private ?string $content = null;
 
-    /**
-     * @var \Categorie
-     *
-     */
-    #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CategorieBlog')]
-    private $categorie;
+    #[ORM\ManyToOne(inversedBy: 'blogs')]
+    private ?CategorieBlog $categorie = null;
 
-    /**
-     * @var \User
-     *
-     */
-    #[ORM\JoinColumn(name: 'author', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'User')]
-    private $author;
+    #[ORM\OneToMany(mappedBy: 'blog', targetEntity: CommentaireBlog::class)]
+    private Collection $commentaireBlogs;
+
+    #[ORM\OneToMany(mappedBy: 'blog', targetEntity: NoteBlog::class)]
+    private Collection $noteBlogs;
+
+    #[ORM\ManyToOne(inversedBy: 'blogs')]
+    private ?User $author = null;
+
+    public function __construct()
+    {
+        $this->commentaireBlogs = new ArrayCollection();
+        $this->noteBlogs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -96,14 +84,14 @@ class Blog
         return $this;
     }
 
-    public function getUrl(): ?string
+    public function getImage(): ?string
     {
-        return $this->url;
+        return $this->image;
     }
 
-    public function setUrl(string $url): self
+    public function setImage(string $image): self
     {
-        $this->url = $url;
+        $this->image = $image;
 
         return $this;
     }
@@ -120,14 +108,74 @@ class Blog
         return $this;
     }
 
-    public function getCategorie(): ?Categorie
+    public function getCategorie(): ?CategorieBlog
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setCategorie(?CategorieBlog $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommentaireBlog>
+     */
+    public function getCommentaireBlogs(): Collection
+    {
+        return $this->commentaireBlogs;
+    }
+
+    public function addCommentaireBlog(CommentaireBlog $commentaireBlog): self
+    {
+        if (!$this->commentaireBlogs->contains($commentaireBlog)) {
+            $this->commentaireBlogs->add($commentaireBlog);
+            $commentaireBlog->setBlog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaireBlog(CommentaireBlog $commentaireBlog): self
+    {
+        if ($this->commentaireBlogs->removeElement($commentaireBlog)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaireBlog->getBlog() === $this) {
+                $commentaireBlog->setBlog(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NoteBlog>
+     */
+    public function getNoteBlogs(): Collection
+    {
+        return $this->noteBlogs;
+    }
+
+    public function addNoteBlog(NoteBlog $noteBlog): self
+    {
+        if (!$this->noteBlogs->contains($noteBlog)) {
+            $this->noteBlogs->add($noteBlog);
+            $noteBlog->setBlog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoteBlog(NoteBlog $noteBlog): self
+    {
+        if ($this->noteBlogs->removeElement($noteBlog)) {
+            // set the owning side to null (unless already changed)
+            if ($noteBlog->getBlog() === $this) {
+                $noteBlog->setBlog(null);
+            }
+        }
 
         return $this;
     }

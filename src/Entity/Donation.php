@@ -2,72 +2,35 @@
 
 namespace App\Entity;
 
-use repository;
-use App\Entity\User;
-use App\Entity\Categorie;
 use App\Repository\DonationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-
-#[ORM\Table(name: 'donation')]
-#[ORM\Index(name: 'owner', columns: ['owner'])]
-#[ORM\Index(name: 'FK_donationcat', columns: ['categorie'])]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: DonationRepository::class)]
 class Donation
 {
-   
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
-    private $title;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
-    /**
-     * @var string
-     *
-     */
-    #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
-    private $description;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
-    /**
-     * @var \DateTime
-     *
-     */
-    #[ORM\Column(name: 'date_creation', type: 'date', nullable: false)]
-    private $dateCreation;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_creation = null;
 
-    /**
-     * @var \DateTime
-     *
-     */
-    #[ORM\Column(name: 'date_expiration', type: 'date', nullable: false)]
-    private $dateExpiration;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date_expiration = null;
 
-    /**
-     * @var int
-     *
-     */
-    #[ORM\Column(name: 'amount', type: 'integer', nullable: false)]
-    private $amount;
+    #[ORM\Column]
+    private ?float $amount = null;
 
-    /**
-     * @var \User
-     *
-     */
-    #[ORM\JoinColumn(name: 'owner', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'User')]
-    private $owner;
-
-    /**
-     * @var \Categorie
-     *
-     */
-    #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'CategorieDonation')]
-    private $categorie;
+    #[ORM\ManyToOne(inversedBy: 'donations')]
+    private ?CategorieDonation $categorie = null;
 
     public function getId(): ?int
     {
@@ -100,58 +63,46 @@ class Donation
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->dateCreation;
+        return $this->date_creation;
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    public function setDateCreation(\DateTimeInterface $date_creation): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->date_creation = $date_creation;
 
         return $this;
     }
 
     public function getDateExpiration(): ?\DateTimeInterface
     {
-        return $this->dateExpiration;
+        return $this->date_expiration;
     }
 
-    public function setDateExpiration(\DateTimeInterface $dateExpiration): self
+    public function setDateExpiration(\DateTimeInterface $date_expiration): self
     {
-        $this->dateExpiration = $dateExpiration;
+        $this->date_expiration = $date_expiration;
 
         return $this;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): self
+    public function setAmount(float $amount): self
     {
         $this->amount = $amount;
 
         return $this;
     }
 
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): self
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
-    public function getCategorie(): ?Categorie
+    public function getCategorie(): ?CategorieDonation
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?Categorie $categorie): self
+    public function setCategorie(?CategorieDonation $categorie): self
     {
         $this->categorie = $categorie;
 

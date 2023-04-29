@@ -82,22 +82,8 @@
                     </div><!-- /.logo-box -->
                     <div class="main-nav__main-navigation">
                         <ul class="main-nav__navigation-box">
-                            <li class="dropdown">
-                                <a href="index.html">Home</a>
-                                <ul>
-                                    <li><a href="index.html">Home 01</a></li>
-                                    <li><a href="index-2.html">Home 02</a></li>
-                                    <li><a href="index-3.html">Home 03</a></li>
-                                    <li><a href="index-rtl.html">Home RTL</a></li>
-                                    <li class="dropdown">
-                                        <a href="#">Header Styles</a>
-                                        <ul>
-                                            <li><a href="index.html">Header 01</a></li>
-                                            <li><a href="index-2.html">Header 02</a></li>
-                                            <li><a href="index-3.html">Header 03</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                            <li >
+                                <a href="{{ path('app_home') }}">Home</a>
                             </li>
                             <li class="dropdown">
                                 <a href="about.html">About</a>
@@ -129,7 +115,7 @@
                              {% elseif is_granted('ROLE_USER') %}
                              <li><a href="{{ path('clientProfile') }}">Profile</a></li>
                             {% endif %}
-                                {% if  is_granted('ROLE_ADMIN') %}
+                                {% if  is_granted('ROLE_USER')  or is_granted('ROLE_ARTISTE') %}
                               <li class="dropdown">
                                 <a href="#">Complaints</a>
                                 <ul>
@@ -139,6 +125,19 @@
                         
                                 </ul>
                             </li>
+                              {% endif %}
+                                  {% if   is_granted('ROLE_ARTISTE') %}
+                              <li class="dropdown">
+                                <a href="{{ path('app_blog')}}">Blogs</a>
+                                <ul>
+                                   
+                                    <li><a href="{{ path('Myapp_blog')}}">My Blogs</a></li>
+                                    <li><a href="{{ path('app_new_blog') }}">Add Blog</a></li>
+                        
+                                </ul>
+                            </li>
+                             {% else %}
+                              <li>  <a href="{{ path('app_blog')}}">Blogs</a></li>
                               {% endif %}
                             
                         {% if app.user %} 
@@ -521,11 +520,11 @@
             <div class="container">
                 <div class="blog-one__top">
                     <div class="block-title">
-                        <p>Muzex News</p>
-                        <h3>Latest From Our News</h3>
+                        <p>Tun'art News</p>
+                        <h3>Latest From Our Blogs</h3>
                     </div><!-- /.block-title -->
                     <div class="more-post__block">
-                        <a class="more-post__link" href="#">
+                        <a class="more-post__link" href="{{path('app_blog')}}">
                             All Post
                             <span class="curved-circle">View More &nbsp;&emsp;View More &nbsp;&emsp;View More View More View More &nbsp;&emsp;View &nbsp;&emsp; </span>
                             <!-- /.curved-circle -->
@@ -533,6 +532,7 @@
                     </div><!-- /.more-post__block -->
                 </div><!-- /.blog-one__top -->
                 <div class="row">
+                {% block blog %}
                     <div class="col-lg-4">
                         <div class="blog-one__single">
                             <div class="blog-one__image">
@@ -596,6 +596,7 @@
                             </div><!-- /.blog-one__content -->
                         </div><!-- /.blog-one__single -->
                     </div><!-- /.col-lg-4 -->
+                    {% endblock %}
                 </div><!-- /.row -->
             </div><!-- /.container -->
         </section><!-- /.blog-one -->

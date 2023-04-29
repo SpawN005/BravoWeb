@@ -18,7 +18,6 @@ class ArtworkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
             ->add('title')
             ->add('description')

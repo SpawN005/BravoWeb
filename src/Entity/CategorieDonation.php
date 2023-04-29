@@ -3,46 +3,73 @@
 namespace App\Entity;
 
 use App\Repository\CategorieDonationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategorieDonationRepository::class)]
-#[ORM\UniqueConstraint(name: 'NomCategorie', columns: ['NomCategorie'])]
 class CategorieDonation
 {
-    /**
-     * @var int
-     *
-     */
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var string
-     *
-     */
-    #[ORM\Column(name: 'NomCategorie', type: 'string', length: 100, nullable: false)]
-    private $nomcategorie;
+    #[ORM\Column(length: 255)]
+    private ?string $nomCategorie = null;
+
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Donation::class)]
+    private Collection $donations;
+
+    public function __construct()
+    {
+        $this->donations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNomcategorie(): ?string
+    public function getNomCategorie(): ?string
     {
-        return $this->nomcategorie;
+        return $this->nomCategorie;
     }
 
-    public function setNomcategorie(string $nomcategorie): self
+    public function setNomCategorie(string $nomCategorie): self
     {
-        $this->nomcategorie = $nomcategorie;
+        $this->nomCategorie = $nomCategorie;
 
         return $this;
     }
-    public function __toString()
+
+    /**
+     * @return Collection<int, Donation>
+     */
+    public function getDonations(): Collection
     {
-        return $this->nomcategorie;
+        return $this->donations;
+    }
+
+    public function addDonation(Donation $donation): self
+    {
+        if (!$this->donations->contains($donation)) {
+            $this->donations->add($donation);
+            $donation->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDonation(Donation $donation): self
+    {
+        if ($this->donations->removeElement($donation)) {
+            // set the owning side to null (unless already changed)
+            if ($donation->getCategorie() === $this) {
+                $donation->setCategorie(null);
+            }
+        }
+
+        return $this;
     }
 }

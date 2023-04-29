@@ -40,65 +40,58 @@ class ReclamationRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Reclamation[] Returns an array of Reclamation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Reclamation[] Returns an array of Reclamation objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Reclamation
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//   
+    //    public function findOneBySomeField($value): ?Reclamation
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //   
 
-public function findByTitleAndStateAndCreationDate($title, $etat, $dateCreation)
-{
-    $qb = $this->createQueryBuilder('r')
-        ->where('r.title LIKE :title')
-        ->setParameter('title', '%'.$title.'%');
-    
-    if ($etat) {
-        $qb->andWhere('r.etat = :etat')
-            ->setParameter('etat', $etat);
+    public function findByTitleAndStateAndCreationDate($title, $etat, $dateCreation)
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->where('r.title LIKE :title')
+            ->setParameter('title', '%' . $title . '%');
+
+        if ($etat) {
+            $qb->andWhere('r.etat = :etat')
+                ->setParameter('etat', $etat);
+        }
+
+        if ($dateCreation) {
+            $qb->andWhere('r.dateCreation = :dateCreation')
+                ->setParameter('dateCreation', $dateCreation);
+        }
+
+        return $qb->getQuery()
+            ->getResult();
     }
-    
-    if ($dateCreation) {
-        $qb->andWhere('r.dateCreation = :dateCreation')
-        ->setParameter('dateCreation', $dateCreation);
+
+
+    public function countByNote()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.note, COUNT(r.id) as count')
+            ->groupBy('r.note')
+            ->getQuery()
+            ->getResult();
     }
-    
-    return $qb->getQuery()
-        ->getResult();
-}
-
-
-public function countByNote()
-{
-    return $this->createQueryBuilder('r')
-        ->select('r.note, COUNT(r.id) as count')
-        ->groupBy('r.note')
-        ->getQuery()
-        ->getResult();
-}
-
-
-
-
-
-
-
 }
