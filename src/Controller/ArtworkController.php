@@ -64,7 +64,7 @@ class ArtworkController extends AbstractController
         ]);
     }
 
-    #[Route('artiste/newArt', name: 'app_artwork_new', methods: ['GET', 'POST'])]
+    #[Route('/artiste/newArt', name: 'app_artwork_new', methods: ['GET', 'POST'])]
     public function new(HttpClientInterface $httpClient, Request $request, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
     {
         $user = $this->getUser();

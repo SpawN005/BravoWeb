@@ -25,7 +25,7 @@
        
                      </ul><!-- /.collection-filter list-unstyled -->
                     {% if app.user and 'ROLE_ARTISTE' in app.user.roles %}
-   <a href="new" style="color:#848484;"> <p style="margin:0px 0px 20px -150px;">Add Artwork + </p> </a>
+   <a href="{{path('app_artwork_new')}}" style="color:#848484;"> <p style="margin:0px 0px 20px -150px;">Add Artwork + </p> </a>
 {% else %}
    
 {% endif %}
