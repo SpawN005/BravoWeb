@@ -142,8 +142,11 @@ class EventController extends AbstractController
             $eventTitle = $event->getTitle();
             $message = 'The event "' . $eventTitle . '" has been cancelled.';
         }
-        $session->getFlashBag()->add('danger', $message);
-        $this->emailAnnulation($user, $eventTitle, $mailer);
+        if ($s) {
+            $session->getFlashBag()->add('danger', $message);
+            $this->emailAnnulation($user, $eventTitle, $mailer);
+        }
+
 
         // Enregistrer les modifications dans la base de données
         $em->flush();

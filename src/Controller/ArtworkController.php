@@ -129,7 +129,7 @@ class ArtworkController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_artwork_show', methods: ['GET', 'POST'])]
+    #[Route('/art/{id}', name: 'app_artwork_show', methods: ['GET', 'POST'])]
     public function show(Request $request, CommentsoeuvreRepository $commentsoeuvreRepository, Artwork $artwork, EntityManagerInterface $entityManager): Response
     {
         $notes = $entityManager
