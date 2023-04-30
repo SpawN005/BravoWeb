@@ -73,7 +73,7 @@ class ReclamationController extends AbstractController
     }
 
 
-    #[Route('/reclamation/addReclamation', name: 'app_addR', methods: ['GET', 'POST'])]
+    #[Route('/user/reclamation/addReclamation', name: 'app_addR', methods: ['GET', 'POST'])]
 
     public function addReclamation(
         ManagerRegistry $doctrine,
@@ -119,7 +119,7 @@ class ReclamationController extends AbstractController
         );
     }
 
-    #[Route('/reclamation/deleteR/{id}', name: 'app_deleteR')]
+    #[Route('/user/reclamation/deleteR/{id}', name: 'app_deleteR')]
     public function deleteR($id, ReclamationRepository $rep, ManagerRegistry $doctrine): Response
     {
         //recuperer la classe a supprimer 
@@ -131,7 +131,7 @@ class ReclamationController extends AbstractController
         $this->addFlash('success', 'La réclamation a bien été supprimée.');
         return $this->redirectToRoute('reclamation_user');
     }
-    #[Route('/reclamation/updateR/{id}', name: 'app_updateR')]
+    #[Route('/user/reclamation/updateR/{id}', name: 'app_updateR')]
     public function updateR(
         $id,
         ReclamationRepository $rep,
@@ -159,7 +159,7 @@ class ReclamationController extends AbstractController
     }
 
     //methode de recherche multicriteres titre +etat+datecreation
-    #[Route('/reclamation/searchReclamationBytitle', name: 'searchReclamationBytitle')]
+    #[Route('/user/reclamation/searchReclamationBytitle', name: 'searchReclamationBytitle')]
     public function searchReclamation(Request $request, ReclamationRepository $reclamationRepository)
     {
         $title = null;
@@ -196,7 +196,7 @@ class ReclamationController extends AbstractController
 
 
     //affichage des reclamations coté user (ses propres reclam)
-    #[Route('/reclamation/UserReclamation', name: 'reclamation_user')]
+    #[Route('/user/reclamation/UserReclamation', name: 'reclamation_user')]
     public function userReclamations(ReclamationRepository $r, PaginatorInterface $paginator, Request $request)
     {
         $user = $this->getUser();
@@ -215,7 +215,7 @@ class ReclamationController extends AbstractController
     }
 
     //methode donner avis cote user 
-    #[Route('/reclamation/avisReclamation/{id}', name: 'reclamation_avis')]
+    #[Route('/user/reclamation/avisReclamation/{id}', name: 'reclamation_avis')]
     public function avis($id, Request $request, ReclamationRepository $rep, EntityManagerInterface $entityManager, SessionInterface $session)
     {
         $reclamation = $rep->find($id);
@@ -295,6 +295,7 @@ class ReclamationController extends AbstractController
     {
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', true);
         $dompdf = new Dompdf($pdfOptions);
         $reclamations = $repository->findAll();
 

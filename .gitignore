@@ -18,7 +18,10 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+<<<<<<< HEAD
 
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+=======
+>>>>>>> 8a448731318833a6874ffb8e8d5a72197d4c88e2

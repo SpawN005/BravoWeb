@@ -31,10 +31,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 
 
-#[Route('/artwork')]
+
 class ArtworkController extends AbstractController
 {
-    #[Route('/', name: 'app_artwork_index', methods: ['GET'])]
+    #[Route('/artwork', name: 'app_artwork_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
 
     {
@@ -224,7 +224,7 @@ class ArtworkController extends AbstractController
         $flashy->success('Artwork deleted!', 'http://your-awesome-link.com');
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/{id}/comment/delete', name: 'app_comment_delete', methods: ['GET', 'DELETE'])]
+    #[Route('/user/{id}/comment/delete', name: 'app_comment_delete', methods: ['GET', 'DELETE'])]
     public function deleteComment(Commentsoeuvre $commentsoeuvre, EntityManagerInterface $entityManager): Response
     {
 

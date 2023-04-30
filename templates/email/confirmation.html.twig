@@ -1,0 +1,31 @@
+{% block subject %}
+    Confirmation de réservation
+{% endblock %}
+
+{% block body %}
+    
+
+    {# <p>Bonjour {{ r.idParticipant.nom }} {{ r.idParticipant.prenom }},</p> #}
+    
+    <p>Bonjour,</p>
+
+    <p>Nous vous confirmons votre réservation pour l'événement</p>
+     {# {% if r is defined %} #}
+     {# "{{ r.idEvent.title }}" qui aura lieu le {{ r.idEvent.dateBeg|date('d/m/Y') }} à {{ r.idEvent.dateEnd|date('d/m/Y') }}.
+
+    <p>Veuillez trouver ci-dessous le récapitulatif de votre réservation :</p>
+
+    <ul>
+        <li>Nom de l'événement : {{ r.idEvent.title }}</li>
+        <li>Date de l'événement : {{ r.idEvent.dateBeg|date('d/m/Y') }} à {{ r.idEvent.dateEnd|date('d/m/Y') }}</li>
+        <li>Nombre de places réservées : {{ r.nbPlace }}</li>
+    </ul>
+
+    {# {% if qrCodeUrl is defined %}
+        <p>Voici votre QR Code :</p>
+        <img src="{{ qrCodeUrl }}" alt="QR Code">
+    {% endif %} #}
+
+    <p>Merci pour votre réservation et à bientôt !</p>
+    {# {% endif %} #}
+{% endblock %}

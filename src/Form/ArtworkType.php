@@ -23,7 +23,6 @@ class ArtworkType extends AbstractType
             ->add('description')
             ->add('categorie')
             ->add('url', FileType::class, array('data_class' => null, 'required' => false))
-
             ->add('captcha', CaptchaType::class, array(
                 'width' => 370,
                 'height' => 80,

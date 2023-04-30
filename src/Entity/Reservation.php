@@ -2,109 +2,81 @@
 
 namespace App\Entity;
 
+use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Reservation
- *
- */
-#[ORM\Table(name: 'reservation')]
-#[ORM\Index(name: 'fk_id_participant', columns: ['id_participant'])]
-#[ORM\Index(name: 'fk_event', columns: ['id_event'])]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
 {
-    /**
-     * @var int
-     *
-     */
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @var bool
-     *
-     */
-    #[ORM\Column(name: 'isConfirmed', type: 'boolean', nullable: false)]
-    private $isconfirmed;
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    private ?Event $id_event = null;
 
-    /**
-     * @var int
-     *
-     */
-    #[ORM\Column(name: 'nb_place', type: 'integer', nullable: false)]
-    private $nbPlace;
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    private ?User $id_participant = null;
 
-    /**
-     * @var \Event
-     *
-     */
-    #[ORM\JoinColumn(name: 'id_event', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'Event')]
-    private $idEvent;
+    #[ORM\Column]
+    private ?bool $isConfirmed = null;
 
-    /**
-     * @var \User
-     *
-     */
-    #[ORM\JoinColumn(name: 'id_participant', referencedColumnName: 'id')]
-    #[ORM\ManyToOne(targetEntity: 'User')]
-    private $idParticipant;
+    #[ORM\Column(type: "integer")]
+    #[Assert\Range(min: 1, max: 10)]
+    private ?int $nb_place = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function isIsconfirmed(): ?bool
-    {
-        return $this->isconfirmed;
-    }
-
-    public function setIsconfirmed(bool $isconfirmed): self
-    {
-        $this->isconfirmed = $isconfirmed;
-
-        return $this;
-    }
-
-    public function getNbPlace(): ?int
-    {
-        return $this->nbPlace;
-    }
-
-    public function setNbPlace(int $nbPlace): self
-    {
-        $this->nbPlace = $nbPlace;
-
-        return $this;
-    }
-
     public function getIdEvent(): ?Event
     {
-        return $this->idEvent;
+        return $this->id_event;
     }
 
-    public function setIdEvent(?Event $idEvent): self
+    public function setIdEvent(?Event $id_event): self
     {
-        $this->idEvent = $idEvent;
+        $this->id_event = $id_event;
 
         return $this;
     }
 
     public function getIdParticipant(): ?User
     {
-        return $this->idParticipant;
+        return $this->id_participant;
     }
 
-    public function setIdParticipant(?User $idParticipant): self
+    public function setIdParticipant(?User $id_participant): self
     {
-        $this->idParticipant = $idParticipant;
+        $this->id_participant = $id_participant;
 
         return $this;
     }
 
+    public function isIsConfirmed(): ?bool
+    {
+        return $this->isConfirmed;
+    }
 
+    public function setIsConfirmed(bool $isConfirmed): self
+    {
+        $this->isConfirmed = $isConfirmed;
+
+        return $this;
+    }
+
+    public function getNbPlace(): ?int
+    {
+        return $this->nb_place;
+    }
+
+    public function setNbPlace(int $nb_place): self
+    {
+        $this->nb_place = $nb_place;
+
+        return $this;
+    }
 }

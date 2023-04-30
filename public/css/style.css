@@ -2968,7 +2968,7 @@ a:focus {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-image: url(../images/backgrounds/event-bg-1-1.jpg);
+	background-image: url(../images/backgrounds/bg.png);
 }
 
 .event-one__moc {
@@ -4201,7 +4201,7 @@ a:focus {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-image: url(../images/backgrounds/event-bg-1-1.jpg);
+	background-image: url(../images/backgrounds/bg.png);
 }
 
 .about-two {
@@ -4368,7 +4368,7 @@ a:focus {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-image: url(../images/backgrounds/event-bg-1-1.jpg);
+	background-image: url(../images/backgrounds/bg.png);
 }
 
 .about-four__content>p {
@@ -6464,9 +6464,13 @@ a:focus {
 	background-color: var(--thm-base);
 	border-color: var(--thm-base);
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 
 =======
 }
 >>>>>>> 4055e0b4cca334d04da872cb5b2442cf9e53efa1
+=======
+}
+>>>>>>> 8a448731318833a6874ffb8e8d5a72197d4c88e2

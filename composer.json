@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cmen/google-charts-bundle": "^5.0",
+        "bacon/bacon-qr-code": "^2.0",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -23,6 +24,7 @@
         "lexik/jwt-authentication-bundle": "^2.18",
         "dompdf/dompdf": "*",
         "knplabs/knp-snappy-bundle": "^1.9",
+        "endroid/qr-code-bundle": "^4.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.16",
         "sensio/framework-extra-bundle": "^6.1",
@@ -66,7 +68,8 @@
             "composer/package-versions-deprecated": true,
             "php-http/discovery": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "endroid/installer": true
         },
         "optimize-autoloader": true,
         "preferred-install": {

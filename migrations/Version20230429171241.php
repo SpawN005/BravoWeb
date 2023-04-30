@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230429105720 extends AbstractMigration
+final class Version20230429171241 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -35,7 +35,7 @@ final class Version20230429105720 extends AbstractMigration
         $this->addSql('CREATE TABLE note_blog (id INT AUTO_INCREMENT NOT NULL, blog_id INT DEFAULT NULL, user_id INT DEFAULT NULL, note INT NOT NULL, INDEX IDX_606F401BDAE07E97 (blog_id), INDEX IDX_606F401BA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE noteoeuvre (id INT AUTO_INCREMENT NOT NULL, id_oeuvre INT DEFAULT NULL, id_user INT DEFAULT NULL, note INT NOT NULL, INDEX fk_user (id_user), INDEX IDX_DAD661B513C99B13 (id_oeuvre), UNIQUE INDEX idx_noteoeuvre_id (id_oeuvre, id_user), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reclamation (id INT AUTO_INCREMENT NOT NULL, typereclamation INT DEFAULT NULL, title VARCHAR(30) NOT NULL, description VARCHAR(100) NOT NULL, date_creation DATE NOT NULL, etat VARCHAR(30) NOT NULL, date_treatment DATE DEFAULT NULL, note INT NOT NULL, ownerID INT DEFAULT NULL, INDEX IDX_CE606404B0284259 (typereclamation), INDEX ownerID (ownerID), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE reservation (id INT AUTO_INCREMENT NOT NULL, id_event INT DEFAULT NULL, id_participant INT DEFAULT NULL, isConfirmed TINYINT(1) NOT NULL, nb_place INT NOT NULL, INDEX fk_id_participant (id_participant), INDEX fk_event (id_event), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE reservation (id INT AUTO_INCREMENT NOT NULL, id_event_id INT DEFAULT NULL, id_participant_id INT DEFAULT NULL, is_confirmed TINYINT(1) NOT NULL, nb_place INT NOT NULL, INDEX IDX_42C84955212C041E (id_event_id), INDEX IDX_42C84955A07A8D1F (id_participant_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reset_password_request (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, selector VARCHAR(20) NOT NULL, hashed_token VARCHAR(100) NOT NULL, requested_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', expires_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_7CE748AA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE role (user_id INT DEFAULT NULL, role_ID INT AUTO_INCREMENT NOT NULL, role VARCHAR(20) DEFAULT \'guest\', INDEX user_id (user_id), PRIMARY KEY(role_ID)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE typereclamation (id INT AUTO_INCREMENT NOT NULL, typeReclamation VARCHAR(30) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -58,8 +58,8 @@ final class Version20230429105720 extends AbstractMigration
         $this->addSql('ALTER TABLE noteoeuvre ADD CONSTRAINT FK_DAD661B56B3CA4B FOREIGN KEY (id_user) REFERENCES user (id)');
         $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404DB30DDED FOREIGN KEY (ownerID) REFERENCES user (id)');
         $this->addSql('ALTER TABLE reclamation ADD CONSTRAINT FK_CE606404B0284259 FOREIGN KEY (typereclamation) REFERENCES typereclamation (id) ON DELETE RESTRICT');
-        $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955D52B4B97 FOREIGN KEY (id_event) REFERENCES event (id)');
-        $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955CF8DA6E6 FOREIGN KEY (id_participant) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955212C041E FOREIGN KEY (id_event_id) REFERENCES event (id)');
+        $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955A07A8D1F FOREIGN KEY (id_participant_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE role ADD CONSTRAINT FK_57698A6AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
     }
@@ -84,8 +84,8 @@ final class Version20230429105720 extends AbstractMigration
         $this->addSql('ALTER TABLE noteoeuvre DROP FOREIGN KEY FK_DAD661B56B3CA4B');
         $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404DB30DDED');
         $this->addSql('ALTER TABLE reclamation DROP FOREIGN KEY FK_CE606404B0284259');
-        $this->addSql('ALTER TABLE reservation DROP FOREIGN KEY FK_42C84955D52B4B97');
-        $this->addSql('ALTER TABLE reservation DROP FOREIGN KEY FK_42C84955CF8DA6E6');
+        $this->addSql('ALTER TABLE reservation DROP FOREIGN KEY FK_42C84955212C041E');
+        $this->addSql('ALTER TABLE reservation DROP FOREIGN KEY FK_42C84955A07A8D1F');
         $this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
         $this->addSql('ALTER TABLE role DROP FOREIGN KEY FK_57698A6AA76ED395');
         $this->addSql('DROP TABLE artwork');

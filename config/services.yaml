@@ -6,6 +6,9 @@
 parameters:
   app.path.product_images: "C:/xampp/htdocs/img"
 services:
+  Endroid\QrCode\QrCode:
+    arguments:
+      $data: ""
   # default configuration for services in *this* file
   _defaults:
     autowire: true # Automatically injects dependencies in your services.

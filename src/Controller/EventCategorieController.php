@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class EventCategorieController extends AbstractController
 {
-    #[Route('/categorie/event', name: 'app_event_categorie')]
+    #[Route('/admin/categorie/event', name: 'app_event_categorie')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $categories = $entityManager
@@ -37,13 +37,13 @@ class EventCategorieController extends AbstractController
     //     ]);
     // }
 
-    #[Route('/deleteCategorie/{id}', name: 'app_deleteCategrie')]
+    #[Route('/admin/deleteCategorie/{id}', name: 'app_deleteCategrie')]
     public function deleteCategorie($id, EventCategorieRepository $ce, ManagerRegistry $doctrine): Response
     {
         //récupérer la classe à supprimer
         $categories = $ce->find($id);
         if (!$categories) {
-            throw $this->createNotFoundException('Categorie not found for id '.$id);
+            throw $this->createNotFoundException('Categorie not found for id ' . $id);
         }
         //Action de suppression
         //récupérer l'Entitye manager
@@ -54,11 +54,11 @@ class EventCategorieController extends AbstractController
         return $this->redirectToRoute('app_event_categorie');
     }
 
-    #[Route('/addCategorie', name: 'app_addCategorie')]
+    #[Route('/admin/addCategorie', name: 'app_addCategorie')]
     public function addCategorie(ManagerRegistry $doctrine, Request $request): Response
     {
         $categories = new EventCategorie();
-        $form = $this->createForm(EventCategorieType::class,$categories);
+        $form = $this->createForm(EventCategorieType::class, $categories);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //Action d'ajout
@@ -73,20 +73,20 @@ class EventCategorieController extends AbstractController
         ]);
     }
 
-    #[Route('/updateCategorie/{id}', name: 'app_updateCategorie')]
+    #[Route('/admin/updateCategorie/{id}', name: 'app_updateCategorie')]
     public function updateCategorie($id, EventCategorieRepository $ce, ManagerRegistry $doctrine, Request $request): Response
     {
         //récupérer la classe à modifier
         $categories = $ce->find($id);
-        $form = $this->createForm(EventCategorieType::class,$categories);
+        $form = $this->createForm(EventCategorieType::class, $categories);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //Action de MAJ
-            $em =$doctrine->getManager();
+            $em = $doctrine->getManager();
             $em->flush();
             return $this->redirectToRoute("app_event_categorie");
         }
-        return $this->renderForm("event_categorie/createCategorie.html.twig", [
+        return $this->renderForm("event_categorie/updateCategorie.html.twig", [
             "form" => $form
         ]);
     }

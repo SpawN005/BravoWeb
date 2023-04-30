@@ -1,4 +1,37 @@
 {% extends 'base.html.twig' %}
+{% block topBar %}
+
+        <div class="topbar-one">
+            <div class="container">
+                <div class="topbar-one__left">
+                    <p>Look at the Calender for the Upcoming Exhibitions.</p>
+                </div><!-- /.topbar-one__left -->
+                {% if latestevent %}
+                <div class="topbar-one__right">
+                    <a href="#"><i class="far fa-clock"></i> {{latestevent.dateBeg | date('d-m')}} ---> {{latestevent.dateEnd | date('d-m')}}</a>
+                    <a href="#"><i class="fa fa-phone-alt"></i> (251) 235-3256</a>
+                    <a href="{{ path('app_addReservation', {'id': latestevent.id}) }}" class="thm-btn topbar__btn">Book</a><!-- /.thm-btn -->
+                </div><!-- /.topbar-one__right -->
+                {% endif %}
+            </div><!-- /.container -->
+        </div><!-- /.topbar-one -->
+{% endblock %}
+ {% block bannerSection %}
+      {% for randomevent in randomEvents %}
+  <div class="slide-item">
+                    <div class="image-layer lazy-image" style="background-image: url(http://localhost/img/{{randomevent.image}});"></div>
+
+                    <div class="container">
+                        <div class="content-box text-center">
+                            <h3>Opening On  {{randomevent.dateBeg | date('D. M d, Y')}}</h3>
+                            <h2>{{randomevent.title}} </h2>
+                            <div class="btn-box"><a href="{{ path('app_detailEventUser', {'id': randomevent.id}) }}" class="thm-btn btn-style-one">Learn
+                                    More</a></div>
+                        </div>
+                    </div>
+                </div>
+                  {% endfor %}
+{% endblock %}
  {% block items %}
         {% for artwork in artworks %}
           <div class="item">
@@ -17,6 +50,37 @@
         
 
       {% endblock %}
+      {% block events %}
+          {% for upcomingEvent in upcomingEvents %}
+                <div class="col-lg-12">
+                   
+                        <div class="event-one__single">
+                            <div class="event-one__image">
+                                <div class="event-one__date">
+                                    <span> {{upcomingEvent.dateBeg | date('m')}}</span>
+                                 {{upcomingEvent.dateBeg | date('M')}}
+                                </div><!-- /.event-one__date -->
+                                <div class="event-one__image-box">
+                                    <div class="event-one__image-inner">
+                                        <img src="http://localhost/img/{{upcomingEvent.image}}" alt="" width="159" height="159">
+                                    </div><!-- /.event-one__image-inner -->
+                                </div><!-- /.event-one__image-box -->
+                            </div><!-- /.event-one__image -->
+                            <div class="event-one__content">
+                                <h3><a href="{{ path('app_detailEventUser', {'id': upcomingEvent.id}) }}">{{upcomingEvent.title}}</a></h3>
+                                <p>{{upcomingEvent.description}}</p>
+                            </div><!-- /.event-one__content -->
+                            <div class="event-one__btn-block">
+                                <a href="{{ path('app_detailEventUser', {'id': upcomingEvent.id}) }}" class="thm-btn event-one__btn">Learn More</a>
+                            </div><!-- /.event-one__btn-block -->
+                        </div><!-- /.event-one__single -->
+                    </div><!-- /.col-lg-12 -->
+                          {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+      {% endblock %}
         {% block blog %}
               {% for blog in blogs %}
                 <div class="col-lg-4">
@@ -33,7 +97,7 @@
                                     <li><a href="#">By {{blog.author.firstName}} {{blog.author.lastName}}</a></li>
                                     <li><a href="#">03 Comments</a></li>
                                 </ul><!-- /.blog-one__meta list-unstyled -->
-                                <h3><a href="news-details.html">{{blog.title}}</a></h3>
+                                <h3><a href="{{ path('app_detail_blog', {'id': blog.id}) }}">{{blog.title}}</a></h3>
                                 <p>{{blog.description}}</p>
                                 <a href="{{ path('app_detail_blog', {'id': blog.id}) }}" class="blog-one__link">Learn More</a><!-- /.blog-one__link -->
                             </div><!-- /.blog-one__content -->
@@ -45,4 +109,5 @@
             </tr>
         {% endfor %}
          {% endblock %}
+         
 

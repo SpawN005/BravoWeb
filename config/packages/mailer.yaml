@@ -1,3 +1,28 @@
+# framework:
+#     mailer:
+#         dsn: '%env(MAILER_DSN)%'
+
+# framework:
+#     mailer:
+#         dsn: 'smtp://smtp.example.com:587?encryption=tls&auth_mode=login'
+#         user: 'meriam123.hammi@gmail.com'
+#         password: 'wnevuhcvabtqhhiz'
+# config/packages/mailer.yaml
+
+# #framework:
+#  #   mailer:
+#         dsn: '%env(MAILER_DSN)%'
+#         envelope:
+#             sender: 'meriam123.hammi@gmail.com'
+#             recipients: null
+#         headers:
+#             from:
+#                 - 'meriam123.hammi@gmail.com'
+
+# config/packages/framework.yaml
 framework:
-    mailer:
-        dsn: '%env(MAILER_DSN)%'
+  mailer:
+    dsn: "%env(MAILER_DSN)%"
+#       envelope:
+#          sender: '%env(MAILER_FROM_ADDRESS)%'
+

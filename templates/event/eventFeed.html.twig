@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+
+
+
+{% block body %}
+ <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>Events</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+  
+        <section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
+                  <div class="block-title text-left">
+                        <p>Events  </p>
+                        <h3>Explore <br> Our events</h3>
+                    </div>
+    
+    {{ form_start(form) }}
+        {# {{ form_row(form.dateBeg) }}
+        {{ form_row(form.dateEnd) }} #}
+        {{ form_row(form.nbPlaceMax) }}
+        {{ form_row(form.categorie, {'empty_data': null}) }}
+        {{ form_row(form.Search) }}
+    {{ form_end(form) }}
+
+    <div class="row">
+        {% for e in ev %}
+        {% if (form.Search.vars.value is empty or e.title matches '/^.*' ~ form.Search.vars.value ~ '.*$/i') and
+                  (form.nbPlaceMax.vars.value is empty or e.nbPlaceMax <= form.nbPlaceMax.vars.value) and
+                  (form.categorie.vars.value is empty or e.categorie.id == form.categorie.vars.value) %}
+            <div class="col-lg-4 col-md-6 filter-item masonary-item {{e.categorie.nom}}">
+                <div class="collection-grid__single">
+                    <div class="collection-grid__image">
+                        <img src="http://localhost/img/{{e.image}}" width="363" height="363" alt="">
+                    </div><!-- /.collection-grid__image -->
+                    <div class="collection-grid__content">
+                        <h3><a href="{{ path('app_detailEventUser', {'id': e.id}) }}">{{e.title}}</a></h3>
+                       <strong>Description:</strong> <p>{{e.description}}</p>
+<strong>Nombre de places maximum:</strong> <p>{{e.nbPlaceMax}}</p>
+<strong>Date de début:</strong> <p>{{e.dateBeg |date('Y-m-d')}}</p>
+<strong>Date de fin:</strong> <p>{{e.dateEnd |date('Y-m-d')}}</p>
+
+          </div><!-- /.collection-grid__content -->
+                </div><!-- /.collection-grid__single -->
+            </div><!-- /.col-lg-4 col-md-6 filter-item masonary-item -->
+  {% endif %}
+        {% endfor %}
+         </div><!-- /.row -->
+        </div><!-- /.row -->
+            </div><!-- /.container -->
+             
+        </section><!-- /.event-details -->
+{% endblock %}
+  
+           

@@ -5,9 +5,9 @@
 
 
 {% block body %}
-{# <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});"> #}
+<section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
             <div class="container">
-                <h2>Event Details</h2>
+                <h2>Event detail</h2>
             </div><!-- /.container -->
         </section><!-- /.page-header -->
 
@@ -16,7 +16,7 @@
             <div class="container">
                 <div class="event-details__top">
                {% if eventId is defined %}
-    <a href="{{ path('app_eventUser', {'id': eventId}) }}">back</a>
+    <a href="{{ path('app_eventFeed') }}" class="thm-btn contact-one__btn">back</a>
 {% endif %}
 
 
@@ -24,10 +24,10 @@
                     <h3>{{ event.title }}</h3>
                 </div><!-- /.event-details__top -->
                 <div class="row high-gutter">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="event-details__main">
                             <div class="event-details__image">
-                                <img src="http://localhost/img/{{event.image}}" alt="" width="500" height="565">
+                                <img src="http://localhost/img/{{event.image}}" alt="" >
                             </div><!-- /.event-details__image -->
                             <div class="event-details__content">
                              <p> {{event.description}} </p>
@@ -35,18 +35,11 @@
 
                              
                                
-                        <div class="event-details__booking">
-                            <ul class="event-details__booking-info list-unstyled">
-                                {# <li>
-                                    <span>Type:</span>
-                                    {{artwork.categorie.NomCategorie}}
-                                </li> #}
+                       
                    
-                               
-                            </ul><!-- /.event-details__booking-info list-unstyled -->
-                     
-                            <!-- /.thm-btn event-details__book-btn -->
-                        </div><!-- /.event-details__booking -->
+                               {% if app.user %}
+              <a class="thm-btn contact-one__btn mt-5" href="{{ path('app_addReservation', {'id': event.id}) }}">Reserver</a>
+ {% endif %}
                     
                 </div><!-- /.row -->
             </div><!-- /.container -->

@@ -45,7 +45,7 @@ class BlogController extends AbstractController
             'myblogs' => $bool
         ]);
     }
-    #[Route('/Myblogs', name: 'Myapp_blog')]
+    #[Route('/artiste/Myblogs', name: 'Myapp_blog')]
     public function indexMyblogs(): Response
     {
         //récupérer le repository 

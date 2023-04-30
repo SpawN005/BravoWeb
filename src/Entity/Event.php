@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 
 #[UniqueEntity(fields: ['title'], message: 'There is already an event with this title')]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -53,6 +54,21 @@ class Event
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?EventCategorie $categorie = null;
+
+
+
+    #[ORM\OneToMany(mappedBy: 'id_event', targetEntity: Reservation::class, cascade: ['remove'])]
+    private Collection $reservations;
+
+
+
+
+    public function __construct()
+    {
+
+        $this->id_event = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -139,6 +155,68 @@ class Event
     public function setCategorie(?EventCategorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getIdEvent(): Collection
+    {
+        return $this->id_event;
+    }
+
+    public function addIdEvent(Reservation $idEvent): self
+    {
+        if (!$this->id_event->contains($idEvent)) {
+            $this->id_event->add($idEvent);
+            $idEvent->setIdEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdEvent(Reservation $idEvent): self
+    {
+        if ($this->id_event->removeElement($idEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($idEvent->getIdEvent() === $this) {
+                $idEvent->setIdEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setIdEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getIdEvent() === $this) {
+                $reservation->setIdEvent(null);
+            }
+        }
 
         return $this;
     }

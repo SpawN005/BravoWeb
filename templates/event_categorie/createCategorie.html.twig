@@ -1,4 +1,4 @@
-{% extends 'base-back.html.twig' %}
+{% extends 'dashboard-base.html.twig' %}
 
 
 {% block title %}New Category{% endblock %}
@@ -12,6 +12,8 @@
                             <a href="{{ path('app_addEvent')}}" class="dropdown-item">create event</a>
                             <a href="{{ path('app_addCategorie')}}" class="dropdown-item">create type</a>
                             <a href="{{ path('app_event_categorie')}}" class="dropdown-item">list type</a>
+                            <a href="{{ path('app_reservation')}}" class="dropdown-item">list reservation</a>
+
                         </div>
                     </div>
                     
@@ -36,7 +38,9 @@
                                 </div>
                                
                             </div><!-- /.row -->
+                             <div class="col-lg-12 mt-3">
                             <button class="btn">Create</button>
+                             </div><!-- /.col-lg-12 -->
                             <a href="{{ path('app_event') }}">Retour</a>
                     {{form_end(form)}}
                      
