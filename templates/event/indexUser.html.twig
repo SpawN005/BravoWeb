@@ -37,6 +37,7 @@
                         <img src="http://localhost/img/{{e.image}}" width="350" height="350" alt="">
                     </div><!-- /.collection-grid__image -->
                     <div class="collection-grid__content">
+                    
                         <h3><a href="{{ path('app_detailEventUser', {'id': e.id}) }}">{{e.title}}</a></h3>
                        <strong>Description:</strong> <p>{{e.description}}</p>
 <strong>Nombre de places maximum:</strong> <p>{{e.nbPlaceMax}}</p>
@@ -47,7 +48,12 @@
 {% else %}
     <strong>Catégorie:</strong> <p>No category</p>
 {% endif %} {% if app.user %}
-              <a class="thm-btn contact-one__btn" href="{{ path('app_addReservation', {'id': e.id}) }}">Reserver</a>
+{% if e.nbPlaceMax == 0 %}
+              <button class="  thm-btn contact-one__btn btn-danger " href="#" disabled>Event Full</button>
+              {% else %}
+                            <a class="thm-btn contact-one__btn " href="{{ path('app_addReservation', {'id': e.id}) }}">Reserver</a>
+
+               {% endif %}
  {% endif %}
                        
                     </div><!-- /.collection-grid__content -->

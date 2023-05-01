@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\DonationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 #[ORM\Entity(repositoryClass: DonationRepository::class)]
 class Donation
@@ -14,23 +17,79 @@ class Donation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    /**
+     * @var string
+     *
+     */
 
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_creation = null;
+    #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
+    #[Assert\NotBlank(message: 'Please enter a title')]
+    private $title;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_expiration = null;
+    /**
+     * @var string
+     *
+     */
+    #[Assert\NotBlank(message: 'Please enter a description')]
+    #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
+    private $description;
 
-    #[ORM\Column]
-    private ?float $amount = null;
+    /**
+     * @var \DateTime
+     *
+     */
+    #[Assert\GreaterThanOrEqual('today', message: 'The start date must be a date that is later than the current date.')]
+    #[ORM\Column(name: 'date_creation', type: 'date', nullable: false)]
+    private $dateCreation;
 
-    #[ORM\ManyToOne(inversedBy: 'donations')]
-    private ?CategorieDonation $categorie = null;
+    /**
+     * @var \DateTime
+     *
+     */
+    #[Assert\GreaterThanOrEqual(propertyPath: 'dateCreation', message: 'The end date must be a date that is later than the start date.')]
+    #[ORM\Column(name: 'date_expiration', type: 'date', nullable: false)]
+    private $dateExpiration;
+
+    /**
+     * @var int
+     *
+     */
+    #[Assert\Range(min: 1, notInRangeMessage: 'The amount must be greater than zero',)]
+    #[ORM\Column(name: 'amount', type: 'integer', nullable: false)]
+    private $amount;
+
+    /**
+     * @var \User
+     *
+     */
+    #[ORM\JoinColumn(name: 'owner', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'User')]
+    private $owner;
+
+    /**
+     * @var \CategorieDonation
+     *
+     */
+    #[ORM\JoinColumn(name: 'categorie', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: 'CategorieDonation')]
+    private $categorie;
+    #[ORM\OneToMany(targetEntity: 'Donater', mappedBy: 'idDonation')]
+
+    private $donaters;
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+    public function __construct()
+    {
+        $this->donaters = new ArrayCollection();
+    }
+    public function getDonaters()
+    {
+        return $this->donaters;
+    }
+
 
     public function getId(): ?int
     {
@@ -63,24 +122,24 @@ class Donation
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getDateExpiration(): ?\DateTimeInterface
     {
-        return $this->date_expiration;
+        return $this->dateExpiration;
     }
 
-    public function setDateExpiration(\DateTimeInterface $date_expiration): self
+    public function setDateExpiration(\DateTimeInterface $dateExpiration): self
     {
-        $this->date_expiration = $date_expiration;
+        $this->dateExpiration = $dateExpiration;
 
         return $this;
     }
@@ -93,6 +152,18 @@ class Donation
     public function setAmount(float $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

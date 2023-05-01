@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donater{% endblock %}
+
+{% block body %}
+    <h1>Donation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Title</th>
+         
+                   <th>Owner</th>
+            
+                   <th>Description</th>
+      
+                   <th>Amount to achieve</th>
+                   
+                   <th>Amount Donated</th>
+                        <th>Creation Date</th>
+                             <th>Expiration Date</th>
+      
+        
+            </tr>
+            <tr>
+               
+                <td>{{ donater.idDonation.title }}</td>
+                   <td>{{ donater.idDonation.Owner }}</td>
+                      <td>{{ donater.idDonation.description }}</td>
+                         <td>{{ donater.idDonation.amount }}</td>
+                            <td>{{ donater.amount }}</td>
+                               <td>{{ donater.idDonation.dateCreation |ago}}</td>
+                                  <td>{{ donater.idDonation.dateExpiration|ago }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_donater_conntroller_index') }}">back to list</a>
+
+ 
+
+{% endblock %}

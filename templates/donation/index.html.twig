@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}donations{% endblock %}
+
+{% block body %}
+ <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>List Donations</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+     <section class="event-details">
+            <div class="container">
+                <div class="event-details__top">
+                  <div class="block-title text-left mb-4">
+                        <p>Donations table  </p>
+                       
+                    </div>
+<div class="card" align="center">
+
+<table border='2'>
+<tr>
+<th>title</th>
+<th>description</th>
+<th>date creation</th>
+<th>date expiration</th>
+<th>amount</th>
+<th>buttons</th>
+{% for d in donation %}
+<tr>
+
+<td>{{d.title}}</td>
+<td>{{d.description}}</td>
+<td>{{d.datecreation|date('d-m-Y')}}</td>
+<td>{{d.dateexpiration|date('d-m-Y')}}</td>
+<td>{{d.amount}}</td>
+<td class="d-flex"><form action="{{path('app_donation_update',{'id':d.id})}}">
+    <button class="thm-btn contact-one__btn p-3 ml-4" >update</button>
+    </form>
+    <form action="{{path('app_donation_delete',{'id':d.id})}}">
+    <button class="thm-btn contact-one__btn p-3 ml-4 ">delete</button>
+    </form></td>
+</tr>
+
+{% endfor %}
+</table><div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="{{ path('app_donation_add') }}" class="thm-btn contact-one__btn">Create new</a>
+    <a href="{{ path('app_donation_show') }}" class="thm-btn contact-one__btn">Show existing</a>
+</div>
+
+
+</div>
+   </div><!-- /.row -->
+            </div><!-- /.container -->
+             
+        </section>
+{% endblock %}

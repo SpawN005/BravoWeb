@@ -38,7 +38,12 @@
                        
                    
                                {% if app.user %}
-              <a class="thm-btn contact-one__btn mt-5" href="{{ path('app_addReservation', {'id': event.id}) }}">Reserver</a>
+{% if event.nbPlaceMax == 0 %}
+              <button class="  thm-btn contact-one__btn btn-danger mt-5" href="#" disabled>Event Full</button>
+              {% else %}
+                            <a class="thm-btn contact-one__btn mt-5" href="{{ path('app_addReservation', {'id': event.id}) }}">Reserver</a>
+
+               {% endif %}
  {% endif %}
                     
                 </div><!-- /.row -->

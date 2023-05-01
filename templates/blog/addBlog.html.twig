@@ -14,7 +14,7 @@
 
 {% block body %}
   
-<section class="page-header" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);">
+<section class="page-header" style="background-image:  url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
 
             <div class="container">
                 <h2>New Blog</h2>
@@ -63,7 +63,7 @@
 
                                 <div class="col-lg-6 ">
                                 {{ form_label (f.categorie, "Categorie") }} 
-                                {{ form_widget(f.categorie) }} 
+                                {{ form_widget(f.categorie,{'attr': {'class': 'selectpicker'}}) }} 
                                 {{ form_errors (f.categorie) }} 
                                  </div>
 

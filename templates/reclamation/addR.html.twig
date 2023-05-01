@@ -2,7 +2,7 @@
 {% block body %}
 {#{% block title %}<h1>New complaint</h1> {% endblock %}#}
 
-<section class="page-header" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);">
+<section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
 
             <div class="container">
                 <h2>New complaint</h2>
@@ -51,7 +51,7 @@
        <div class="col-lg-6">
 
     {{ form_label (form.typereclamation, "Title") }} 
-    {{ form_widget(form.typereclamation) }} 
+    {{ form_widget(form.typereclamation,{'attr': {'class': 'selectpicker'}}) }} 
     {{ form_errors (form.typereclamation) }} 
        </div>
 

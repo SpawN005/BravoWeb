@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add New Donation{% endblock %}
+
+{% block body %}
+ <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2> Add a Donation</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+    <section id="breadcrumbs" class="breadcrumbs">
+        <div class="container">
+
+          
+
+        </div>
+    </section>
+
+    <div class="container" style="margin-top: 50px;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+
+                    <div class="form-group">
+                        {{ form_label(form.title, 'Title') }}
+                        {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Enter the title of your donation'}}) }}
+                        {{ form_errors(form.title) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.description, 'Description') }}
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Enter a brief description of your donation'}}) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+<style>
+    .date-input {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+</style>
+                    <div class="form-group">
+                    <div class="row">
+                    <div class="col">
+                        {{ form_label(form.dateCreation, 'Date Creation') }}
+                        {{ form_widget(form.dateCreation, {'attr': {'class': 'form-control', 'type': 'date'}}) }}
+                        {{ form_errors(form.dateCreation) }}
+                    </div>
+                    <div class="col">
+                        {{ form_label(form.dateExpiration, 'Date Expiration') }}
+                       {{ form_widget(form.dateExpiration, {'attr': {'class': 'form-control', 'type': 'date'}}) }}
+                      {{ form_errors(form.dateExpiration) }}
+                     </div>
+                     </div>
+</div>
+
+
+                    <div class="form-group">
+                        {{ form_label(form.amount, 'Amount') }}
+                        {{ form_widget(form.amount, {'attr': {'class': 'form-control', 'placeholder': 'Enter the amount of your donation'}}) }}
+                        {{ form_errors(form.amount) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.Categorie, 'Category') }}
+                        {{ form_widget(form.Categorie, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.Categorie) }}
+                    </div>
+
+                    <div class="form-group mt-4 mb-0">
+                        <button type="submit" class="thm-btn contact-one__btn">
+                            Create New Donation
+                        </button>
+                    </div>
+
+                {{ form_end (form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'dashboard-base.html.twig' %}
+
+{% block title %}CategorieDonation{% endblock %}
+
+{% block body %}
+    <h1>CategorieDonation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ categorie_donation.id }}</td>
+            </tr>
+            <tr>
+                <th>Nomcategorie</th>
+                <td>{{ categorie_donation.nomcategorie }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_categorie_donation_index') }}">back to list</a>
+
+    <a href="{{ path('app_categorie_donation_edit', {'id': categorie_donation.id}) }}">edit</a>
+
+    {{ include('categorie_donation/_delete_form.html.twig') }}
+{% endblock %}

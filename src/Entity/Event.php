@@ -35,11 +35,15 @@ class Event
     #[Assert\GreaterThanOrEqual(value: 0)]
     private ?int $nb_placeMax = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_beg = null;
+    #[ORM\Column(type: 'date', nullable: false)]
+    #[Assert\NotBlank(message: 'Please enter a Date.')]
+    #[Assert\GreaterThanOrEqual('today', message: 'The start date must be a date that is later than the current date.')]
+    private ?\DateTimeInterface $date_beg;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_end = null;
+    #[ORM\Column(type: 'date', nullable: false)]
+    #[Assert\NotBlank(message: 'Please enter a Date.')]
+    #[Assert\GreaterThanOrEqual(propertyPath: 'date_beg', message: 'The end date must be a date that is later than the start date.')]
+    private ?\DateTimeInterface $date_end;
 
     // public function getToday(): ?\DateTimeInterface
     // {
@@ -50,6 +54,7 @@ class Event
 
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Image is required")]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]

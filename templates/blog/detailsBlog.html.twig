@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="blog-details__top">
                {% if blogId is defined %}
-    <a href="{{ path('app_read_blog', {'id': blogId}) }}">back</a>
+    <a href="{{ path('app_read_blog') }}">back</a>
 {% endif %}
 
 
@@ -48,6 +48,20 @@
     <input type="number" name="score" id="score" min="0" max="10" required>
     <button type="submit">Add</button>
 </form>"#}
+     {% if app.user is not null %}
+    {% if app.user == blog.author %}
+        <div style="display: flex; flex-direction: row;  align-items:center; margin-top:40px;margin-left:200px;">    
+            
+            <form method="post" action="{{ path('app_delete_blog', {'id': blog.id}) }}">
+                <button class="thm-btn contact-one__btn">Delete</button>
+            </form>  
+            
+            <form method="post" action="{{ path('app_update_blog', {'id': blog.id}) }}">
+                <button class="thm-btn contact-one__btn ml-5">Update</button>
+            </form>  
+        </div>
+    {% endif %}
+{% endif %}
 
 {% if app.user %}
         {{form_start(form)}}

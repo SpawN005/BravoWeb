@@ -40,60 +40,42 @@
             {% endif %}
             </div><!-- /.container -->
         </section><!-- /.page-header -->
-
-        <section class="event-details">
+  <section class="collection-grid collection-masonary">
             <div class="container">
-                <div class="event-details__top">
-                {%for b in blog %}
-
-                    <h3><a href="{{ path('app_detail_blog', {'id': b.id}) }}">{{b.title}}</a></h3>
-                </div><!-- /.event-details__top -->
-                <div class="row high-gutter">
-                    <div class="col-lg-8">
-                        <div class="event-details__main">
-                            <div class="event-details__image">
-                                <img src="http://localhost/img/{{b.image}}" alt="" width="500" height="400">
-                            </div><!-- /.event-details__image -->
-                            <div class="event-details__content">
-                           <p> {{b.description}} </p>
-                           <p> {{b.author.FirstName}}  </p>
-
-                           {% if app.user %}
-                                {% if app.user == b.author %}
-                                  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">      
-                            <li><form action="{{path('app_delete_blog',{'id':b.id}) }}">
-                        <button class="thm-btn contact-one__btn">Delete</button>
-                            </form>
-                            </li>
-                            
-                            <li> 
-                        <form action="{{path('app_update_blog',{'id':b.id}) }}">
-                        <button class="thm-btn contact-one__btn">Update</button>
-                        </form> 
- </div>
-                                {% endif %}
-                            {% endif %}
-
-        
-</li>
-{%endfor%}
-</section>
-                                </ul><!-- /.event-details__contact -->
-                            </div><!-- /.event-details__content -->
-                        </div><!-- /.event-details__main -->
-          
-                    </div><!-- /.col-lg-8 -->
-
-        <section class="cta-one" style="background-image: url({{asset('images/shapes/cta-bg-1-1.jpg')}});">
-            <div class="container text-center">
-                <h3>More Than 1250 Exhibits!</h3>
-                <p>Every day more exhibits arrive in our museum. Do not <br> wait and buy a ticket now.</p>
-                <div class="cta-one__btn-block">
-                    <a href="#" class="thm-btn cta-one__btn-one">Become A Member</a><!-- /.thm-btn cta-one__btn-one -->
-                    <a href="#" class="thm-btn cta-one__btn-two">Buy Online</a><!-- /.thm-btn cta-one__btn-two -->
-                </div><!-- /.cta-one__btn-block -->
+                <div class="collection-grid__top">
+                    <div class="block-title text-left">
+                        <p>Blogs  </p>
+                        <h3>Explore <br> Our Blogs</h3>
+                    </div>
+                  
+      
+                      
+                      
+               <!-- /.block-title -->
+                       </div><!-- /.collection-grid__top --> <div class="row high-gutter filter-layout masonary-layout">
+{% for b in blog %}  
+               
+                    <div class="col-lg-4 col-md-6 filter-item masonary-item ">
+                        <div class="collection-grid__single">
+                            <div class="collection-grid__image">
+                                <img src="http://localhost/img/{{b.image}}"  width="363" height="363"alt="">
+                          
+                            </div><!-- /.collection-grid__image -->
+                            <div class="collection-grid__content">
+                                <h3><a href="{{ path('app_detail_blog', {'id': b.id}) }}">{{b.title}}</a></h3>
+                                <p>{{b.author.FirstName}} {{b.author.LastName}}</p>
+                            </div><!-- /.collection-grid__content -->
+                        </div><!-- /.collection-grid__single -->
+                          
+                    </div><!-- /.col-lg-4 -->
+                   {% else %} 
+                         <p>no records found</p>
+            
+        {% endfor %}
+                </div><!-- /.row -->
             </div><!-- /.container -->
-        </section><!-- /.cta-one -->
+      
+        </section><!-- /.collection-grid -->
         
       
 {% endblock %}

@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+ 
+
+
+{% block body %}
+  <section class="page-header" style="background-image: url({{asset('images/backgrounds/page-header-bg-1-1.jpg')}});">
+            <div class="container">
+                <h2>Donation Stats</h2>
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+<section class="collection-grid collection-masonary">
+            <div class="container">
+                <div class="collection-grid__top">
+                    <div class="block-title text-left">
+                        <p>My Stats  </p>
+                        <h3>Explore <br> Your donation stats</h3>
+                    </div>
+                </div>
+  <div class="row high-gutter filter-layout masonary-layout " style="margin-bottom: 200px; margin-top: 100px">
+        <div class="col-1" style="writing-mode: vertical-lr;
+			text-orientation: mixed;
+			white-space: nowrap;" align="center">
+            Amount achieved per donation
+        </div>
+        <div class="col-3">
+            <div>
+                <canvas id="myChart2"></canvas>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                const chartData = {};
+
+                {% for k in donation %}
+                if (!chartData["{{ k.title }}"]) {
+                    chartData["{{ k.title }}"] = {{ k.amount }};
+                } else {
+                    chartData["{{ k.title }}"] += {{ k.amount }};
+                }
+                {% endfor %}
+
+                const ctx = document.getElementById('myChart2');
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(chartData),
+                        datasets: [{
+                            label: 'Amount',
+                            data: Object.values(chartData),
+                            backgroundColor: [
+                                '#FF6384',
+                                '#36A2EB',
+                                '#FFCE56',
+                                '#8BC34A',
+                                '#9C27B0',
+                                '#FF9800',
+                                '#607D8B',
+                                '#795548',
+                                '#E91E63',
+                                '#00BCD4',
+                            ]
+                        }]
+                    }
+                });
+            </script></div>
+        <div class="col-1" style="writing-mode: vertical-lr;
+			text-orientation: mixed;
+			white-space: nowrap;" align="center">
+            Amount per type
+        </div><div class="col-3">
+
+
+            <div>
+                <canvas id="myChart3"></canvas>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                const chartData1 = {};
+
+                {% for k in donation %}
+                if (!chartData1["{{ k.title }}"]) {
+                    chartData1["{{ k.title }}"] = {{ k.amount }};
+                } else {
+                    chartData1["{{ k.title }}"] += {{ k.amount }};
+                }
+                {% endfor %}
+
+                const ctx3 = document.getElementById('myChart3');
+
+                new Chart(ctx3, {
+                    type: 'polarArea',
+                    data: {
+                        labels: Object.keys(chartData1),
+                        datasets: [{
+
+                            label: 'Amount',
+                            data: Object.values(chartData1)
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            r: {
+                                pointLabels: {
+                                    display: true,
+                                    centerPointLabels: true,
+                                    font: {
+                                        size: 13
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        }
+                    },
+                });
+            </script>
+
+        </div><div class="col-1" style="writing-mode: vertical-lr;
+			text-orientation: mixed;
+			white-space: nowrap;" align="center">
+            revenue  par mois
+        </div>
+        <div class="col-3">
+
+            <canvas id="myChart4"></canvas>
+
+            <script>
+                const labels = [];
+                const data = {};
+
+                {% for k in donation %}
+                if (!data["{{ k.dateCreation|date("M") }}"]) {
+                    data["{{ k.dateCreation|date("M") }}"] = {{ k.amount }};
+                } else {
+                    data["{{ k.dateCreation|date("M") }}"] += {{ k.amount }};
+                }
+                {% endfor %}
+
+
+                const ctx4 = document.getElementById('myChart4').getContext('2d');
+                const config4 = {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'chiffre d\'affaire',
+                            data: data,
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'chiffre d\'affaire par rapport au mois'
+                            }
+                        }
+                    }
+                };
+
+                new Chart(ctx4, config4);
+
+
+            </script>
+        </div>
+    
+       
+     
+   
+ 
+                   </div>
+            </div><!-- /.container --> 
+            
+                
+        </section><!-- /.collection-grid -->
+{% endblock %}

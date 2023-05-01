@@ -1,0 +1,35 @@
+{% extends 'dashboard-base.html.twig' %}
+
+{% block title %}CategorieDonation index{% endblock %}
+
+{% block body %}
+    <h1>Categories Donation</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nomcategorie</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for categorie_donation in categorie_donations %}
+            <tr>
+                <td>{{ categorie_donation.id }}</td>
+                <td>{{ categorie_donation.nomcategorie }}</td>
+                <td>
+                    <a href="{{ path('app_categorie_donation_show', {'id': categorie_donation.id}) }}">show</a>
+                    <a href="{{ path('app_categorie_donation_edit', {'id': categorie_donation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div><a href="{{ path('app_categorie_donation_new') }}"><button type="button" class="btn btn-warning">Create new</button></a></div>
+{% endblock %}

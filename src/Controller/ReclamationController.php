@@ -320,11 +320,13 @@ class ReclamationController extends AbstractController
 
     public function stats(Request $request, ReclamationRepository $reclamationRepository): Response
     {
-        $rec = $reclamationRepository->findAll();
+        $reclamation = $reclamationRepository->findAll();
         $r1 = 0;
         $r2 = 0;
         $r3 = 0;
-        foreach ($rec as $reclamation) {
+        $dates[] = [];
+        $totals[] = [];
+        foreach ($reclamation as $reclamation) {
             if ($reclamation->getEtat() == 'on hold') {
                 $r1 += 1;
             } elseif ($reclamation->getEtat() == 'processing') {

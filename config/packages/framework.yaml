@@ -18,7 +18,8 @@ framework:
         log: true
 
 when@test:
-    framework:
+    framework: 
+        validation: { enabled: true }
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file

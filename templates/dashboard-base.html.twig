@@ -62,7 +62,7 @@
             </div>
             <div class="navbar-nav w-100">
                 <a href="#" class="nav-item nav-link "><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    <a class="nav-item nav-link " href="{{path('adminbacks')}}"   ><i class="fa fa-keyboard me-2"></i>
+                    <a class="nav-item nav-link " href="{{path('adminbacks')}}"   ><i class="fa fa-user-circle me-2"></i>
                         <span >User</span>
                     </a>
                     <!-- <a class="nav-item nav-link " href="{{path('adminbacks')}}"   ><i class="fa fa-keyboard me-2"></i>
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Events</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-calendar me-2"></i>Events</a>
                     <div class="dropdown-menu bg-transparent border-0">
                      <a href="{{ path('app_event')}}" class="dropdown-item">Show events</a>
                  <a href="{{ path('app_addEvent')}}" class="dropdown-item">Create event</a>
@@ -98,10 +98,19 @@
                       <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Category Blog</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="{{ path('app_new_categorie_blog')}}" class="dropdown-item">create type</a>
-                            <a href="{{ path('app_categorie_blog')}}" class="dropdown-item">list type</a>
+                            <a href="{{ path('app_new_categorie_blog')}}" class="dropdown-item">Create type</a>
+                            <a href="{{ path('app_categorie_blog')}}" class="dropdown-item">List type</a>
                         </div>
-                    </div>       
+                    </div> 
+                     <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Donations</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+ 
+                          <a href="{{path('app_donation_back')}}" class="dropdown-item">Donations list</a>
+                            <a href="{{ path('app_categorie_donation_index')}}" class="dropdown-item">Category Management</a>
+                        </div>
+                    </div> 
+                                            
                 <a href="{{ path('admin_chart') }}" class="nav-item nav-link" ><i class="fa fa-chart-bar me-2"></i>Charts</a>
 
             </div>

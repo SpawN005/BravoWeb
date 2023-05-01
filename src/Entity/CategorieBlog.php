@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: CategorieBlogRepository::class)]
 class CategorieBlog
@@ -17,6 +19,7 @@ class CategorieBlog
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: "Categorie is required")]
     private ?string $nomCategorie = null;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Blog::class)]

@@ -23,6 +23,7 @@
         "mercuryseries/flashy-bundle": "^5.1",
         "lexik/jwt-authentication-bundle": "^2.18",
         "dompdf/dompdf": "*",
+        "symfony/ux-chartjs": "^2.7",
         "knplabs/knp-snappy-bundle": "^1.9",
         "endroid/qr-code-bundle": "^4.3",
         "phpdocumentor/reflection-docblock": "^5.3",

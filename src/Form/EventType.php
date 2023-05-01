@@ -37,6 +37,7 @@ class EventType extends AbstractType
                     'class' => 'my-custom-class',
                     'placeholder' => 'YYYY-MM-DD',
                 ],
+                'data' => new \DateTime(),
             ])
             // ->add('date_end')
 
@@ -48,19 +49,19 @@ class EventType extends AbstractType
                     'class' => 'my-custom-class',
                     'placeholder' => 'YYYY-MM-DD',
                 ],
-              
+                'data' => new \DateTime(),
+
             ])
             ->add('image', FileType::class, [
                 'required' => true,
                 'label' => 'Profile Picture',
-                'data_class' => null,    
+                'data_class' => null,
             ])
             ->add('categorie', EntityType::class, [
-                'class'=>EventCategorie::class,
+                'class' => EventCategorie::class,
                 'choice_label' => 'nom',
-               
-            ])
-        ;
+
+            ]);
         // $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
         //     $user = $event->getData();
         //     $imageFile = $user->getImage();
@@ -82,7 +83,7 @@ class EventType extends AbstractType
         //         $user->setImage($newFilename);
         //     }
         // });
-        
+
 
 
 

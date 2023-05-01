@@ -32,9 +32,11 @@ class Blog
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Image is required")]
     private ?string $image = null;
 
     #[ORM\Column(length: 1000)]
+    #[Assert\NotBlank(message: "Content is required")]
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]

@@ -34,10 +34,7 @@
     <link rel="stylesheet" href="{{asset('css/hover-min.css')}}">
     <link rel="stylesheet" href="{{asset('css/muzex-icons.css')}}">
     <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
-<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
-
-    
-
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
 
 
@@ -79,14 +76,39 @@
                             <li><a href="{{ path('app_eventFeed') }}">Event</a></li>
                           
                           
-                           {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{ path('app_admin') }}">Dashboard</a></li>
-                             {% elseif is_granted('ROLE_ARTISTE') %}
-                             <li><a href="{{ path('artiste') }}">Profile</a></li>
-                             
-                             {% elseif is_granted('ROLE_USER') %}
-                             <li><a href="{{ path('clientProfile') }}">Profile</a></li>
-                            {% endif %}
+                        
+                                  {% if   is_granted('ROLE_ARTISTE') %}
+                              <li class="dropdown">
+                                <a href="{{ path('app_read_blog')}}">Blogs</a>
+                                <ul>
+                                   
+                                    <li><a href="{{ path('Myapp_blog')}}">My Blogs</a></li>
+                                    <li><a href="{{ path('app_new_blog') }}">Add Blog</a></li>
+                        
+                                </ul>
+                            </li>
+                             {% else %}
+                              <li>  <a href="{{ path('app_read_blog')}}">Blogs</a></li>
+                              {% endif %}
+                                {% if app.user %} 
+                              <li class="dropdown">
+                                <a href="{{path('app_donation_show')}}">Donation</a>
+                                <ul>
+                                    {% if   is_granted('ROLE_ARTISTE') %}
+                                    <li><a href="{{ path('app_donation')}}">My Donations</a></li>
+                                    
+                                    
+                                     {% endif %}
+                                        {% if  is_granted('ROLE_ARTISTE') or is_granted('ROLE_USER')   %} 
+                                          <li><a href="{{ path('app_donater_conntroller_index')}}">Donated list</a></li>
+                                       {% endif %} 
+                        
+                                      
+                        
+                                </ul>
+                            </li>
+                                {% endif %}
+                                
                                 {% if  is_granted('ROLE_USER')  or is_granted('ROLE_ARTISTE') %}
                               <li class="dropdown">
                                 <a href="#">Complaints</a>
@@ -98,20 +120,14 @@
                                 </ul>
                             </li>
                               {% endif %}
-                                  {% if   is_granted('ROLE_ARTISTE') %}
-                              <li class="dropdown">
-                                <a href="{{ path('app_blog')}}">Blogs</a>
-                                <ul>
-                                   
-                                    <li><a href="{{ path('Myapp_blog')}}">My Blogs</a></li>
-                                    <li><a href="{{ path('app_new_blog') }}">Add Blog</a></li>
-                        
-                                </ul>
-                            </li>
-                             {% else %}
-                              <li>  <a href="{{ path('app_blog')}}">Blogs</a></li>
-                              {% endif %}
-                            
+                                   {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('app_admin') }}">Dashboard</a></li>
+                             {% elseif is_granted('ROLE_ARTISTE') %}
+                             <li><a href="{{ path('artisteProfile') }}">Profile</a></li>
+                             
+                             {% elseif is_granted('ROLE_USER') %}
+                             <li><a href="{{ path('clientProfile') }}">Profile</a></li>
+                            {% endif %}
                         {% if app.user %} 
                              <li><a href="{{ path('app_logout') }}">Logout</a></li>
                            
@@ -744,7 +760,7 @@
     {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
     <script>
   var audio = document.getElementById("myaudio");
-  audio.volume = 0.5;
+  audio.volume = 0.015;
    
 
   // Check if the current time position is stored in local storage

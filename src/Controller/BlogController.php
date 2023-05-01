@@ -93,7 +93,7 @@ class BlogController extends AbstractController
             );
             $twilio->sendSMS('+21655757442', 'Your blog is added successfuly  !');
 
-            return $this->redirectToRoute("app_blog");
+            return $this->redirectToRoute("Myapp_blog");
         }
         return $this->renderForm("blog/addBlog.html.twig", array("f" => $form));
     }
@@ -113,7 +113,7 @@ class BlogController extends AbstractController
         $em->remove($blog);
         //La maj au niveau de la bd
         $em->flush();
-        return $this->redirectToRoute('app_blog');
+        return $this->redirectToRoute('Myapp_blog');
     }
 
 

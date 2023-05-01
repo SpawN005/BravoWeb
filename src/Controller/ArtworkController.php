@@ -38,10 +38,18 @@ class ArtworkController extends AbstractController
     public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
 
     {
-
+        $searchTerm = $request->query->get('search');
         $artworks = $entityManager
             ->getRepository(Artwork::class)
             ->findAll();
+        if ($searchTerm) {
+            $artworks = $entityManager->getRepository(Artwork::class)->createQueryBuilder('d')
+                ->where('d.title LIKE :title')
+                ->setParameter('title', '%' . $searchTerm . '%')
+                ->getQuery()
+                ->getResult();
+        }
+
         $categories = $entityManager
             ->getRepository(Categorie::class)
             ->findAll();
