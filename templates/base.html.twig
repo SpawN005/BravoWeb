@@ -94,14 +94,16 @@
                               <li class="dropdown">
                                 <a href="{{path('app_donation_show')}}">Donation</a>
                                 <ul>
-                                    {% if   is_granted('ROLE_ARTISTE') %}
-                                    <li><a href="{{ path('app_donation')}}">My Donations</a></li>
-                                    
-                                    
-                                     {% endif %}
+                                   
                                         {% if  is_granted('ROLE_ARTISTE') or is_granted('ROLE_USER')   %} 
                                           <li><a href="{{ path('app_donater_conntroller_index')}}">Donated list</a></li>
                                        {% endif %} 
+                                        {% if   is_granted('ROLE_ARTISTE') %}
+                                    <li><a href="{{ path('app_donation')}}">My Donations</a></li>
+                                             <li><a href="{{ path('app_donation_stats')}}">My Donations Stats</a></li>
+                                    
+                                    
+                                     {% endif %}
                         
                                       
                         
