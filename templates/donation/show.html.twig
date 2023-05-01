@@ -1,25 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    </form>
-    <div class="row">
-        {% for d in donation %}
-            <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ d.title }}</h5>
-                        <p class="card-text">{{ d.description }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">{{ d.dateCreation|date('Y-m-d') }}</small>
-                            <small class="text-muted">{{ d.dateExpiration|date('Y-m-d') }}</small>
+    <form>
+        <div class="row">
+            {% for d in donation %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ d.title }}</h5>
+                            <p class="card-text">{{ d.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">{{ d.dateCreation|date('Y-m-d') }}</small>
+                                <small class="text-muted">{{ d.dateExpiration|date('Y-m-d') }}</small>
+                            </div>
+                            <a href="{{ path('app_donater_conntroller_new',{'id':d.id}) }}" class="btn btn-danger mt-3">Donate Now</a> <!-- Add red button here -->
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-</div>
-    <div class="d-flex justify-content-center align-items-center mb-3">
-            <a href="{{ path('app_donation_add') }}" class="btn btn-warning btn-lg">Create new</a>
+            {% endfor %}
         </div>
+    </form>
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <a href="{{ path('app_donation_add') }}" class="btn btn-warning btn-lg">Create new</a>
     </div>
 {% endblock %}
+

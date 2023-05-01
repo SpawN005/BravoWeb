@@ -6,19 +6,19 @@
 {% block body %}
 <div class="container" >
     <div class="row">
-        <h1>mes reservation</h1>
+        <h1>my charts</h1>
     </div>
 
     <div class="row">
         <div class="col-1" style="writing-mode: vertical-lr;
 			text-orientation: mixed;
 			white-space: nowrap;" align="center">
-            vélos réservés par ville
+            Donations comulés
         </div>
         <div class="col-3">
 
             <div>
-                <canvas id="myChart2"></canvas>
+                <canvas id="myChart2" width="10000px" height="800px"></canvas>
             </div>
 
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -41,7 +41,7 @@
                     data: {
                         labels: Object.keys(chartData),
                         datasets: [{
-                            label: 'Vélos',
+                            label: 'amount',
                             data: Object.values(chartData),
                             backgroundColor: [
                                 '#FF6384',
@@ -62,7 +62,7 @@
         <div class="col-1" style="writing-mode: vertical-lr;
 			text-orientation: mixed;
 			white-space: nowrap;" align="center">
-            vélos réservés par type
+
         </div><div class="col-3">
 
 
@@ -86,12 +86,12 @@
                 const ctx3 = document.getElementById('myChart3');
 
                 new Chart(ctx3, {
-                    type: 'polarArea',
+                    type: 'bar',
                     data: {
                         labels: Object.keys(chartData1),
                         datasets: [{
 
-                            label: 'vélos',
+                            label: 'amount',
                             data: Object.values(chartData1)
                         }]
                     },
@@ -122,65 +122,10 @@
 			white-space: nowrap;" align="center">
             revenue  par mois
         </div>
-        <div class="col-3">
-
-            <canvas id="myChart4"></canvas>
-
-            <script>
-                const labels = [];
-                const data = {};
-
-                {% for k in donation %}
-                if (!data["{{ k.dateCreation|date("M") }}"]) {
-                    data["{{ k.dateCreation|date("M") }}"] = {{ k.amount }};
-                } else {
-                    data["{{ k.dateCreation|date("M") }}"] += {{ k.amount }};
-                }
-                {% endfor %}
-
-
-                const ctx4 = document.getElementById('myChart4').getContext('2d');
-                const config4 = {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'chiffre d\'affaire',
-                            data: data,
-                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }
-                        },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'chiffre d\'affaire par rapport au mois'
-                            }
-                        }
-                    }
-                };
-
-                new Chart(ctx4, config4);
-
-
-            </script>
-        </div></div>
-    <div class="row">
-        <h1>My Chart Example</h1>
-        {{ render_chart(chart) }}
-
-        {# You can pass HTML attributes as a second argument to add them on the <canvas> tag #}
-        {{ render_chart(chart, {'class': 'my-chart'}) }}
-    </div>
+        <div>
+            {{ render_chart(chart) }}
+<h1>My charts</h1>
+        </div>
+        </div>
 </div>
 {% endblock %}

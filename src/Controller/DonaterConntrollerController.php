@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Donater;
+use App\Entity\Donation;
 use App\Form\DonaterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,12 +26,13 @@ class DonaterConntrollerController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_donater_conntroller_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    #[Route('/new/{id}', name: 'app_donater_conntroller_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager,Donation $donation): Response
+    {   dd($donation);
         $donater = new Donater();
         $form = $this->createForm(DonaterType::class, $donater);
         $form->handleRequest($request);
+        $donater->setIdDonation($donation);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($donater);

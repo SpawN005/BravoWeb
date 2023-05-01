@@ -13,7 +13,6 @@ class DonaterType extends AbstractType
     {
         $builder
             ->add('amount')
-            ->add('idDonation')
             ->add('idUser')
         ;
     }
