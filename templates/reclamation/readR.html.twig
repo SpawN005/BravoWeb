@@ -57,7 +57,7 @@
                 <th>OwnerID</th>
                 <th>date_Traitement</th>
                 <th>note</th>
-                <th>typereclamation</th>
+                <th>TypeReclamation</th>
                 <th>actions</th>
             </tr>
        </thead>
@@ -72,7 +72,7 @@
                 <td>{{ reclamation.ownerID.firstname }}</td>
                 <td>{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
                 <td>{{ reclamation.note|default('-') }}</td>
-                <td>{{ reclamation.typereclamation }}</td>
+                <td>{{ reclamation.TypeReclamation }}</td>
                  <td>
                 {% if reclamation.etat == "on hold" %}
                     <a href="{{ path('app_deleteR', {'id': reclamation.id}) }}"class="btn btn-primary">delete</a>

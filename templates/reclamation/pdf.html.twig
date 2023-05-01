@@ -51,7 +51,7 @@
         <th class="wd-12p col-owner">OwnerID</th>
         <th class="wd-12p col-dateTraitement">date_Traitement</th>
         <th class="wd-12p col-note">note</th>
-        <th class="wd-12p col-type">typereclamation</th>
+        <th class="wd-12p col-type">TypeReclamation</th>
     </tr>
 </thead>
         <tbody>
@@ -65,7 +65,7 @@
         <td class="col-owner">{{ reclamation.ownerID.firstName }}</td>
         <td class="col-dateTraitement">{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
         <td class="col-note">{{ reclamation.note|default('-') }}</td>
-        <td class="col-type">{{ reclamation.typereclamation }}</td>
+        <td class="col-type">{{ reclamation.TypeReclamation }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -9,7 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ReclamationFormType;
 use App\Entity\Reclamation;
-use App\Entity\Typereclamation;
+use App\Entity\TypeReclamation;
 use App\Entity\User;
 use App\Repository\ReclamationRepository;
 use App\Repository\UserRepository;

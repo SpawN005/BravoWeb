@@ -27,7 +27,7 @@
                     <th>Propriétaire</th>
                     <th>Date de traitement</th>
                     <th>Note</th>
-                    <th>typereclamation</th>
+                    <th>TypeReclamation</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -41,7 +41,7 @@
                         <td>{{ reclamation.ownerID.firstname }}</td>
                         <td>{{ reclamation.dateTreatment|default('-')|date('d/m/Y') }}</td>
                         <td>{{ reclamation.note|default('-') }}</td>
-                        <td>{{ reclamation.typereclamation}}</td>
+                        <td>{{ reclamation.TypeReclamation}}</td>
                                         
                         <td>
                             {% if reclamation.etat == "on hold" %}

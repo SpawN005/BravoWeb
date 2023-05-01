@@ -9,7 +9,7 @@ use App\Repository\TypeReclamationRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\TypeReclamationFormType;
-use App\Entity\Typereclamation;
+use App\Entity\TypeReclamation;
 use App\Entity\Reclamation;
 use App\Repository\ReclamationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +53,7 @@ class TypeReclamationController extends AbstractController
                 return $this->redirectToRoute('app_addTypeR');
             }
             // Action d'ajout
-            $type->setTypereclamation($form->get('typereclamation')->getData());
+            $type->setTypeReclamation($form->get('TypeReclamation')->getData());
             $em->persist($type);
             $em->flush();
 
@@ -106,16 +106,16 @@ class TypeReclamationController extends AbstractController
     }
 
     #[Route('/admin/deleteTypecheck/{id}', name: 'app_deleteTypeCheck')]
-    public function delete($id, TypeReclamationRepository $rep, Request $request, TypeReclamation $typeReclamation, EntityManagerInterface $entityManager): Response
+    public function delete($id, TypeReclamationRepository $rep, Request $request, TypeReclamation $TypeReclamation, EntityManagerInterface $entityManager): Response
     { //recuperer le type a supprimer 
         $type = $rep->find($id);
         // Vérifier s'il existe des réclamations associées au type de réclamation
-        $reclamations = $this->getDoctrine()->getRepository(Reclamation::class)->findBy(['typereclamation' => $type]);
+        $reclamations = $this->getDoctrine()->getRepository(Reclamation::class)->findBy(['TypeReclamation' => $type]);
         if (count($reclamations) > 0) {
             // Si oui, demander confirmation avant la suppression
             $alertMessage = "Attention ! Ce type de réclamation est déjà associé à des réclamations. Êtes-vous sûr de vouloir le supprimer ?";
             $alertForm = $this->createFormBuilder()
-                ->setAction($this->generateUrl('app_deleteTypeCheck', ['id' => $typeReclamation->getId()]))
+                ->setAction($this->generateUrl('app_deleteTypeCheck', ['id' => $TypeReclamation->getId()]))
                 ->add('confirm', SubmitType::class, ['label' => 'Confirmer la suppression'])
                 ->getForm();
             $alertForm->handleRequest($request);
@@ -123,11 +123,11 @@ class TypeReclamationController extends AbstractController
                 // Si le formulaire de confirmation est soumis et valide, mettre à jour les réclamations associées
                 // au type de réclamation en les affectant au type "Autre"
                 foreach ($reclamations as $reclamation) {
-                    $reclamation->setTypeReclamation($entityManager->getRepository(TypeReclamation::class)->findOneBy(['typereclamation' => 'Autre']));
+                    $reclamation->setTypeReclamation($entityManager->getRepository(TypeReclamation::class)->findOneBy(['TypeReclamation' => 'Autre']));
                     $entityManager->persist($reclamation);
                 }
                 // Supprimer le type de réclamation
-                $entityManager->remove($typeReclamation);
+                $entityManager->remove($TypeReclamation);
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Le type de réclamation a été supprimé avec succès.');
@@ -135,14 +135,14 @@ class TypeReclamationController extends AbstractController
             } else {
                 // Si le formulaire n'est pas encore soumis, retourner la vue avec le formulaire
                 return $this->render('type_reclamation/delete_confirm.html.twig', [
-                    'typeReclamation' => $typeReclamation,
+                    'TypeReclamation' => $TypeReclamation,
                     'alertMessage' => $alertMessage,
                     'alertForm' => $alertForm->createView(),
                 ]);
             }
         } else {
             // Sinon, supprimer directement le type de réclamation
-            $entityManager->remove($typeReclamation);
+            $entityManager->remove($TypeReclamation);
             $entityManager->flush();
             $this->addFlash('success', 'Le type de réclamation a été supprimé avec succès.');
             return $this->redirectToRoute('app_readTypeR');

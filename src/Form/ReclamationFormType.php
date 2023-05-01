@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Reclamation;
-use App\Entity\Typereclamation;
+use App\Entity\TypeReclamation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,14 +18,19 @@ class ReclamationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('typereclamation', EntityType::class, 
-            ['class'=>Typereclamation::class,// liste déroulante depuis
-           'choice_label'=>'typeReclamation'])// aabineha b name
+            ->add(
+                'TypeReclamation',
+                EntityType::class,
+                [
+                    'class' => TypeReclamation::class, // liste déroulante depuis
+                    'choice_label' => 'TypeReclamation'
+                ]
+            ) // aabineha b name
 
-        ->add('title')
-        ->add('description', TextareaType::class)
-        //->add('Save',SubmitType::class);
-    ;
+            ->add('title')
+            ->add('description', TextareaType::class)
+            //->add('Save',SubmitType::class);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

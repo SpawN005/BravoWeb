@@ -85,9 +85,9 @@ class Reclamation
     #[ORM\ManyToOne(targetEntity: 'User')]
     private $ownerid;
 
-    #[ORM\JoinColumn(name: 'typereclamation', referencedColumnName: 'id', onDelete: "RESTRICT")]
-    #[ORM\ManyToOne(targetEntity: 'Typereclamation')]
-    private $typereclamation;
+    #[ORM\JoinColumn(name: 'TypeReclamation', referencedColumnName: 'id', onDelete: "RESTRICT")]
+    #[ORM\ManyToOne(targetEntity: 'TypeReclamation')]
+    private $TypeReclamation;
 
     public function getId(): ?int
     {
@@ -192,14 +192,14 @@ class Reclamation
         );
     }
 
-    public function getTypereclamation(): ?Typereclamation
+    public function getTypeReclamation(): ?TypeReclamation
     {
-        return $this->typereclamation;
+        return $this->TypeReclamation;
     }
 
-    public function setTypereclamation(?Typereclamation $typereclamation): self
+    public function setTypeReclamation(?TypeReclamation $TypeReclamation): self
     {
-        $this->typereclamation = $typereclamation;
+        $this->TypeReclamation = $TypeReclamation;
 
         return $this;
     }
