@@ -16,7 +16,7 @@ class CommentaireBlog
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commentaireBlogs')]
+    #[ORM\ManyToOne(inversedBy: 'CommentaireBlogs')]
     private ?Blog $blog = null;
 
     public function getId(): ?int

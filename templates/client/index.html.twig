@@ -173,8 +173,9 @@
 
 <button type="submit" class="btn btn-primary">Save Changes</button>
 
+<a class="btn btn-danger" href="{{ path('deleteProfileClient', { 'id': app.user.getId()  }) }}" >Delete</a>
 
-<a class="btn btn-danger" href="{{ path('deleteProfile', { 'id': app.user.getId()  }) }}" >Delete</a>
+
 </div>
 </div>
 {{form_end(form)}}
@@ -527,7 +528,7 @@ $(document).ready(function() {
 
 function sendVerificationCode() {
     console.log('sendVerificationCode function called!');
-    var phoneNumber = '+21655249321' 
+    var phoneNumber = '+21652444970' 
     console.log("Phone number: " + phoneNumber);
 
     $.ajax({

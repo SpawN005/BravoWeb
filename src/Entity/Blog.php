@@ -43,18 +43,18 @@ class Blog
     private ?CategorieBlog $categorie = null;
 
     #[ORM\OneToMany(mappedBy: 'blog', targetEntity: CommentaireBlog::class)]
-    private Collection $commentaireBlogs;
+    private Collection $CommentaireBlogs;
 
     #[ORM\OneToMany(mappedBy: 'blog', targetEntity: NoteBlog::class)]
-    private Collection $noteBlogs;
+    private Collection $NoteBlogs;
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
     private ?User $author = null;
 
     public function __construct()
     {
-        $this->commentaireBlogs = new ArrayCollection();
-        $this->noteBlogs = new ArrayCollection();
+        $this->CommentaireBlogs = new ArrayCollection();
+        $this->NoteBlogs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,25 +127,25 @@ class Blog
      */
     public function getCommentaireBlogs(): Collection
     {
-        return $this->commentaireBlogs;
+        return $this->CommentaireBlogs;
     }
 
-    public function addCommentaireBlog(CommentaireBlog $commentaireBlog): self
+    public function addCommentaireBlog(CommentaireBlog $CommentaireBlog): self
     {
-        if (!$this->commentaireBlogs->contains($commentaireBlog)) {
-            $this->commentaireBlogs->add($commentaireBlog);
-            $commentaireBlog->setBlog($this);
+        if (!$this->CommentaireBlogs->contains($CommentaireBlog)) {
+            $this->CommentaireBlogs->add($CommentaireBlog);
+            $CommentaireBlog->setBlog($this);
         }
 
         return $this;
     }
 
-    public function removeCommentaireBlog(CommentaireBlog $commentaireBlog): self
+    public function removeCommentaireBlog(CommentaireBlog $CommentaireBlog): self
     {
-        if ($this->commentaireBlogs->removeElement($commentaireBlog)) {
+        if ($this->CommentaireBlogs->removeElement($CommentaireBlog)) {
             // set the owning side to null (unless already changed)
-            if ($commentaireBlog->getBlog() === $this) {
-                $commentaireBlog->setBlog(null);
+            if ($CommentaireBlog->getBlog() === $this) {
+                $CommentaireBlog->setBlog(null);
             }
         }
 
@@ -157,25 +157,25 @@ class Blog
      */
     public function getNoteBlogs(): Collection
     {
-        return $this->noteBlogs;
+        return $this->NoteBlogs;
     }
 
-    public function addNoteBlog(NoteBlog $noteBlog): self
+    public function addNoteBlog(NoteBlog $NoteBlog): self
     {
-        if (!$this->noteBlogs->contains($noteBlog)) {
-            $this->noteBlogs->add($noteBlog);
-            $noteBlog->setBlog($this);
+        if (!$this->NoteBlogs->contains($NoteBlog)) {
+            $this->NoteBlogs->add($NoteBlog);
+            $NoteBlog->setBlog($this);
         }
 
         return $this;
     }
 
-    public function removeNoteBlog(NoteBlog $noteBlog): self
+    public function removeNoteBlog(NoteBlog $NoteBlog): self
     {
-        if ($this->noteBlogs->removeElement($noteBlog)) {
+        if ($this->NoteBlogs->removeElement($NoteBlog)) {
             // set the owning side to null (unless already changed)
-            if ($noteBlog->getBlog() === $this) {
-                $noteBlog->setBlog(null);
+            if ($NoteBlog->getBlog() === $this) {
+                $NoteBlog->setBlog(null);
             }
         }
 

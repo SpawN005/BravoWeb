@@ -76,8 +76,6 @@ class ArtworkController extends AbstractController
     public function new(HttpClientInterface $httpClient, Request $request, EntityManagerInterface $entityManager, FlashyNotifier $flashy): Response
     {
         $user = $this->getUser();
-
-
         $artwork = new Artwork();
         $artwork->setOwner($user);
         $form = $this->createForm(ArtworkType::class, $artwork);

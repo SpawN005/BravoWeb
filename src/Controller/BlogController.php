@@ -148,8 +148,8 @@ class BlogController extends AbstractController
         $blogs = $rep->find($id);
         $blogId = $blogs->getId();
         $note = $nb->countByNote($id);
-        $noteblog = new NoteBlog();
-        $form = $this->createForm(NoteBlogType::class, $noteblog, ['csrf_protection' => false]);
+        $NoteBlog = new NoteBlog();
+        $form = $this->createForm(NoteBlogType::class, $NoteBlog, ['csrf_protection' => false]);
         $form->handleRequest($request);
 
 

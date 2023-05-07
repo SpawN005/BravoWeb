@@ -98,9 +98,9 @@ class ArtisteController extends AbstractController
 
     public function DeleteUser(EntityManagerInterface $entityManager, User $user, UserRepository $repository, $id, ManagerRegistry $doctrine, Request $request)
     {
+        dd('aze');
 
         $session = $request->getSession();
-
         $user = $repository->find($id);
         $entityManager = $doctrine->getManager();
         $entityManager->remove($user);

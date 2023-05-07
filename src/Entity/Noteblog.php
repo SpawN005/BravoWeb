@@ -16,10 +16,10 @@ class NoteBlog
     #[ORM\Column]
     private ?int $note = null;
 
-    #[ORM\ManyToOne(inversedBy: 'noteBlogs')]
+    #[ORM\ManyToOne(inversedBy: 'NoteBlogs')]
     private ?Blog $blog = null;
 
-    #[ORM\ManyToOne(inversedBy: 'noteBlogs')]
+    #[ORM\ManyToOne(inversedBy: 'NoteBlogs')]
     private ?User $user = null;
 
     public function getId(): ?int

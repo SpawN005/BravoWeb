@@ -120,22 +120,21 @@ class ClientController extends AbstractController
 
 
 
-    #[Route('/client/profile/modifier/{id}', name: 'deleteProfile')]
-
-    public function DeleteUser(EntityManagerInterface $entityManager, User $user, UserRepository $repository, $id, ManagerRegistry $doctrine, Request $request)
+    #[Route('/user/profile/modifier/{id}', name: 'deleteProfileClient')]
+    public function deleteUser(EntityManagerInterface $entityManager, UserRepository $repository, User $user, ManagerRegistry $doctrine, Request $request)
     {
-
         $session = $request->getSession();
 
-        $user = $repository->find($id);
         if (!$user || !$user->getId()) {
             throw new \Exception("User not found or has no identifier");
         }
+
+        $session->remove('user_id');
+
         $entityManager = $doctrine->getManager();
         $entityManager->remove($user);
         $entityManager->flush();
 
-        $session->remove('user_id');
         return $this->redirectToRoute('registration');
     }
 
@@ -143,7 +142,7 @@ class ClientController extends AbstractController
     public function sendVerificationCode(Request $request)
     {
 
-        $phoneNumber = '+21655249321';
+        $phoneNumber = '+21652444970';
 
         // Check whether the phone number already contains the country code
         if (!preg_match('/^\+216\d{8}$/', $phoneNumber)) {

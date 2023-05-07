@@ -40,7 +40,10 @@ class RegistrationaaaController extends AbstractController
         $user->setBanned(0);
         if ($form->isSubmitted() && $form->isValid()) {
             // Encode the new users password
-            $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPassword()));
+            $password = $form->get('password')->getData();
+            $salt = '$2a$12$' . substr(md5(random_bytes(18)), 0, 22);
+            $hash = crypt($password, $salt);
+            $user->setPassword($hash);
 
             // Set their role
 
