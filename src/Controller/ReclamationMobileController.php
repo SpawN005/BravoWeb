@@ -116,24 +116,19 @@ private function getErrorsFromForm(FormInterface $form): array
 }
 
 #[Route('/updateR/{id}', name: 'app_updateR')]
-public function updateR($id, ReclamationRepository $rep, ManagerRegistry $doctrine, Request $request, NormalizerInterface $Normalizer): Response
+public function updateR($id, ReclamationRepository $rep,UserRepository $ru,TypeReclamationRepository $r, ManagerRegistry $doctrine, Request $request, NormalizerInterface $Normalizer): Response
 {
-    // récupérer la classe à modifier
-    $reclamation = $rep->find($id);
-    // if (!$reclamation) {
-    //     return new JsonResponse(['message' => 'La réclamation n\'existe pas.'], Response::HTTP_NOT_FOUND);
-    // }
-// Récupérer les paramètres depuis la requête
+    $reclamation=$rep->find($id);
 $title = $request->get('title');
 $description = $request->get('description');
-
-
 $reclamation->setTitle($title);
 $reclamation->setDescription($description);
 $reclamation->setDateCreation(new \DateTime());
 $reclamation->setEtat('on hold');
 $reclamation->setNote(0);
 $reclamation->setDateTreatment(new \DateTime());
+$reclamation->setTypereclamation($r->findOneBy([]));
+    $reclamation->setOwnerid($ru->findOneBy([]));
         // Action de Mise à jour
         $em = $doctrine->getManager();
         $em->flush();
