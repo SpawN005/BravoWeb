@@ -21,6 +21,7 @@ use Swift_Message;
 use Swift_SmtpTransport;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use App\Entity\Reservation;
 
 
 class EventController extends AbstractController
@@ -135,14 +136,16 @@ class EventController extends AbstractController
     
        
        // Envoyer une notification à chaque utilisateur ayant réservé des places dans cet événement
+       $message = ''; // initialiser la variable message
 foreach ($reservations as $reservation) {
     $user = $reservation->getIdParticipant();
     $eventTitle = $event->getTitle();
     $message = 'The event "' . $eventTitle . '" has been cancelled.';
-}
     $session->getFlashBag()->add('danger', $message);
     $this->emailAnnulation($user, $eventTitle, $mailer);
 
+}
+    
         // Enregistrer les modifications dans la base de données
         $em->flush();
     

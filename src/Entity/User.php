@@ -40,8 +40,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'id_participant', targetEntity: Reservation::class, cascade: ['remove'])]
     private Collection $reservations;
 
-    #[ORM\OneToMany(mappedBy: 'participant', targetEntity: Event::class)]
-    private Collection $events;
+    // #[ORM\OneToMany(mappedBy: 'participant', targetEntity: Event::class)]
+    // private Collection $events;
 
     
 
