@@ -10,6 +10,8 @@ use App\Entity\Donation;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\DonationType;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 
 
 
@@ -100,6 +102,34 @@ class DonationController extends AbstractController
         return $this->redirectToRoute('app_donation');
     }
 
+///////////////////////////////// json lenna
+    #[Route('/getall', name: 'getall')]
+    public function stationb(NormalizerInterface $serializer): Response
+    {
+        $r=$this->getDoctrine()->getRepository(Donation::class);
+        $messtation = $r->findAll();
+        $snorm=$serializer->normalize($messtation,'json',['groups'=>'stations']);
+        $json= json_encode($snorm);
+        return new Response($json);
+    }
+/////////////////////////////////////json
 
+    #[Route('/add', name: 'add')]
+    public function addstation(Request $request,
+                               NormalizerInterface $Normalizer): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $station = new station();
+        $station->setNomStation($request->get('nomStation'));
+        $station->setLocalisationStation($request->get('localisationStation'));
+        $station->setVeloStation($request->get('veloStation'));
+        $em->persist($station);
+        $em->flush();
+
+        $jsonContent = $Normalizer->normalize($station, 'js
+on', ['groups' => 'stations']);
+        return new Response(json_encode($jsonContent));
+    }
+/////////////////////////////////////json
 
 }

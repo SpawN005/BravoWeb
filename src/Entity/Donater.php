@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Donater
@@ -45,6 +46,7 @@ class Donater
      */
     #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'User')]
+    #[Groups("stations")]
     private $idUser;
 
     public function getId(): ?int

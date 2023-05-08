@@ -3,7 +3,8 @@
 namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;//si Aymen
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
@@ -23,6 +24,7 @@ class Donation
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[Groups("stations")]
     private $id;
 
     /**
@@ -33,6 +35,7 @@ class Donation
 
     #[ORM\Column(name: 'title', type: 'string', length: 30, nullable: false)]
     #[Assert\NotBlank(message:'Please enter a title')]
+    #[Groups("stations")]
     private $title;
 
     /**
@@ -41,6 +44,7 @@ class Donation
      */
     #[Assert\NotBlank(message:'Please enter a description')]
     #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
+    #[Groups("stations")]
     private $description;
 
     /**
@@ -57,6 +61,7 @@ class Donation
      */
     #[Assert\GreaterThanOrEqual(propertyPath:'dateCreation', message:'The end date must be a date that is later than the start date.')]
     #[ORM\Column(name: 'date_expiration', type: 'date', nullable: false)]
+    #[Groups("stations")]
     private $dateExpiration;
 
     /**
@@ -65,6 +70,7 @@ class Donation
      */
     #[Assert\Range(min: 1,notInRangeMessage: 'The amount must be greater than zero',)]
     #[ORM\Column(name: 'amount', type: 'integer', nullable: false)]
+    #[Groups("stations")]
     private $amount;
 
     /**

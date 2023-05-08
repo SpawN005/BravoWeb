@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CategorieDonationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategorieDonationRepository::class)]
 #[ORM\UniqueConstraint(name: 'NomCategorie', columns: ['NomCategorie'])]
@@ -24,6 +25,7 @@ class CategorieDonation
      */
     #[ORM\Column(name: 'NomCategorie', type: 'string', length: 100, nullable: false)]
     #[Assert\NotBlank(message:'Please')]
+    #[Groups("stations")]
     private $nomcategorie;
 
     public function getId(): ?int
