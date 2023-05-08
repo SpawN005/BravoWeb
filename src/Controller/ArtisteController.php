@@ -29,20 +29,6 @@ class ArtisteController extends AbstractController
 
 
 
-    #[Route('/artiste', name: 'artiste', methods: ['GET', 'POST'])]
-    public function Artiste(Security $security): Response
-    {
-
-        if ($security->getUser()) {
-            if (in_array("ROLE_ARTISTE", $security->getUser()->getRoles())) {
-                return $this->render('frontUser.html.twig', ['controller_name' => 'ArtisteController']);
-            } else {
-                return $this->redirectToRoute("app_login");
-            }
-        } else {
-            return $this->redirectToRoute("app_login");
-        }
-    }
 
     #[Route('/artiste/profile/modifier', name: 'artisteProfile', methods: ['GET', 'POST'])]
 
@@ -85,7 +71,7 @@ class ArtisteController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('artiste');
+            return $this->redirectToRoute('artisteProfile');
         }
 
         return $this->render('client/index.html.twig', [

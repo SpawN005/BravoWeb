@@ -532,7 +532,7 @@ function sendVerificationCode() {
     console.log("Phone number: " + phoneNumber);
 
     $.ajax({
-        url: "/client/profile/modifier/{id}/sendVerificationCode",
+        url: "/user/profile/modifier/{id}/sendVerificationCode",
         type: "POST",
         data: { phone: phoneNumber },
         success: function(response) {
@@ -542,7 +542,7 @@ function sendVerificationCode() {
             var verificationCode = prompt(flashMessage);
             
             $.ajax({
-                url: "/client/profile/modifier/{id}/verifyCode",
+                url: "/user/profile/modifier/{id}/verifyCode",
                 type: "POST",
                 data: { code: verificationCode },
                 success: function(response) {

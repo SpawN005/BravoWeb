@@ -30,7 +30,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 
-
 class ClientController extends AbstractController
 {
     private $requestStack;
@@ -45,20 +44,6 @@ class ClientController extends AbstractController
 
 
 
-    #[Route('/client', name: 'client', methods: ['GET', 'POST'])]
-    public function Client(Security $security): Response
-    {
-
-        if ($security->getUser()) {
-            if (in_array("ROLE_USER", $security->getUser()->getRoles())) {
-                return $this->render('frontUser.html.twig', ['controller_name' => 'ClientController']);
-            } else {
-                return $this->redirectToRoute("app_login");
-            }
-        } else {
-            return $this->redirectToRoute("app_login");
-        }
-    }
 
 
 
@@ -129,16 +114,20 @@ class ClientController extends AbstractController
             throw new \Exception("User not found or has no identifier");
         }
 
-        $session->remove('user_id');
 
+        $session->invalidate();
+        $this->container->get('security.token_storage')->setToken(null);
+
+        // Delete the user's profile
         $entityManager = $doctrine->getManager();
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('registration');
+        $successUrl = $this->generateUrl('app_login');
+        return $this->redirect($successUrl);
     }
 
-    #[Route('/client/profile/modifier/{id}/sendVerificationCode', methods: ['POST'])]
+    #[Route('/user/profile/modifier/{id}/sendVerificationCode', methods: ['POST'])]
     public function sendVerificationCode(Request $request)
     {
 
@@ -171,7 +160,7 @@ class ClientController extends AbstractController
         return new JsonResponse(['success' => true]);
     }
 
-    #[Route('/client/profile/modifier/{id}/verifyCode', methods: ['POST'])]
+    #[Route('/user/profile/modifier/{id}/verifyCode', methods: ['POST'])]
     public function verifyCode(Request $request, EntityManagerInterface $em): JsonResponse
     {
         // Get the verification code entered by the user

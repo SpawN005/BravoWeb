@@ -49,7 +49,7 @@
               <tbody >  
               {% if userClient is defined %}
            {% for userClient in userClient %}
-            
+            {% if userClient != app.user %}
               <tr class="ls1" data-name="{{ userClient.firstName }}">
                 <th scope="row">{{userClient.id}}</th>
                 <td>
@@ -87,6 +87,7 @@
                   <a type="button" class="btn btn-danger m-2" href="{{ path('deleteUser', { 'id': userClient.getId()  }) }}">Delete Account</a>
                   <a type="button" class="btn btn-danger m-2" href="{{ path('banUser', { 'id': userClient.id }) }}">Ban User</a>
                 </td>
+                {% endif %}
                 {% endfor %}
                   {% endif %}
 
