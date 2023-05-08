@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: CategorieBlogRepository::class)]
 class CategorieBlog
@@ -14,9 +16,12 @@ class CategorieBlog
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("categories")]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique:true)]
+    #[Groups("categories")]
     private ?string $nomCategorie = null;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Blog::class)]

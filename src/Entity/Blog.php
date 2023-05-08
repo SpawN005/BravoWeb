@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+
 use App\Repository\BlogRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
 #[UniqueEntity(fields:["title", "description"], message:"This Blog Already Exist.")]
@@ -15,35 +17,50 @@ class Blog
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("blogs")]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"The Field Title Cannot be empty")]
     #[Assert\Length(max:20, maxMessage:"The Field Title cannot cannot contain more than {{20}} caracters")]
     #[Assert\Regex(pattern:"/^[a-zA-Z0-9 ]*$/", message:"The Field Title can only contain letters and numbers")]
+    #[Groups("blogs")]
+
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"The Field Description Cannot be empty")]
     #[Assert\Length(max:100, maxMessage:"The Field Desciption cannot cannot contain more than {{20}} caracters")]
+    #[Groups("blogs")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("blogs")]
+
     private ?string $image = null;
 
     #[ORM\Column(length: 1000)]
+    #[Groups("blogs")]
+
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
+    #[Groups("blogs")]
+
     private ?CategorieBlog $categorie = null;
 
     #[ORM\OneToMany(mappedBy: 'blog', targetEntity: CommentaireBlog::class)]
+    #[Groups("blogs")]
     private Collection $commentaireBlogs;
 
     #[ORM\OneToMany(mappedBy: 'blog', targetEntity: NoteBlog::class)]
+    #[Groups("blogs")]
+
     private Collection $noteBlogs;
 
     #[ORM\ManyToOne(inversedBy: 'blogs')]
+    #[Groups("blogs")]
+
     private ?User $author = null;
 
     public function __construct()
