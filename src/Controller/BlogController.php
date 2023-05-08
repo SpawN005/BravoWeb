@@ -87,11 +87,11 @@ class BlogController extends AbstractController
 
             // envoyer un message a l'artiste pour lui informer que son blog est ajouté avec succes
             $twilio = new TwilioSmS(
-                'ACf4d21551919fa154b13f7057f9474002',
-                '0b2fecada12dc7ea90b60b62cc39edcd',
-                '+16813666808'
+                'AC722e32116c6083cff1c7e8898c7a1dd5',
+                '7a9334e17663891b9f651c3fdcbef544',
+                '+15076088911'
             );
-            $twilio->sendSMS('+21655757442', 'Your blog is added successfuly  !');
+            $twilio->sendSMS('+21652444970', 'Your blog is added successfuly  !');
 
             return $this->redirectToRoute("Myapp_blog");
         }
