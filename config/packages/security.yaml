@@ -38,6 +38,9 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/client, roles: ROLE_USER }
+         - { path: ^/artiste, roles: ROLE_ARTISTE }
+
+
 
 when@test:
     security:
