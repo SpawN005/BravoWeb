@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -12,19 +13,23 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("reservations")]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Event $id_event = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
+
     private ?User $id_participant = null;
 
     #[ORM\Column]
+    #[Groups("reservations")]
     private ?bool $isConfirmed = null;
 
     #[ORM\Column(type: "integer")]
     #[Assert\Range(min: 1, max: 10)]
+    #[Groups("reservations")]
     private ?int $nb_place = null;
 
     public function getId(): ?int

@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * TypeReclamation
@@ -28,6 +28,7 @@ class TypeReclamation
     #[Assert\NotBlank(message: "Le champ type ne peut pas être vide")]
     #[Assert\Length(max: 10, maxMessage: "Le champ type ne peut pas contenir plus de {{ 10 }} caractères")]
     #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "Le champ type ne peut contenir que des lettres, des chiffres et des espaces")]
+    #[Groups("type")]
     private $TypeReclamation;
 
     /**
@@ -39,7 +40,7 @@ class TypeReclamation
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
 
-
+    #[Groups("type")]
     private $id;
 
     #[ORM\OneToMany(mappedBy: 'TypeReclamation', targetEntity: Reclamation::class)]

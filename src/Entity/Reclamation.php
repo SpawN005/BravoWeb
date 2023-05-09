@@ -6,6 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -27,6 +28,7 @@ class Reclamation
     #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[Groups("reclamations")]
     private $id;
 
     /**
@@ -38,6 +40,7 @@ class Reclamation
     #[Assert\NotBlank(message: "Le champ Titre ne peut pas être vide")]
     #[Assert\Length(max: 10, maxMessage: "Le champ Titre ne peut pas contenir plus de {{ 10 }} caractères")]
     #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "Le champ Titre ne peut contenir que des lettres, des chiffres et des espaces")]
+    #[Groups("reclamations")]
     private $title;
 
     /**
@@ -47,6 +50,7 @@ class Reclamation
     #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
     #[Assert\NotBlank(message: "Le champ Description ne peut pas être vide")]
     #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "Le champ Description ne peut contenir que des lettres, des chiffres et des espaces")]
+    #[Groups("reclamations")]
     private $description;
 
     /**
@@ -54,6 +58,7 @@ class Reclamation
      *
      */
     #[ORM\Column(name: 'date_creation', type: 'date', nullable: false)]
+    #[Groups("reclamations")]
     private $dateCreation;
 
     /**
@@ -61,6 +66,7 @@ class Reclamation
      *
      */
     #[ORM\Column(name: 'etat', type: 'string', length: 30, nullable: false)]
+    #[Groups("reclamations")]
     private $etat;
 
     /**
@@ -68,6 +74,7 @@ class Reclamation
      *
      */
     #[ORM\Column(name: 'date_treatment', type: 'date', nullable: true)]
+    #[Groups("reclamations")]
     private $dateTreatment;
 
     /**
@@ -75,6 +82,7 @@ class Reclamation
      *
      */
     #[ORM\Column(name: 'note', type: 'integer', nullable: false)]
+    #[Groups("reclamations")]
     private $note;
 
     /**
@@ -83,10 +91,12 @@ class Reclamation
      */
     #[ORM\JoinColumn(name: 'ownerID', referencedColumnName: 'id')]
     #[ORM\ManyToOne(targetEntity: 'User')]
+    #[Groups("reclamations")]
     private $ownerid;
 
     #[ORM\JoinColumn(name: 'TypeReclamation', referencedColumnName: 'id', onDelete: "RESTRICT")]
     #[ORM\ManyToOne(targetEntity: 'TypeReclamation')]
+    #[Groups("reclamations")]
     private $TypeReclamation;
 
     public function getId(): ?int

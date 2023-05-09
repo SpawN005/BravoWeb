@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[UniqueEntity(fields: ['title'], message: 'There is already an event with this title')]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -17,30 +18,36 @@ class Event
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("events")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Groups("events")]
     #[Assert\NotBlank(message: 'Please enter a title.')]
     #[Assert\Length(max: 20, maxMessage: "The Field Title cannot cannot contain more than {{20}} caracters")]
     #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "The Field Title can only contain letters and numbers")]
     private ?string $title;
 
     #[ORM\Column(length: 255)]
+    #[Groups("events")]
     #[Assert\NotBlank(message: 'Please enter a description.')]
     #[Assert\Length(max: 100, maxMessage: "The Field Desciption cannot cannot contain more than {{20}} caracters")]
     #[Assert\Regex(pattern: "/^[a-zA-Z0-9 ]*$/", message: "The Field Title can only contain letters and numbers")]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups("events")]
     #[Assert\GreaterThanOrEqual(value: 0)]
     private ?int $nb_placeMax = null;
 
     #[ORM\Column(type: 'date', nullable: false)]
+    #[Groups("events")]
     #[Assert\NotBlank(message: 'Please enter a Date.')]
     #[Assert\GreaterThanOrEqual('today', message: 'The start date must be a date that is later than the current date.')]
     private ?\DateTimeInterface $date_beg;
 
     #[ORM\Column(type: 'date', nullable: false)]
+    #[Groups("events")]
     #[Assert\NotBlank(message: 'Please enter a Date.')]
     #[Assert\GreaterThanOrEqual(propertyPath: 'date_beg', message: 'The end date must be a date that is later than the start date.')]
     private ?\DateTimeInterface $date_end;
@@ -54,6 +61,7 @@ class Event
 
 
     #[ORM\Column(length: 255)]
+    #[Groups("events")]
     #[Assert\NotBlank(message: "Image is required")]
     private ?string $image = null;
 
